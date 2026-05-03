@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "@/App.css";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import {
   Phone,
   Hash,
@@ -13,8 +14,12 @@ import {
   Mail,
   MapPin,
   MessageCircle,
+  Calculator,
+  Menu,
+  X,
 } from "lucide-react";
 import Logo from "./components/Logo";
+const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -41,49 +46,123 @@ const useReveal = () => {
 /* ---------- Nav ---------- */
 const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
   const links = [
     ["About", "#about"],
     ["Services", "#services"],
-    ["Testimonials", "#testimonials"],
+    ["Name Numerology Calculator", "/name-numerology"],
     ["Contact", "#contact"],
   ];
+  const sanitize = (label) =>
+    `nav-${label.toLowerCase().replace(/\s+/g, "-")}-link`;
   return (
     <header
       data-testid="site-nav"
       className={`fixed top-0 inset-x-0 z-40 transition-all duration-500 ${
-        scrolled
-          ? "bg-[#0F0518]/80 backdrop-blur-xl border-b border-[#D4AF37]/10"
+        scrolled || open
+          ? "bg-[#0F0518]/85 backdrop-blur-xl border-b border-[#D4AF37]/10"
           : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-        <a href="#home" className="flex items-center" data-testid="nav-home-link">
-          <Logo size={44} showWordmark />
-        </a>
-        <nav className="hidden md:flex items-center gap-10">
-          {links.map(([label, href]) => (
-            <a
-              key={href}
-              href={href}
-              data-testid={`nav-${label.toLowerCase()}-link`}
-              className="font-mono text-[11px] uppercase tracking-[0.28em] text-[#C8BED6] hover:text-[#D4AF37] transition-colors duration-300"
-            >
-              {label}
-            </a>
-          ))}
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-10 py-4 flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center shrink-0" data-testid="nav-home-link" onClick={() => setOpen(false)}>
+          <Logo size={40} showWordmark />
+        </Link>
+
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
+          {links.map(([label, href]) => {
+            const isRoute = href.startsWith("/");
+            const cls =
+              "font-mono text-[10px] xl:text-[11px] uppercase tracking-[0.24em] xl:tracking-[0.28em] text-[#C8BED6] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap";
+            return isRoute ? (
+              <Link key={href} to={href} data-testid={sanitize(label)} className={cls}>
+                {label}
+              </Link>
+            ) : (
+              <a key={href} href={href} data-testid={sanitize(label)} className={cls}>
+                {label}
+              </a>
+            );
+          })}
         </nav>
+
         <a
           href="#contact"
           data-testid="nav-book-btn"
-          className="hidden md:inline-flex btn-gold text-sm"
+          className="hidden lg:inline-flex btn-gold text-sm shrink-0"
         >
           Book Consultation <ArrowRight size={16} />
         </a>
+
+        {/* Mobile hamburger */}
+        <button
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          onClick={() => setOpen((v) => !v)}
+          data-testid="mobile-menu-toggle"
+          className="lg:hidden h-11 w-11 rounded-full border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] hover:border-[#D4AF37] transition-colors"
+        >
+          {open ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
+        </button>
+      </div>
+
+      {/* Mobile menu sheet */}
+      <div
+        data-testid="mobile-menu-panel"
+        className={`lg:hidden overflow-hidden transition-all duration-500 ease-out ${
+          open ? "max-h-[80vh] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="px-6 pb-8 pt-4 flex flex-col gap-1 border-t border-[#D4AF37]/10">
+          {links.map(([label, href]) => {
+            const isRoute = href.startsWith("/");
+            const cls =
+              "block py-4 font-serif text-2xl text-[#F8F5F0] hover:text-[#D4AF37] transition-colors border-b border-[#D4AF37]/10";
+            return isRoute ? (
+              <Link
+                key={href}
+                to={href}
+                onClick={() => setOpen(false)}
+                data-testid={sanitize(label) + "-mobile"}
+                className={cls}
+                style={{ fontWeight: 400 }}
+              >
+                {label}
+              </Link>
+            ) : (
+              <a
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                data-testid={sanitize(label) + "-mobile"}
+                className={cls}
+                style={{ fontWeight: 400 }}
+              >
+                {label}
+              </a>
+            );
+          })}
+          <a
+            href="#contact"
+            onClick={() => setOpen(false)}
+            data-testid="nav-book-btn-mobile"
+            className="btn-gold mt-6 self-start"
+          >
+            Book Consultation <ArrowRight size={16} />
+          </a>
+        </div>
       </div>
     </header>
   );
@@ -102,6 +181,8 @@ const Hero = () => {
         <img
           src="https://images.unsplash.com/photo-1767727239273-5ed97a1986b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGNvc21pYyUyMGdvbGRlbiUyMGdlb21ldHJ5fGVufDB8fHx8MTc3NzgxMjE0MHww&ixlib=rb-4.1.0&q=85"
           alt=""
+          loading="eager"
+          fetchpriority="high"
           className="w-full h-full object-cover opacity-45"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0F0518]/75 via-[#0F0518]/55 to-[#0F0518]" />
@@ -114,14 +195,14 @@ const Hero = () => {
         <Logo size={560} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 pt-40 pb-24 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 md:px-10 pt-32 sm:pt-40 pb-20 sm:pb-24 w-full">
         <div className="max-w-3xl fade-up">
           <div className="flex items-center gap-3 mb-8">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
             <span className="v-label">Since 2010 · Vedic Sciences</span>
           </div>
           <h1
-            className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.02] tracking-tight text-[#F8F5F0]"
+            className="font-serif text-[2.6rem] sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-[#F8F5F0]"
             style={{ fontWeight: 300 }}
           >
             The science of <em className="gold-shimmer not-italic font-medium">name</em>,
@@ -132,7 +213,7 @@ const Hero = () => {
           </h1>
 
           <p className="mt-10 text-lg md:text-xl text-[#C8BED6] font-light leading-relaxed max-w-2xl">
-            I am <span className="text-[#F8F5F0]">Newalkkarsaandiip</span> — Mobile
+            I am <span className="text-[#F8F5F0]">Newalkkar Saandiip</span> — Mobile
             Numerologist, Name Numerologist and Vastu Consultant. Aligning the vibrations of
             your mobile, identity and surroundings with cosmic intent, so your life flows in
             its natural order of prosperity.
@@ -142,9 +223,9 @@ const Hero = () => {
             <a href="#contact" data-testid="hero-cta-primary" className="btn-gold">
               Book a Consultation <ArrowRight size={18} />
             </a>
-            <a href="#services" data-testid="hero-cta-secondary" className="btn-ghost">
-              Explore Services
-            </a>
+            <Link to="/name-numerology" data-testid="hero-cta-calculator" className="btn-ghost">
+              <Calculator size={16} /> Free Name Calculator
+            </Link>
           </div>
 
           <div className="mt-16 grid grid-cols-3 gap-8 max-w-xl">
@@ -189,7 +270,9 @@ const About = () => {
             <div className="absolute -inset-6 border border-[#D4AF37]/25 rounded-2xl" />
             <img
               src="https://images.unsplash.com/photo-1585240975858-7264fd020798?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBlbGVnYW50JTIwY29uc3VsdGFudCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3NzgxMjEzMHww&ixlib=rb-4.1.0&q=85"
-              alt="Newalkkarsaandiip"
+              alt="Newalkkar Saandiip"
+              loading="lazy"
+              decoding="async"
               className="relative rounded-2xl w-full object-cover aspect-[4/5] grayscale-[15%]"
             />
             <div className="absolute -bottom-6 -right-6 bg-[#1A0B2E] border border-[#D4AF37]/25 rounded-2xl px-6 py-5 backdrop-blur-md">
@@ -386,7 +469,7 @@ const testimonials = [
   },
   {
     quote:
-      "I've met many numerologists. Newalkkarsaandiip ji is rare — he explains the logic, shows the math, and never pushes anything. The name correction changed how I am received in meetings.",
+      "I've met many numerologists. Newalkkar Saandiip ji is rare — he explains the logic, shows the math, and never pushes anything. The name correction changed how I am received in meetings.",
     name: "Dr. Vivek Sharma",
     role: "Consulting Physician",
   },
@@ -479,7 +562,7 @@ const Contact = () => {
       return;
     }
 
-    const message = `Namaste Newalkkarsaandiip ji,\n\nI would like to book a consultation.\n\nName: ${trimmedName}\nMobile: ${digits}${
+    const message = `Namaste Newalkkar Saandiip ji,\n\nI would like to book a consultation.\n\nName: ${trimmedName}\nMobile: ${digits}${
       note.trim() ? `\nMessage: ${note.trim()}` : ""
     }\n\nKindly get in touch.`;
 
@@ -665,7 +748,7 @@ const Contact = () => {
 
                 <div className="pt-2 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
                   <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#C8BED6]/60 max-w-xs">
-                    Your details will be sent directly to Newalkkarsaandiip ji's WhatsApp.
+                    Your details will be sent directly to Newalkkar Saandiip ji's WhatsApp.
                   </p>
                   <button
                     type="submit"
@@ -705,19 +788,30 @@ const Footer = () => {
             <div className="v-label mb-5">Navigate</div>
             <ul className="space-y-3">
               {[
-                ["About", "#about"],
-                ["Services", "#services"],
-                ["Testimonials", "#testimonials"],
-                ["Contact", "#contact"],
-              ].map(([l, h]) => (
+                ["About", "#about", false],
+                ["Services", "#services", false],
+                ["Name Calculator", "/name-numerology", true],
+                ["Testimonials", "#testimonials", false],
+                ["Contact", "#contact", false],
+              ].map(([l, h, isRoute]) => (
                 <li key={h}>
-                  <a
-                    href={h}
-                    className="text-[#F8F5F0]/80 hover:text-[#D4AF37] transition-colors font-light"
-                    data-testid={`footer-${l.toLowerCase()}-link`}
-                  >
-                    {l}
-                  </a>
+                  {isRoute ? (
+                    <Link
+                      to={h}
+                      className="text-[#F8F5F0]/80 hover:text-[#D4AF37] transition-colors font-light"
+                      data-testid={`footer-${l.toLowerCase().replace(/\s+/g, "-")}-link`}
+                    >
+                      {l}
+                    </Link>
+                  ) : (
+                    <a
+                      href={h}
+                      className="text-[#F8F5F0]/80 hover:text-[#D4AF37] transition-colors font-light"
+                      data-testid={`footer-${l.toLowerCase().replace(/\s+/g, "-")}-link`}
+                    >
+                      {l}
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>
@@ -745,7 +839,7 @@ const Footer = () => {
 
         <div className="gold-divider mt-14 mb-6" />
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#C8BED6]/50 font-mono uppercase tracking-[0.24em]">
-          <span>© {new Date().getFullYear()} Newalkkarsaandiip</span>
+          <span>© {new Date().getFullYear()} Newalkkar Saandiip</span>
           <span>Crafted with devotion</span>
         </div>
       </div>
@@ -767,8 +861,8 @@ const WhatsAppFloat = () => (
   </a>
 );
 
-/* ---------- App ---------- */
-function App() {
+/* ---------- Home (single-page) ---------- */
+function Home() {
   useReveal();
   return (
     <div className="App grain relative min-h-screen bg-[#0F0518] text-[#F8F5F0]">
@@ -783,6 +877,27 @@ function App() {
       <Footer />
       <WhatsAppFloat />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <React.Suspense
+        fallback={
+          <div className="min-h-screen bg-[#0F0518] flex items-center justify-center">
+            <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#D4AF37]">
+              Aligning the cosmos…
+            </div>
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/name-numerology" element={<NameNumerology />} />
+        </Routes>
+      </React.Suspense>
+    </BrowserRouter>
   );
 }
 

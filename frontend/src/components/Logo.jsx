@@ -17,7 +17,7 @@ const Logo = ({ size = 64, showWordmark = false, className = "" }) => {
         viewBox="0 0 120 120"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        aria-label="Newalkkarsaandiip brand mark"
+        aria-label="Newalkkar Saandiip brand mark"
       >
         <defs>
           <linearGradient id="goldGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
@@ -78,10 +78,10 @@ const Logo = ({ size = 64, showWordmark = false, className = "" }) => {
 
       {showWordmark && (
         <div className="leading-tight">
-          <div className="font-serif text-xl text-[#F8F5F0] tracking-tight" style={{ fontWeight: 500 }}>
-            Newalkkarsaandiip
+          <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0] tracking-tight whitespace-nowrap" style={{ fontWeight: 500 }}>
+            Newalkkar Saandiip
           </div>
-          <div className="font-mono text-[9px] tracking-[0.32em] uppercase text-[#D4AF37]">
+          <div className="font-mono text-[8px] sm:text-[9px] tracking-[0.28em] sm:tracking-[0.32em] uppercase text-[#D4AF37]">
             Numerology · Vastu
           </div>
         </div>
