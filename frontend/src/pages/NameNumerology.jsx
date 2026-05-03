@@ -246,23 +246,44 @@ export default function NameNumerology() {
                   </div>
                 ))}
               </div>
-              <div className="mt-6 font-mono text-xs md:text-sm text-[#C8BED6] space-y-2 leading-relaxed">
-                <div>
-                  <span className="text-[#D4AF37]">Name</span> → sum of all letters ={" "}
-                  {result.nameSum} → reduces to{" "}
-                  <span className="text-[#F8F5F0]">{result.nameNumber}</span>
+              <div className="mt-6 space-y-3 text-sm md:text-base text-[#C8BED6] leading-relaxed">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2 font-mono">
+                  <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-xs">Name</span>
+                  <span className="text-[#C8BED6]/70">→ sum of all letters</span>
+                  <span className="px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3D060] font-semibold text-base" data-testid="breakdown-name-total">
+                    Total = {result.nameSum}
+                  </span>
+                  <span className="text-[#C8BED6]/70">→ reduces to</span>
+                  <span className="font-serif text-2xl text-[#F8F5F0]" style={{ fontWeight: 600 }}>
+                    {result.nameNumber}
+                  </span>
                 </div>
-                <div>
-                  <span className="text-[#D4AF37]">Soul</span> → sum of vowels ({result.vowelLetters.join(" + ") || "—"}) ={" "}
-                  {result.soulSum} → reduces to{" "}
-                  <span className="text-[#F8F5F0]">{result.soulNumber}</span>
+
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2 font-mono">
+                  <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-xs">Soul</span>
+                  <span className="text-[#C8BED6]/70">→ sum of vowels ({result.vowelLetters.join(" + ") || "—"})</span>
+                  <span className="px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3D060] font-semibold text-base" data-testid="breakdown-soul-total">
+                    Total = {result.soulSum}
+                  </span>
+                  <span className="text-[#C8BED6]/70">→ reduces to</span>
+                  <span className="font-serif text-2xl text-[#F8F5F0]" style={{ fontWeight: 600 }}>
+                    {result.soulNumber}
+                  </span>
                 </div>
-                <div>
-                  <span className="text-[#D4AF37]">Personality</span> → sum of consonants ={" "}
-                  {result.personalitySum} → reduces to{" "}
-                  <span className="text-[#F8F5F0]">{result.personalityNumber}</span>
+
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2 font-mono">
+                  <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-xs">Personality</span>
+                  <span className="text-[#C8BED6]/70">→ sum of consonants</span>
+                  <span className="px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/40 text-[#F3D060] font-semibold text-base" data-testid="breakdown-personality-total">
+                    Total = {result.personalitySum}
+                  </span>
+                  <span className="text-[#C8BED6]/70">→ reduces to</span>
+                  <span className="font-serif text-2xl text-[#F8F5F0]" style={{ fontWeight: 600 }}>
+                    {result.personalityNumber}
+                  </span>
                 </div>
-                <div className="pt-2 text-[#C8BED6]/70">
+
+                <div className="pt-4 mt-4 border-t border-[#D4AF37]/10 text-[#C8BED6]/70 font-mono text-xs">
                   Master numbers 11, 22 and 33 are preserved and not reduced further.
                 </div>
               </div>
