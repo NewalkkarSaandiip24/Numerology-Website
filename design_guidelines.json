@@ -1,0 +1,100 @@
+{
+  "project_name": "Newalkkarsaandiip Numerology & Vastu Consulting",
+  "theme": "dark",
+  "archetype": "Archetype 5: Jewel & Luxury",
+  "mood": "Elegant, Mystical, Premium, Authoritative, Indian/Vedic Heritage",
+  "colors": {
+    "background_primary": "#0F0518",
+    "background_secondary": "#1A0B2E",
+    "surface": "#25123E",
+    "surface_glass": "bg-[#1A0B2E]/60 backdrop-blur-2xl",
+    "primary_brand": "#D4AF37",
+    "primary_hover": "#F3D060",
+    "accent": "#9370DB",
+    "text_primary": "#F8F5F0",
+    "text_secondary": "#C8BED6",
+    "border_subtle": "rgba(212, 175, 55, 0.15)",
+    "border_focus": "rgba(212, 175, 55, 0.5)"
+  },
+  "typography": {
+    "headings": {
+      "font_family": "Cormorant Garamond, serif",
+      "weight_primary": "300",
+      "weight_emphasis": "600",
+      "tracking": "tracking-tighter",
+      "h1_size": "text-5xl sm:text-6xl md:text-7xl",
+      "h2_size": "text-3xl sm:text-4xl md:text-5xl",
+      "h3_size": "text-2xl sm:text-3xl"
+    },
+    "body": {
+      "font_family": "Outfit, sans-serif",
+      "weight": "300",
+      "size": "text-base md:text-lg",
+      "line_height": "leading-relaxed"
+    },
+    "accent": {
+      "font_family": "Azeret Mono, monospace",
+      "usage": "For dates, numerology digits, overlines, and labels",
+      "size": "text-xs md:text-sm",
+      "tracking": "tracking-[0.2em]",
+      "transform": "uppercase"
+    }
+  },
+  "layout_spacing": {
+    "container_max_width": "max-w-7xl",
+    "section_padding": "py-24 md:py-32",
+    "grid_strategy": "Bento Grid (Mode A: Tetris) for services to create visual tension and asymmetry. Use gap-8 to gap-12.",
+    "border_radius": "rounded-2xl"
+  },
+  "surface_strategies": {
+    "cards": "Glassmorphism (Crystal Variant). Background: bg-[#1A0B2E]/40. Blur: backdrop-blur-xl. Border: 1px solid border-[#D4AF37]/20. Shadow: soft diffuse shadow-lg.",
+    "buttons": "Solid gold (#D4AF37) with dark aubergine text (#0F0518) for primary CTA. Subtle hover lift (-translate-y-1) and glow (shadow-[0_0_15px_rgba(212,175,55,0.4)]).",
+    "header": "Sticky Crystal Glass. bg-[#0F0518]/70 backdrop-blur-md border-b border-[#D4AF37]/10."
+  },
+  "components": {
+    "hero": {
+      "layout": "Full viewport height (min-h-screen). Immersive background image with heavy gradient overlay (bg-gradient-to-b from-[#0F0518]/80 via-[#0F0518]/40 to-[#0F0518]) to ensure text contrast.",
+      "content": "Centered elegant typography. Sacred geometry logo concept on top."
+    },
+    "services": {
+      "layout": "4 cards using asymmetrical bento grid. Each card represents a service (Mobile Numerology, Name Numerology, Vastu Consultation, Business Name Correction). Include subtle gold icons (Lucide icons: Hash, Compass, Briefcase, User)."
+    },
+    "about": {
+      "layout": "Two-column staggered layout. Large portrait image (optical alignment, slightly overlapping the container) on left. Typography-driven storytelling on right."
+    },
+    "contact": {
+      "functionality": "Form with Name and Mobile Number inputs. Submit button triggers WhatsApp link: https://wa.me/919929059153?text=Hi%20Newalkkarsaandiip,%20I%20would%20like%20to%20book%20a%20consultation.%20My%20name%20is%20[Name]%20and%20mobile%20is%20[Number].",
+      "design": "Clean Shadcn inputs customized with gold focus rings and glassmorphic container."
+    }
+  },
+  "media_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1767727239273-5ed97a1986b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGNvc21pYyUyMGdvbGRlbiUyMGdlb21ldHJ5fGVufDB8fHx8MTc3NzgxMjE0MHww&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract golden geometric shapes on black background, representing cosmic geometry."
+    },
+    "consultant_portrait": {
+      "url": "https://images.unsplash.com/photo-1585240975858-7264fd020798?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBlbGVnYW50JTIwY29uc3VsdGFudCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3NzgxMjEzMHww&ixlib=rb-4.1.0&q=85",
+      "description": "Elegant professional consultant portrait for the About section."
+    },
+    "vastu_service": {
+      "url": "https://images.unsplash.com/photo-1760262567949-e3a05cff752e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMjd8MHwxfHNlYXJjaHwyfHxjb21wYXNzJTIwYXJjaGl0ZWN0dXJlJTIwdmludGFnZXxlbnwwfHx8fDE3Nzc4MTIxNDV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Compass and architecture representing Vastu."
+    },
+    "numerology_service": {
+      "url": "https://images.unsplash.com/photo-1571156425562-12341e7c9aae?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA2MDV8MHwxfHNlYXJjaHwxfHxudW1iZXJzJTIwbXlzdGljYWwlMjBhYnN0cmFjdHxlbnwwfHx8fDE3Nzc4MTIxNDV8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Abstract numbers representing Numerology."
+    }
+  },
+  "motion_and_interactions": {
+    "hover_states": "All service cards must lift (-translate-y-2) and increase border opacity on hover. Transitions must be smooth (duration-300 ease-out).",
+    "scroll_reveal": "Use framer-motion for staggered fade-up reveals of grid items and sections as they enter the viewport."
+  },
+  "instructions_to_main_agent": [
+    "Strictly adhere to the dark aubergine (#0F0518) and classic gold (#D4AF37) palette. Do not introduce generic tech blues or grays.",
+    "For the logo, if no image is available, construct a CSS/SVG-based sacred geometry symbol (like overlapping triangles or a minimalist Sri Yantra) using gold strokes.",
+    "Use standard HTML/Tailwind for the marketing layout, avoiding generic Shadcn card wrappers for main sections to ensure custom, overlapping bento layouts.",
+    "Form inputs must use Shadcn customized to match the dark theme (transparent bg, gold borders on focus).",
+    "Implement the WhatsApp redirect carefully on the client side upon form submission.",
+    "Include data-testid attributes for all interactive elements."
+  ]
+}
