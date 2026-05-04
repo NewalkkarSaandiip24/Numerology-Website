@@ -219,14 +219,20 @@ const Hero = () => {
             <span className="v-label">Since 2010 · Vedic Sciences</span>
           </div>
           <h1
-            className="font-serif text-[2.6rem] sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] tracking-tight text-[#F8F5F0]"
+            className="font-serif text-[2.35rem] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-[#F8F5F0]"
             style={{ fontWeight: 300 }}
           >
-            The science of <em className="gold-shimmer not-italic font-medium">name</em>,
+            <span className="whitespace-nowrap">
+              The science of <em className="gold-shimmer not-italic font-medium">name</em>,
+            </span>
             <br />
-            the rhythm of <em className="gold-shimmer not-italic font-medium">number</em>,
+            <span className="whitespace-nowrap">
+              the rhythm of <em className="gold-shimmer not-italic font-medium">number</em>,
+            </span>
             <br />
-            the harmony of <em className="gold-shimmer not-italic font-medium">space</em>.
+            <span className="whitespace-nowrap">
+              the harmony of <em className="gold-shimmer not-italic font-medium">space</em>.
+            </span>
           </h1>
 
           <p className="mt-10 text-lg md:text-xl text-[#C8BED6] font-light leading-relaxed max-w-2xl">
