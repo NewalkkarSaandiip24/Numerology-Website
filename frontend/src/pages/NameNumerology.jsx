@@ -178,9 +178,10 @@ export default function NameNumerology() {
 
           <label
             htmlFor="name-input"
-            className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] block mb-2"
+            className="font-serif text-base sm:text-lg italic text-[#F3D060] block mb-2"
+            style={{ fontWeight: 500, letterSpacing: "0.01em" }}
           >
-            Full Name (as on birth records)
+            Full Name <span className="text-[#C8BED6]/70 not-italic font-light text-sm">(as on birth records)</span>
           </label>
           <div className="flex flex-col sm:flex-row gap-4">
             <input

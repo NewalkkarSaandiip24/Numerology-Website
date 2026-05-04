@@ -10,15 +10,21 @@ import React from "react";
 const Logo = ({ size = 64, showWordmark = false, className = "" }) => {
   const s = size;
   return (
-    <div className={`flex items-center gap-3 ${className}`} data-testid="brand-logo">
-      <svg
-        width={s}
-        height={s}
-        viewBox="0 0 120 120"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="Newalkkar Saandiip brand mark"
-      >
+    <div
+      className={`logo-wrap group flex items-center gap-3 ${className}`}
+      data-testid="brand-logo"
+    >
+      <div className="logo-mark relative">
+        <span className="logo-glow" aria-hidden="true" />
+        <svg
+          width={s}
+          height={s}
+          viewBox="0 0 120 120"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-label="Newalkkar Saandiip brand mark"
+          className="relative z-[1] transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-[8deg]"
+        >
         <defs>
           <linearGradient id="goldGrad" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#F3D060" />
@@ -74,15 +80,22 @@ const Logo = ({ size = 64, showWordmark = false, className = "" }) => {
         >
           N9
         </text>
-      </svg>
+        </svg>
+      </div>
 
       {showWordmark && (
-        <div className="leading-tight">
-          <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0] tracking-tight whitespace-nowrap" style={{ fontWeight: 500 }}>
+        <div className="leading-tight transition-colors duration-500">
+          <div
+            className="font-serif text-base sm:text-lg md:text-xl tracking-tight whitespace-nowrap text-[#F8F5F0] group-hover:text-[#F3D060] transition-colors duration-500"
+            style={{ fontWeight: 500 }}
+          >
             Newalkkar Saandiip
           </div>
-          <div className="font-mono text-[8px] sm:text-[9px] tracking-[0.28em] sm:tracking-[0.32em] uppercase text-[#D4AF37]">
-            Numerology · Vastu
+          <div
+            className="font-serif italic text-[11px] sm:text-[12px] tracking-[0.06em] text-[#D4AF37]/85 group-hover:text-[#F3D060] transition-colors duration-500"
+            style={{ fontWeight: 400 }}
+          >
+            numerology · vastu
           </div>
         </div>
       )}
