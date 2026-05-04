@@ -292,7 +292,7 @@ const About = () => {
           <div className="relative">
             <div className="absolute -inset-6 border border-[#D4AF37]/25 rounded-2xl" />
             <img
-              src="https://images.unsplash.com/photo-1716504627981-22728cb2d2e2?fm=jpg&q=85&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0"
+              src="https://images.unsplash.com/photo-1580471259844-e664957da155?fm=jpg&q=85&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0"
               alt="Newalkkar Saandiip"
               loading="lazy"
               decoding="async"
