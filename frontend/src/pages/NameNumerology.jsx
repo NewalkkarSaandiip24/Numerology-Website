@@ -138,27 +138,24 @@ export default function NameNumerology() {
         </div>
       </header>
 
-      <main className="relative z-10 max-w-6xl mx-auto px-6 md:px-10 pt-36 md:pt-44 pb-24">
+      <main className="relative z-10 max-w-6xl mx-auto px-5 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-20">
         {/* Intro */}
         <div className="max-w-3xl fade-up">
-          <div className="flex items-center gap-3 mb-6">
+          <div className="flex items-center gap-3 mb-4">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
             <span className="v-label">Chaldean System · Free Tool</span>
           </div>
           <h1
-            className="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight"
+            className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.05] tracking-tight"
             style={{ fontWeight: 300 }}
           >
             Name <em className="gold-shimmer not-italic font-medium">Numerology</em> Calculator
           </h1>
-          <p className="mt-8 text-lg text-[#C8BED6] font-light leading-relaxed">
-            Enter your full birth name to discover your three guiding vibrations — the
-            <span className="text-[#F8F5F0]"> Expression </span>
-            (destiny), the
-            <span className="text-[#F8F5F0]"> Soul Urge </span>
-            (inner desire) and the
-            <span className="text-[#F8F5F0]"> Personality </span>
-            (outer expression) — calculated via the Chaldean system.
+          <p className="mt-4 sm:mt-5 text-base text-[#C8BED6] font-light leading-relaxed">
+            Enter your full birth name to discover three guiding vibrations —
+            <span className="text-[#F8F5F0]"> Expression</span> (destiny),
+            <span className="text-[#F8F5F0]"> Soul Urge</span> (inner desire) and
+            <span className="text-[#F8F5F0]"> Personality</span> (outer expression) — via the Chaldean system.
           </p>
         </div>
 
@@ -166,13 +163,13 @@ export default function NameNumerology() {
         <form
           onSubmit={handleCalculate}
           data-testid="calc-form"
-          className="glass-card mt-14 p-8 md:p-12 reveal is-visible"
+          className="glass-card mt-8 sm:mt-10 p-6 sm:p-8 md:p-10 reveal is-visible"
           noValidate
         >
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <Calculator className="text-[#D4AF37]" size={22} strokeWidth={1.2} />
-              <h2 className="font-serif text-2xl md:text-3xl" style={{ fontWeight: 400 }}>
+              <Calculator className="text-[#D4AF37]" size={20} strokeWidth={1.2} />
+              <h2 className="font-serif text-xl sm:text-2xl md:text-3xl" style={{ fontWeight: 400 }}>
                 Calculate Your Numbers
               </h2>
             </div>
