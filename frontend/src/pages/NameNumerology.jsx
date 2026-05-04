@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Sparkles, Calculator, ArrowRight, MessageCircle } from "lucide-react";
 import Logo from "../components/Logo";
+import useSEO from "../hooks/useSEO";
 
 /* ---------- Chaldean Numerology ---------- */
 const CHART = {
@@ -52,6 +53,16 @@ const CHALDEAN_TABLE = [
 
 /* ---------- Page ---------- */
 export default function NameNumerology() {
+  useSEO({
+    title: "Name Numerology Calculator (Free) — Chaldean | Newalkkar Saandiip",
+    description:
+      "Free Name Numerology Calculator using the Chaldean system. Instantly find your Name Number, Soul Urge & Personality Number. Master numbers 11, 22, 33 supported. By India's trusted Mobile Numerologist & Vastu Consultant Newalkkar Saandiip.",
+    keywords:
+      "name numerology calculator, name numerology, free name numerology, chaldean name numerology, soul urge number, personality number, expression number, master numbers, indian numerology calculator, name correction numerology, Newalkkar Saandiip",
+    canonical: "https://newalkkarsaandiip.in/name-numerology",
+    ogImage: "https://newalkkarsaandiip.in/consultant-portrait.png",
+  });
+
   const [name, setName] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [error, setError] = useState("");

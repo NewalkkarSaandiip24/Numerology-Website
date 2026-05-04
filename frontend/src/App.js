@@ -19,6 +19,7 @@ import {
   X,
 } from "lucide-react";
 import Logo from "./components/Logo";
+import useSEO from "./hooks/useSEO";
 const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
@@ -886,6 +887,15 @@ const WhatsAppFloat = () => (
 
 /* ---------- Home (single-page) ---------- */
 function Home() {
+  useSEO({
+    title: "Newalkkar Saandiip | Mobile Numerologist, Name Numerologist & Vastu Consultant — India",
+    description:
+      "Newalkkar Saandiip is an Indian Mobile Numerologist, Name Numerologist and Vastu Consultant with 15+ years of practice. Book a personal consultation for name correction, lucky mobile numbers, business numerology and Vastu remedies.",
+    keywords:
+      "Newalkkar Saandiip, mobile numerologist, name numerologist, vastu consultant, numerologist india, name correction, lucky mobile number, business numerology, chaldean numerology, vastu shastra",
+    canonical: "https://newalkkarsaandiip.in/",
+    ogImage: "https://newalkkarsaandiip.in/consultant-portrait.png",
+  });
   useReveal();
   return (
     <div className="App grain relative min-h-screen bg-[#0F0518] text-[#F8F5F0]">
