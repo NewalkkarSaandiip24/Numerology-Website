@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import {
   Phone,
   Hash,
@@ -22,6 +22,15 @@ import Logo from "./components/Logo";
 const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
+
+/* ---------- Scroll to top on route change ---------- */
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" in window ? "instant" : "auto" });
+  }, [pathname]);
+  return null;
+};
 
 /* ---------- Reveal-on-scroll hook ---------- */
 const useReveal = () => {
@@ -76,7 +85,15 @@ const Nav = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-6 md:px-10 py-4 flex items-center justify-between gap-3">
-        <Link to="/" className="flex items-center shrink-0" data-testid="nav-home-link" onClick={() => setOpen(false)}>
+        <Link
+          to="/"
+          className="flex items-center shrink-0"
+          data-testid="nav-home-link"
+          onClick={() => {
+            setOpen(false);
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          }}
+        >
           <Logo size={40} showWordmark />
         </Link>
 
@@ -883,6 +900,7 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <React.Suspense
         fallback={
           <div className="min-h-screen bg-[#0F0518] flex items-center justify-center">

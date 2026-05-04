@@ -109,7 +109,12 @@ export default function NameNumerology() {
       {/* Mini Nav */}
       <header className="fixed top-0 inset-x-0 z-40 bg-[#0F0518]/75 backdrop-blur-xl border-b border-[#D4AF37]/10">
         <div className="max-w-7xl mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
-          <Link to="/" className="flex items-center" data-testid="calc-home-link">
+          <Link
+            to="/"
+            className="flex items-center"
+            data-testid="calc-home-link"
+            onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "smooth" })}
+          >
             <Logo size={42} showWordmark />
           </Link>
           <Link
