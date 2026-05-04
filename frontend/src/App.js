@@ -213,14 +213,14 @@ const Hero = () => {
         <Logo size={560} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-32 sm:pt-40 pb-20 sm:pb-24 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 w-full">
         <div className="max-w-3xl fade-up">
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-5">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
             <span className="v-label">Since 2010 · Vedic Sciences</span>
           </div>
           <h1
-            className="font-serif text-[2.35rem] sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05] tracking-tight text-[#F8F5F0]"
+            className="font-serif text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-[#F8F5F0]"
             style={{ fontWeight: 300 }}
           >
             <span className="whitespace-nowrap">
@@ -236,14 +236,14 @@ const Hero = () => {
             </span>
           </h1>
 
-          <p className="mt-10 text-lg md:text-xl text-[#C8BED6] font-light leading-relaxed max-w-2xl">
+          <p className="mt-5 sm:mt-6 text-base md:text-lg text-[#C8BED6] font-light leading-relaxed max-w-2xl">
             I am <span className="text-[#F8F5F0]">Newalkkar Saandiip</span> — Mobile
             Numerologist, Name Numerologist and Vastu Consultant. Aligning the vibrations of
             your mobile, identity and surroundings with cosmic intent, so your life flows in
             its natural order of prosperity.
           </p>
 
-          <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
             <a href="#contact" data-testid="hero-cta-primary" className="btn-gold justify-center sm:justify-start">
               Book a Consultation <ArrowRight size={18} />
             </a>
@@ -252,7 +252,7 @@ const Hero = () => {
             </Link>
           </div>
 
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-xl">
+          <div className="mt-8 sm:mt-10 grid grid-cols-3 gap-6 max-w-xl">
             {[
               ["15+", "Years of Practice"],
               ["10K+", "Lives Aligned"],
@@ -260,7 +260,7 @@ const Hero = () => {
             ].map(([k, v]) => (
               <div key={v}>
                 <div
-                  className="font-serif text-3xl md:text-4xl text-[#D4AF37]"
+                  className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#D4AF37]"
                   style={{ fontWeight: 500 }}
                 >
                   {k}
@@ -275,9 +275,9 @@ const Hero = () => {
       </div>
 
       {/* Scroll hint */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-[#C8BED6]/60">
+      <div className="hidden xl:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-2 text-[#C8BED6]/60">
         <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <div className="w-[1px] h-10 bg-gradient-to-b from-[#D4AF37] to-transparent" />
+        <div className="w-[1px] h-8 bg-gradient-to-b from-[#D4AF37] to-transparent" />
       </div>
     </section>
   );
