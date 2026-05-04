@@ -529,8 +529,14 @@ const ResultCard = ({ testid, tag, label, sublabel, number, sum }) => {
           </p>
         </>
       )}
-      <div className="mt-5 pt-4 border-t border-[#D4AF37]/10 font-mono text-[10px] uppercase tracking-[0.24em] text-[#C8BED6]/60">
-        Sum: {sum} → {number}
+      <div className="mt-5 pt-4 border-t border-[#D4AF37]/10">
+        <span
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 font-mono text-[12px] uppercase tracking-[0.22em] text-[#F3D060]"
+          data-testid={`${testid}-sum`}
+        >
+          Sum: {sum} <span className="text-[#D4AF37]">→</span>{" "}
+          <span className="text-[#F8F5F0] font-semibold">{number}</span>
+        </span>
       </div>
     </div>
   );

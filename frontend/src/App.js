@@ -102,7 +102,7 @@ const Nav = () => {
           {links.map(([label, href]) => {
             const isRoute = href.startsWith("/");
             const cls =
-              "font-mono text-[10px] xl:text-[11px] uppercase tracking-[0.24em] xl:tracking-[0.28em] text-[#C8BED6] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap";
+              "font-mono text-[10px] xl:text-[11px] uppercase tracking-[0.14em] xl:tracking-[0.16em] text-[#C8BED6] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap";
             return isRoute ? (
               <Link key={href} to={href} data-testid={sanitize(label)} className={cls}>
                 {label}
