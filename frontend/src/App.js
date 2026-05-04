@@ -212,7 +212,7 @@ const Hero = () => {
         <Logo size={560} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 sm:px-6 md:px-10 pt-32 sm:pt-40 pb-20 sm:pb-24 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-32 sm:pt-40 pb-20 sm:pb-24 w-full">
         <div className="max-w-3xl fade-up">
           <div className="flex items-center gap-3 mb-8">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
@@ -242,11 +242,11 @@ const Hero = () => {
             its natural order of prosperity.
           </p>
 
-          <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <a href="#contact" data-testid="hero-cta-primary" className="btn-gold">
+          <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+            <a href="#contact" data-testid="hero-cta-primary" className="btn-gold justify-center sm:justify-start">
               Book a Consultation <ArrowRight size={18} />
             </a>
-            <Link to="/name-numerology" data-testid="hero-cta-calculator" className="btn-ghost">
+            <Link to="/name-numerology" data-testid="hero-cta-calculator" className="btn-ghost justify-center sm:justify-start">
               <Calculator size={16} /> Free Name Calculator
             </Link>
           </div>
