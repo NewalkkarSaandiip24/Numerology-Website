@@ -292,11 +292,11 @@ const About = () => {
           <div className="relative">
             <div className="absolute -inset-6 border border-[#D4AF37]/25 rounded-2xl" />
             <img
-              src="https://images.unsplash.com/photo-1585240975858-7264fd020798?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBlbGVnYW50JTIwY29uc3VsdGFudCUyMHBvcnRyYWl0fGVufDB8fHx8MTc3NzgxMjEzMHww&ixlib=rb-4.1.0&q=85"
+              src="https://images.unsplash.com/photo-1734527224929-ed91c6cfb19a?fm=jpg&q=85&w=1200&auto=format&fit=crop&ixlib=rb-4.1.0"
               alt="Newalkkar Saandiip"
               loading="lazy"
               decoding="async"
-              className="relative rounded-2xl w-full object-cover aspect-[4/5] grayscale-[15%]"
+              className="relative rounded-2xl w-full object-cover aspect-[4/5] grayscale-[10%]"
             />
             <div className="absolute -bottom-6 -right-6 bg-[#1A0B2E] border border-[#D4AF37]/25 rounded-2xl px-6 py-5 backdrop-blur-md">
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37]">
