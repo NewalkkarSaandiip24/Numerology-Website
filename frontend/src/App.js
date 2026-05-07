@@ -13,16 +13,39 @@ import {
   Star,
   Mail,
   MapPin,
-  MessageCircle,
   Calculator,
+  CalendarHeart,
   Menu,
   X,
+  Flame,
+  HeartHandshake,
+  ShieldCheck,
 } from "lucide-react";
 import Logo from "./components/Logo";
+import WhatsAppIcon from "./components/WhatsAppIcon";
+import BookingModal from "./components/BookingModal";
 import useSEO from "./hooks/useSEO";
 const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
+const PersonalYear = React.lazy(() => import("./pages/PersonalYear"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
+
+/* ---------- Booking Modal Context (global open/close) ---------- */
+const BookingContext = React.createContext({ openBooking: () => {}, closeBooking: () => {} });
+export const useBooking = () => React.useContext(BookingContext);
+const BookingProvider = ({ children }) => {
+  const [open, setOpen] = useState(false);
+  const value = React.useMemo(
+    () => ({ openBooking: () => setOpen(true), closeBooking: () => setOpen(false) }),
+    []
+  );
+  return (
+    <BookingContext.Provider value={value}>
+      {children}
+      <BookingModal open={open} onClose={() => setOpen(false)} />
+    </BookingContext.Provider>
+  );
+};
 
 /* ---------- Scroll to top on route change ---------- */
 const ScrollToTop = () => {
@@ -55,6 +78,7 @@ const useReveal = () => {
 
 /* ---------- Nav ---------- */
 const Nav = () => {
+  const { openBooking } = useBooking();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
@@ -72,6 +96,7 @@ const Nav = () => {
     ["About", "#about"],
     ["Services", "#services"],
     ["Name Numerology Calculator", "/name-numerology"],
+    ["Personal Year", "/personal-year"],
     ["Contact", "#contact"],
   ];
   const sanitize = (label) =>
@@ -116,13 +141,14 @@ const Nav = () => {
           })}
         </nav>
 
-        <a
-          href="#contact"
+        <button
+          type="button"
+          onClick={openBooking}
           data-testid="nav-book-btn"
-          className="hidden lg:inline-flex btn-gold text-sm shrink-0"
+          className="hidden lg:inline-flex btn-whatsapp text-sm shrink-0"
         >
-          Book Consultation <ArrowRight size={16} />
-        </a>
+          <WhatsAppIcon size={18} /> Book Consultation
+        </button>
 
         {/* Mobile hamburger */}
         <button
@@ -172,14 +198,17 @@ const Nav = () => {
               </a>
             );
           })}
-          <a
-            href="#contact"
-            onClick={() => setOpen(false)}
+          <button
+            type="button"
+            onClick={() => {
+              setOpen(false);
+              openBooking();
+            }}
             data-testid="nav-book-btn-mobile"
-            className="btn-gold mt-6 self-start"
+            className="btn-whatsapp mt-6 self-start"
           >
-            Book Consultation <ArrowRight size={16} />
-          </a>
+            <WhatsAppIcon size={18} /> Book Consultation
+          </button>
         </div>
       </div>
     </header>
@@ -188,11 +217,20 @@ const Nav = () => {
 
 /* ---------- Hero ---------- */
 const Hero = () => {
+  const { openBooking } = useBooking();
+  const problems = [
+    { e: "💰", t: "Money not staying?" },
+    { e: "💼", t: "Career or promotion stuck?" },
+    { e: "🤔", t: "Confused between job or business?" },
+    { e: "❤️", t: "Relationship or marriage issues?" },
+    { e: "🏥", t: "Health or stress problems?" },
+  ];
+
   return (
     <section
       id="home"
       data-testid="hero-section"
-      className="relative min-h-screen flex items-center overflow-hidden"
+      className="relative min-h-screen flex items-center overflow-hidden pt-24 sm:pt-28 md:pt-24"
     >
       {/* Background image */}
       <div className="absolute inset-0 z-0">
@@ -201,83 +239,148 @@ const Hero = () => {
           alt=""
           loading="eager"
           fetchpriority="high"
-          className="w-full h-full object-cover opacity-45"
+          className="w-full h-full object-cover opacity-30"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0F0518]/75 via-[#0F0518]/55 to-[#0F0518]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0F0518]/80 via-[#0F0518]/65 to-[#0F0518]" />
         <div className="radial-glow w-[620px] h-[620px] -top-40 -left-40 bg-[#9370DB]/25" />
-        <div className="radial-glow w-[520px] h-[520px] bottom-0 right-0 bg-[#D4AF37]/15" />
+        <div className="radial-glow w-[520px] h-[520px] bottom-0 right-0 bg-[#D4AF37]/12" />
       </div>
 
-      {/* Rotating sacred geometry */}
-      <div className="absolute right-[-120px] top-1/2 -translate-y-1/2 z-[1] slow-spin opacity-70 hidden lg:block">
-        <Logo size={560} />
-      </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-6 sm:pt-8 pb-16 sm:pb-20 w-full">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Copy */}
+          <div className="lg:col-span-7 fade-up">
+            {/* Services badge */}
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-5">
+              <span className="px-3.5 py-1.5 rounded-full bg-[#D4AF37]/12 border border-[#D4AF37]/40 font-serif italic text-sm sm:text-base text-[#F3D060]" style={{ fontWeight: 500 }}>
+                Numerology
+              </span>
+              <span className="text-[#D4AF37]/50">·</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-[#D4AF37]/12 border border-[#D4AF37]/40 font-serif italic text-sm sm:text-base text-[#F3D060]" style={{ fontWeight: 500 }}>
+                Mobile Numerology
+              </span>
+              <span className="text-[#D4AF37]/50">·</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-[#D4AF37]/12 border border-[#D4AF37]/40 font-serif italic text-sm sm:text-base text-[#F3D060]" style={{ fontWeight: 500 }}>
+                Vaastu
+              </span>
+            </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-24 sm:pt-28 md:pt-32 pb-16 sm:pb-20 w-full">
-        <div className="max-w-3xl fade-up">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="h-[1px] w-10 bg-[#D4AF37]" />
-            <span className="v-label">Since 2010 · Vedic Sciences</span>
-          </div>
-          <h1
-            className="font-serif text-[2.1rem] sm:text-[2.75rem] md:text-5xl lg:text-6xl leading-[1.05] tracking-tight text-[#F8F5F0]"
-            style={{ fontWeight: 300 }}
-          >
-            <span className="whitespace-nowrap">
-              The science of <em className="gold-shimmer not-italic font-medium">name</em>,
-            </span>
-            <br />
-            <span className="whitespace-nowrap">
-              the rhythm of <em className="gold-shimmer not-italic font-medium">number</em>,
-            </span>
-            <br />
-            <span className="whitespace-nowrap">
-              the harmony of <em className="gold-shimmer not-italic font-medium">space</em>.
-            </span>
-          </h1>
+            {/* Hook */}
+            <h1
+              className="font-serif tracking-tight text-[#F8F5F0] leading-[1.06]"
+              style={{
+                fontWeight: 600,
+                fontSize: "clamp(1.85rem, 4.6vw, 3.5rem)",
+              }}
+            >
+              <span className="inline-flex items-center gap-2 sm:gap-3">
+                <Flame className="text-[#F4A742] shrink-0" size={32} strokeWidth={1.6} />
+                <span>Understand Yourself.</span>
+              </span>
+              <br />
+              <span className="gold-shimmer">Change Your Life.</span>
+            </h1>
 
-          <p className="mt-5 sm:mt-6 text-base md:text-lg text-[#C8BED6] font-light leading-relaxed max-w-2xl">
-            I am <span className="text-[#F8F5F0]">Newalkkar Saandiip</span> — Mobile
-            Numerologist, Name Numerologist and Vastu Consultant. Aligning the vibrations of
-            your mobile, identity and surroundings with cosmic intent, so your life flows in
-            its natural order of prosperity.
-          </p>
+            {/* Sub-question */}
+            <p
+              className="mt-5 text-lg sm:text-xl text-[#F8F5F0] font-light"
+              style={{ fontWeight: 400 }}
+            >
+              Facing problems in life?
+            </p>
 
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
-            <a href="#contact" data-testid="hero-cta-primary" className="btn-gold justify-center sm:justify-start">
-              Book a Consultation <ArrowRight size={18} />
-            </a>
-            <Link to="/name-numerology" data-testid="hero-cta-calculator" className="btn-ghost justify-center sm:justify-start">
-              <Calculator size={16} /> Free Name Calculator
-            </Link>
-          </div>
-
-          <div className="mt-8 sm:mt-10 grid grid-cols-3 gap-6 max-w-xl">
-            {[
-              ["15+", "Years of Practice"],
-              ["10K+", "Lives Aligned"],
-              ["4.9★", "Client Rating"],
-            ].map(([k, v]) => (
-              <div key={v}>
-                <div
-                  className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#D4AF37]"
-                  style={{ fontWeight: 500 }}
+            {/* Problems list */}
+            <ul className="mt-4 grid sm:grid-cols-2 gap-x-5 gap-y-2.5">
+              {problems.map((p) => (
+                <li
+                  key={p.t}
+                  className="flex items-start gap-2.5 text-[#C8BED6] text-sm sm:text-base font-light"
                 >
-                  {k}
+                  <span className="text-lg leading-none mt-0.5">{p.e}</span>
+                  <span>{p.t}</span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Pivot line */}
+            <p className="mt-5 sm:mt-6 text-base sm:text-lg text-[#F8F5F0] font-light leading-relaxed">
+              <span className="mr-1.5">👉</span>
+              <span>There is always a reason behind it.</span>
+            </p>
+            <p className="mt-3 text-sm sm:text-base text-[#C8BED6] font-light leading-relaxed max-w-2xl">
+              🔢 Discover the real cause of your problems through{" "}
+              <span className="text-[#F3D060]">Numerology, Vaastu &amp; Mobile
+              Numerology</span> — and get simple, practical solutions to improve your
+              life.
+            </p>
+
+            {/* Trust marks */}
+            <div className="mt-5 flex flex-wrap items-center gap-4 sm:gap-6 text-sm">
+              <span className="inline-flex items-center gap-2 text-[#F8F5F0]/90">
+                <ShieldCheck size={16} className="text-[#D4AF37]" /> Personal consultation
+              </span>
+              <span className="inline-flex items-center gap-2 text-[#F8F5F0]/90">
+                <Sparkles size={16} className="text-[#D4AF37]" /> Easy remedies
+              </span>
+              <span className="inline-flex items-center gap-2 text-[#F8F5F0]/90">
+                <HeartHandshake size={16} className="text-[#D4AF37]" /> Real results
+              </span>
+            </div>
+
+            {/* Trust line + CTAs */}
+            <div className="mt-6 sm:mt-7">
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#F4A742] mb-3">
+                🚀 Limited slots available today
+              </p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={openBooking}
+                  data-testid="hero-cta-primary"
+                  className="btn-whatsapp justify-center sm:justify-start text-base sm:text-lg"
+                >
+                  <WhatsAppIcon size={22} /> Book Your Consultation Now
+                </button>
+                <Link
+                  to="/name-numerology"
+                  data-testid="hero-cta-calculator"
+                  className="btn-ghost justify-center sm:justify-start"
+                >
+                  <Calculator size={16} /> Free Name Calculator
+                </Link>
+              </div>
+              <p className="mt-3 text-xs text-[#C8BED6]/65 font-light">
+                Trusted guidance by{" "}
+                <span className="text-[#F3D060]">Newalkkar Saandiip</span> —
+                Numerologist, Vaastu Consultant &amp; Mobile Numerologist.
+              </p>
+            </div>
+          </div>
+
+          {/* Photo */}
+          <div className="lg:col-span-5 fade-up">
+            <div className="relative max-w-md mx-auto lg:mx-0 lg:ml-auto">
+              <div className="absolute -inset-3 sm:-inset-5 rounded-2xl border border-[#D4AF37]/30" />
+              <div className="absolute -inset-1.5 rounded-2xl bg-gradient-to-br from-[#D4AF37]/30 via-transparent to-[#9370DB]/20 blur-xl opacity-60" />
+              <img
+                src="/saandiip-photo.jpg"
+                alt="Newalkkar Saandiip — Numerologist, Vaastu Consultant & Mobile Numerologist"
+                loading="eager"
+                fetchpriority="high"
+                className="relative rounded-2xl w-full object-cover aspect-[4/5] border border-[#D4AF37]/40"
+                data-testid="hero-portrait"
+              />
+              <div className="absolute -bottom-4 left-3 sm:left-5 right-3 sm:right-5 bg-[#0F0518]/85 backdrop-blur-md border border-[#D4AF37]/35 rounded-xl px-4 sm:px-5 py-3 sm:py-4">
+                <div className="font-serif text-base sm:text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                  Newalkkar Saandiip
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.24em] text-[#C8BED6]/80 mt-1">
-                  {v}
+                <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.24em] text-[#D4AF37] mt-0.5">
+                  Numerologist · Vaastu · Mobile Numerology
                 </div>
               </div>
-            ))}
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Scroll hint */}
-      <div className="hidden xl:flex absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex-col items-center gap-2 text-[#C8BED6]/60">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <div className="w-[1px] h-8 bg-gradient-to-b from-[#D4AF37] to-transparent" />
       </div>
     </section>
   );
@@ -293,7 +396,7 @@ const About = () => {
           <div className="relative">
             <div className="absolute -inset-6 border border-[#D4AF37]/25 rounded-2xl" />
             <img
-              src="/consultant-portrait.png"
+              src="/saandiip-photo.jpg"
               alt="Newalkkar Saandiip"
               loading="lazy"
               decoding="async"
@@ -301,13 +404,13 @@ const About = () => {
             />
             <div className="absolute -bottom-6 -right-6 bg-[#1A0B2E] border border-[#D4AF37]/25 rounded-2xl px-6 py-5 backdrop-blur-md">
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37]">
-                Master Number
+                Trusted Across India
               </div>
               <div
-                className="font-serif text-5xl text-[#F8F5F0] mt-1"
-                style={{ fontWeight: 400 }}
+                className="font-serif text-2xl text-[#F8F5F0] mt-1"
+                style={{ fontWeight: 500 }}
               >
-                9
+                Hundreds of families
               </div>
             </div>
           </div>
@@ -330,23 +433,24 @@ const About = () => {
 
           <div className="mt-8 space-y-5 text-[#C8BED6] text-base md:text-lg leading-relaxed font-light">
             <p>
-              For over fifteen years I have studied the silent language that numbers speak —
-              in our names, in the ten digits we carry on our phone, in the four walls we
-              call home. My work sits at the crossing of three sciences — <span className="text-[#F8F5F0]">Mobile
+              I am <span className="text-[#F8F5F0]">Newalkkar Saandiip</span> — a
+              dedicated student of the silent language that numbers speak: in our names,
+              in the ten digits we carry on our phone, in the four walls we call home. My
+              work sits at the crossing of three sciences — <span className="text-[#F8F5F0]">Mobile
               Numerology</span>, <span className="text-[#F8F5F0]">Name &amp; Business
-              Numerology</span>, and <span className="text-[#F8F5F0]">Vastu Shastra</span>.
+              Numerology</span>, and <span className="text-[#F8F5F0]">Vaastu Shastra</span>.
             </p>
             <p>
               I do not believe in superstition. I believe in <em className="text-[#D4AF37] not-italic">vibration</em>
               — that every syllable, every digit, every direction carries a frequency, and
               that when these frequencies agree, life becomes gentler, clearer, more
-              prosperous. My consultations are personal, data-driven and rooted in the
-              Chaldean, Pythagorean and Vastu Purush Mandala traditions.
+              prosperous. My consultations are personal, deeply considered and rooted in
+              the Chaldean, Pythagorean and Vaastu Purush Mandala traditions.
             </p>
             <p>
-              Whether you are correcting a name, choosing a lucky mobile number, or planning
-              the energy flow of a new home or business — you will find here an honest,
-              patient, and deeply considered perspective.
+              Whether you are correcting a name, choosing a lucky mobile number, or
+              planning the energy flow of a new home or business — you will find here an
+              honest, patient and trustworthy guide.
             </p>
           </div>
 
@@ -354,7 +458,7 @@ const About = () => {
             {[
               ["Chaldean", "School of Name"],
               ["Pythagorean", "School of Number"],
-              ["Vastu Purush", "School of Space"],
+              ["Vaastu Purush", "School of Space"],
             ].map(([a, b]) => (
               <div
                 key={a}
@@ -395,9 +499,9 @@ const services = [
   },
   {
     icon: Compass,
-    title: "Vastu Consultation",
+    title: "Vaastu Consultation",
     tag: "03 / Space",
-    desc: "Homes, offices, showrooms, plots — space carries memory. Using the Vastu Purush Mandala I audit your directions, entrances, zones and elements, and prescribe non-invasive remedies that restore the flow of prana.",
+    desc: "Homes, offices, showrooms, plots — space carries memory. Using the Vaastu Purush Mandala I audit your directions, entrances, zones and elements, and prescribe non-invasive remedies that restore the flow of prana.",
   },
   {
     icon: Building2,
@@ -621,8 +725,8 @@ const Contact = () => {
 
             <div className="mt-12 space-y-6">
               <div className="flex items-start gap-4" data-testid="contact-info-whatsapp">
-                <div className="h-11 w-11 rounded-full border border-[#D4AF37]/40 flex items-center justify-center text-[#D4AF37] shrink-0">
-                  <MessageCircle size={18} strokeWidth={1.2} />
+                <div className="h-11 w-11 rounded-full bg-[#25D366]/15 border border-[#25D366]/40 flex items-center justify-center text-[#25D366] shrink-0">
+                  <WhatsAppIcon size={20} />
                 </div>
                 <div>
                   <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#C8BED6]/70">
@@ -777,9 +881,9 @@ const Contact = () => {
                   <button
                     type="submit"
                     data-testid="contact-submit-btn"
-                    className="btn-gold"
+                    className="btn-whatsapp"
                   >
-                    Send on WhatsApp <ArrowRight size={18} />
+                    <WhatsAppIcon size={20} /> Send on WhatsApp
                   </button>
                 </div>
               </div>
@@ -815,6 +919,7 @@ const Footer = () => {
                 ["About", "#about", false],
                 ["Services", "#services", false],
                 ["Name Calculator", "/name-numerology", true],
+                ["Personal Year", "/personal-year", true],
                 ["Testimonials", "#testimonials", false],
                 ["Contact", "#contact", false],
               ].map(([l, h, isRoute]) => (
@@ -879,9 +984,10 @@ const WhatsAppFloat = () => (
     rel="noopener noreferrer"
     data-testid="floating-whatsapp-btn"
     aria-label="Chat on WhatsApp"
-    className="fixed bottom-6 left-6 z-40 h-14 w-14 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg shadow-[#25D366]/30 hover:scale-110 transition-transform duration-300"
+    className="fixed bottom-5 left-5 sm:bottom-6 sm:left-6 z-40 h-14 w-14 rounded-full text-white flex items-center justify-center shadow-lg shadow-[#25D366]/40 hover:scale-110 transition-transform duration-300"
+    style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
   >
-    <MessageCircle size={24} strokeWidth={1.5} />
+    <WhatsAppIcon size={28} />
   </a>
 );
 
@@ -916,21 +1022,24 @@ function Home() {
 function App() {
   return (
     <BrowserRouter>
-      <ScrollToTop />
-      <React.Suspense
-        fallback={
-          <div className="min-h-screen bg-[#0F0518] flex items-center justify-center">
-            <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#D4AF37]">
-              Aligning the cosmos…
+      <BookingProvider>
+        <ScrollToTop />
+        <React.Suspense
+          fallback={
+            <div className="min-h-screen bg-[#0F0518] flex items-center justify-center">
+              <div className="font-mono text-[10px] uppercase tracking-[0.32em] text-[#D4AF37]">
+                Aligning the cosmos…
+              </div>
             </div>
-          </div>
-        }
-      >
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/name-numerology" element={<NameNumerology />} />
-        </Routes>
-      </React.Suspense>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/name-numerology" element={<NameNumerology />} />
+            <Route path="/personal-year" element={<PersonalYear />} />
+          </Routes>
+        </React.Suspense>
+      </BookingProvider>
     </BrowserRouter>
   );
 }

@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Sparkles, Calculator, ArrowRight, MessageCircle } from "lucide-react";
+import { ArrowLeft, Sparkles, Calculator, ArrowRight, MessageCircle, CalendarHeart } from "lucide-react";
 import Logo from "../components/Logo";
 import useSEO from "../hooks/useSEO";
+import WhatsAppIcon from "../components/WhatsAppIcon";
 
 /* ---------- Chaldean Numerology ---------- */
 const CHART = {
@@ -19,7 +20,8 @@ const CHART = {
 const VOWELS = new Set(["A", "E", "I", "O", "U", "Y"]);
 
 const reduceToSingleDigit = (n) => {
-  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
+  // Always reduce to a single digit 1-9 (no master-number preservation per user preference)
+  while (n > 9) {
     n = String(n).split("").reduce((a, c) => a + parseInt(c, 10), 0);
   }
   return n;
@@ -35,9 +37,6 @@ const MEANINGS = {
   7: { title: "The Seeker", desc: "Wisdom, intuition, spirituality. Deep thinker who searches for truth and inner knowledge." },
   8: { title: "The Achiever", desc: "Power, success, abundance. Driven and authoritative; capable of manifesting material success." },
   9: { title: "The Humanitarian", desc: "Compassion, wisdom, completion. Universal love and service; the most selfless of all numbers." },
-  11: { title: "The Illuminator", desc: "Master Number. Heightened intuition, spiritual insight, visionary leadership. You are here to inspire." },
-  22: { title: "The Master Builder", desc: "Master Number. Practical vision on a grand scale; capable of manifesting ideas into lasting structures." },
-  33: { title: "The Master Healer", desc: "Master Number. Selfless service, elevated compassion; teaches love through presence." },
 };
 
 const CHALDEAN_TABLE = [
@@ -211,31 +210,35 @@ export default function NameNumerology() {
         {/* Result */}
         {result && (
           <section id="result" className="mt-16 reveal is-visible">
-            <div className="grid md:grid-cols-3 gap-6">
-              <ResultCard
-                testid="result-name-number"
-                tag="01 / Expression"
-                label="Name Number"
-                sublabel="Destiny · how the world sees your path"
-                number={result.nameNumber}
-                sum={result.nameSum}
-              />
-              <ResultCard
-                testid="result-soul-number"
-                tag="02 / Soul Urge"
-                label="Soul Number"
-                sublabel="Heart's desire · what truly moves you"
-                number={result.soulNumber}
-                sum={result.soulSum}
-              />
-              <ResultCard
-                testid="result-personality-number"
-                tag="03 / Personality"
-                label="Personality Number"
-                sublabel="Outer expression · first impressions"
-                number={result.personalityNumber}
-                sum={result.personalitySum}
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+              <div className="lg:col-span-2">
+                <FeaturedCard
+                  testid="result-name-number"
+                  tag="01 / Expression"
+                  label="Name Number"
+                  sublabel="Destiny · how the world sees your path"
+                  number={result.nameNumber}
+                  sum={result.nameSum}
+                />
+              </div>
+              <div className="flex flex-col gap-6">
+                <SmallResultCard
+                  testid="result-soul-number"
+                  tag="02 / Soul Urge"
+                  label="Soul Number"
+                  sublabel="Heart's desire"
+                  number={result.soulNumber}
+                  sum={result.soulSum}
+                />
+                <SmallResultCard
+                  testid="result-personality-number"
+                  tag="03 / Personality"
+                  label="Personality Number"
+                  sublabel="Outer expression"
+                  number={result.personalityNumber}
+                  sum={result.personalitySum}
+                />
+              </div>
             </div>
 
             {/* Breakdown */}
@@ -298,7 +301,7 @@ export default function NameNumerology() {
                 </div>
 
                 <div className="pt-4 mt-4 border-t border-[#D4AF37]/10 text-[#C8BED6]/70 font-mono text-xs">
-                  Master numbers 11, 22 and 33 are preserved and not reduced further.
+                  All numbers reduce to a single digit (1–9) using the Chaldean system.
                 </div>
               </div>
             </div>
@@ -325,9 +328,9 @@ export default function NameNumerology() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="calc-book-consultation-btn"
-                className="btn-gold whitespace-nowrap"
+                className="btn-whatsapp whitespace-nowrap"
               >
-                <MessageCircle size={18} /> Book Consultation
+                <WhatsAppIcon size={20} /> Book Consultation
               </a>
             </div>
           </section>
@@ -447,106 +450,156 @@ export default function NameNumerology() {
                 </p>
               </div>
             ))}
-
-            {[11, 22, 33].map((n) => (
-              <div
-                key={n}
-                className="glass-card p-6 border-[#D4AF37]/50"
-                data-testid={`meaning-${n}`}
-              >
-                <div className="flex items-start justify-between">
-                  <div
-                    className="font-serif text-5xl gold-shimmer leading-none"
-                    style={{ fontWeight: 600 }}
-                  >
-                    {n}
-                  </div>
-                  <div
-                    className="font-serif text-xl text-right text-[#F8F5F0]"
-                    style={{ fontWeight: 400 }}
-                  >
-                    {MEANINGS[n].title}
-                  </div>
-                </div>
-                <p className="mt-5 text-[#C8BED6] text-sm leading-relaxed font-light">
-                  {MEANINGS[n].desc}
-                </p>
-              </div>
-            ))}
           </div>
         </section>
 
-        {/* Return CTA */}
-        <div className="mt-20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 border-t border-[#D4AF37]/15 pt-10">
-          <p className="text-[#C8BED6] font-light max-w-xl">
-            Remember — a single calculator can only hint at the music of your chart. For a
-            true reading, a human eye is irreplaceable.
-          </p>
-          <Link to="/#contact" className="btn-ghost whitespace-nowrap" data-testid="calc-return-contact">
-            Speak with Newalkkar Saandiip ji <ArrowRight size={16} />
+        {/* Cross-link to Personal Year + Return CTA */}
+        <div className="mt-16 sm:mt-20 grid sm:grid-cols-2 gap-6 border-t border-[#D4AF37]/15 pt-10">
+          <Link
+            to="/personal-year"
+            data-testid="calc-to-personal-year"
+            className="glass-card p-6 sm:p-7 flex items-start gap-4 hover:border-[#D4AF37]/55 transition-all"
+          >
+            <div className="h-12 w-12 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
+              <CalendarHeart size={20} strokeWidth={1.2} />
+            </div>
+            <div>
+              <div className="v-label mb-1">Next Step</div>
+              <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                Calculate your <span className="gold-shimmer">Personal Year</span> →
+              </div>
+              <p className="mt-1.5 text-sm text-[#C8BED6] font-light">
+                See what this year holds for you, ruling lord, and gentle guidance.
+              </p>
+            </div>
           </Link>
+
+          <a
+            href="https://wa.me/919929059153"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card p-6 sm:p-7 flex items-start gap-4 hover:border-[#25D366]/55 transition-all"
+            data-testid="calc-return-contact"
+          >
+            <div className="h-12 w-12 rounded-full bg-[#25D366]/15 border border-[#25D366]/45 flex items-center justify-center text-[#25D366] shrink-0">
+              <WhatsAppIcon size={22} />
+            </div>
+            <div>
+              <div className="v-label mb-1" style={{ color: "#7ed99b" }}>Personal Reading</div>
+              <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                Speak with Newalkkar Saandiip ji →
+              </div>
+              <p className="mt-1.5 text-sm text-[#C8BED6] font-light">
+                A calculator hints at the music — only a human ear can read the song.
+              </p>
+            </div>
+          </a>
         </div>
       </main>
     </div>
   );
 }
 
-/* ---------- Result Card ---------- */
-const ResultCard = ({ testid, tag, label, sublabel, number, sum }) => {
+/* ---------- Featured (Name Number) — large card ---------- */
+const FeaturedCard = ({ testid, tag, label, sublabel, number, sum }) => {
   const meaning = MEANINGS[number];
-  const isMaster = number === 11 || number === 22 || number === 33;
   return (
     <div
-      className={`glass-card p-8 flex flex-col ${
-        isMaster ? "border-[#D4AF37]/60" : ""
-      }`}
+      className="glass-card h-full p-7 sm:p-9 md:p-11 flex flex-col"
       data-testid={testid}
+      style={{
+        background:
+          "linear-gradient(140deg, rgba(212,175,55,0.08) 0%, rgba(26,11,46,0.6) 50%)",
+        borderColor: "rgba(212,175,55,0.45)",
+      }}
     >
       <div className="flex items-center justify-between">
         <span className="v-label">{tag}</span>
-        {isMaster && (
-          <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-[#D4AF37] bg-[#D4AF37]/10 px-2 py-1 rounded-full border border-[#D4AF37]/40">
-            Master
+        <span className="font-mono text-[10px] uppercase tracking-[0.26em] text-[#F3D060] bg-[#D4AF37]/15 px-3 py-1 rounded-full border border-[#D4AF37]/45">
+          Primary
+        </span>
+      </div>
+      <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4 sm:gap-8 mt-6 sm:mt-8">
+        <div
+          className="leading-none gold-shimmer"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: "clamp(7.5rem, 18vw, 13rem)",
+            fontWeight: 700,
+            letterSpacing: "-0.04em",
+          }}
+        >
+          {number}
+        </div>
+        <div className="flex-1 pb-2 sm:pb-6">
+          <div className="font-serif text-2xl sm:text-3xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+            {label}
+          </div>
+          <div className="font-mono text-[10px] uppercase tracking-[0.26em] text-[#C8BED6]/70 mt-1">
+            {sublabel}
+          </div>
+          <span
+            className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 font-mono text-[12px] uppercase tracking-[0.22em] text-[#F3D060]"
+            data-testid={`${testid}-sum`}
+          >
+            Sum: {sum} <span className="text-[#D4AF37]">→</span>{" "}
+            <span className="text-[#F8F5F0] font-semibold">{number}</span>
           </span>
-        )}
-      </div>
-      <div
-        className={`font-serif mt-6 leading-none text-7xl md:text-8xl ${
-          isMaster ? "gold-shimmer" : "text-[#F8F5F0]"
-        }`}
-        style={{ fontWeight: 500 }}
-      >
-        {number}
-      </div>
-      <div
-        className="font-serif text-xl mt-5 text-[#F8F5F0]"
-        style={{ fontWeight: 500 }}
-      >
-        {label}
-      </div>
-      <div className="font-mono text-[10px] uppercase tracking-[0.26em] text-[#C8BED6]/70 mt-1">
-        {sublabel}
+        </div>
       </div>
       {meaning && (
         <>
-          <div className="gold-divider my-5" />
-          <div className="font-serif text-lg text-[#D4AF37]" style={{ fontWeight: 500 }}>
+          <div className="gold-divider my-6" />
+          <div className="font-serif text-xl text-[#D4AF37]" style={{ fontWeight: 500 }}>
             {meaning.title}
           </div>
-          <p className="mt-2 text-sm text-[#C8BED6] leading-relaxed font-light">
+          <p className="mt-2 text-sm sm:text-base text-[#C8BED6] leading-relaxed font-light">
             {meaning.desc}
           </p>
         </>
       )}
-      <div className="mt-5 pt-4 border-t border-[#D4AF37]/10">
-        <span
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 font-mono text-[12px] uppercase tracking-[0.22em] text-[#F3D060]"
-          data-testid={`${testid}-sum`}
+    </div>
+  );
+};
+
+/* ---------- Small (Soul / Personality) cards ---------- */
+const SmallResultCard = ({ testid, tag, label, sublabel, number, sum }) => {
+  const meaning = MEANINGS[number];
+  return (
+    <div className="glass-card p-5 sm:p-6 flex flex-col" data-testid={testid}>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="v-label">{tag}</div>
+          <div className="font-serif text-base sm:text-lg text-[#F8F5F0] mt-1.5" style={{ fontWeight: 500 }}>
+            {label}
+          </div>
+          <div className="font-mono text-[9px] uppercase tracking-[0.24em] text-[#C8BED6]/65 mt-0.5">
+            {sublabel}
+          </div>
+        </div>
+        <div
+          className="leading-none text-[#F8F5F0]"
+          style={{
+            fontFamily: "'Outfit', sans-serif",
+            fontSize: "3.25rem",
+            fontWeight: 600,
+            letterSpacing: "-0.03em",
+          }}
         >
-          Sum: {sum} <span className="text-[#D4AF37]">→</span>{" "}
-          <span className="text-[#F8F5F0] font-semibold">{number}</span>
-        </span>
+          {number}
+        </div>
       </div>
+      {meaning && (
+        <p className="mt-3 text-xs sm:text-sm text-[#C8BED6] leading-relaxed font-light">
+          <span className="text-[#D4AF37] font-medium">{meaning.title}.</span> {meaning.desc}
+        </p>
+      )}
+      <span
+        className="mt-3 self-start inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/35 font-mono text-[10px] uppercase tracking-[0.2em] text-[#F3D060]"
+        data-testid={`${testid}-sum`}
+      >
+        {sum} → <span className="text-[#F8F5F0] font-semibold">{number}</span>
+      </span>
     </div>
   );
 };
