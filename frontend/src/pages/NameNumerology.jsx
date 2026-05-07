@@ -169,7 +169,7 @@ export default function NameNumerology() {
             <div className="flex items-center gap-3">
               <Calculator className="text-[#D4AF37]" size={20} strokeWidth={1.2} />
               <h2 className="font-serif text-xl sm:text-2xl md:text-3xl" style={{ fontWeight: 400 }}>
-                Calculate Your Numbers
+                Calculate Your Name
               </h2>
             </div>
             <Sparkles className="text-[#D4AF37] hidden sm:block" size={20} strokeWidth={1.2} />
@@ -333,11 +333,32 @@ export default function NameNumerology() {
                 <WhatsAppIcon size={20} /> Book Consultation
               </a>
             </div>
+
+            {/* Cross-link to Personal Year — appears right below result */}
+            <Link
+              to="/personal-year"
+              data-testid="calc-to-personal-year"
+              className="mt-6 sm:mt-8 glass-card p-5 sm:p-7 flex items-center gap-4 hover:border-[#D4AF37]/55 transition-all"
+            >
+              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
+                <CalendarHeart size={22} strokeWidth={1.2} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="v-label mb-1">Next Step</div>
+                <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                  Now calculate your <span className="gold-shimmer">Personal Year</span>
+                </div>
+                <p className="mt-1 text-xs sm:text-sm text-[#C8BED6] font-light">
+                  Discover what this year holds — ruling lord, opportunities & gentle guidance.
+                </p>
+              </div>
+              <ArrowRight size={18} className="text-[#D4AF37] shrink-0" />
+            </Link>
           </section>
         )}
 
         {/* Chaldean chart */}
-        <section className="mt-24 reveal" data-testid="chaldean-chart">
+        <section className="mt-12 sm:mt-20 reveal" data-testid="chaldean-chart">
           <div className="flex items-center gap-3 mb-6">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
             <span className="v-label">Chaldean System · Letter Values</span>
@@ -413,7 +434,7 @@ export default function NameNumerology() {
         </section>
 
         {/* Meanings */}
-        <section className="mt-24 reveal">
+        <section className="mt-12 sm:mt-20 reveal">
           <div className="flex items-center gap-3 mb-6">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
             <span className="v-label">The Meanings</span>
@@ -453,43 +474,24 @@ export default function NameNumerology() {
           </div>
         </section>
 
-        {/* Cross-link to Personal Year + Return CTA */}
-        <div className="mt-16 sm:mt-20 grid sm:grid-cols-2 gap-6 border-t border-[#D4AF37]/15 pt-10">
-          <Link
-            to="/personal-year"
-            data-testid="calc-to-personal-year"
-            className="glass-card p-6 sm:p-7 flex items-start gap-4 hover:border-[#D4AF37]/55 transition-all"
-          >
-            <div className="h-12 w-12 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
-              <CalendarHeart size={20} strokeWidth={1.2} />
-            </div>
-            <div>
-              <div className="v-label mb-1">Next Step</div>
-              <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
-                Calculate your <span className="gold-shimmer">Personal Year</span> →
-              </div>
-              <p className="mt-1.5 text-sm text-[#C8BED6] font-light">
-                See what this year holds for you, ruling lord, and gentle guidance.
-              </p>
-            </div>
-          </Link>
-
+        {/* Return CTA */}
+        <div className="mt-10 sm:mt-16 border-t border-[#D4AF37]/15 pt-8 sm:pt-10">
           <a
             href="https://wa.me/919929059153"
             target="_blank"
             rel="noopener noreferrer"
-            className="glass-card p-6 sm:p-7 flex items-start gap-4 hover:border-[#25D366]/55 transition-all"
+            className="glass-card p-6 sm:p-7 flex items-center gap-4 hover:border-[#25D366]/55 transition-all"
             data-testid="calc-return-contact"
           >
             <div className="h-12 w-12 rounded-full bg-[#25D366]/15 border border-[#25D366]/45 flex items-center justify-center text-[#25D366] shrink-0">
               <WhatsAppIcon size={22} />
             </div>
-            <div>
+            <div className="flex-1">
               <div className="v-label mb-1" style={{ color: "#7ed99b" }}>Personal Reading</div>
-              <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+              <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
                 Speak with Newalkkar Saandiip ji →
               </div>
-              <p className="mt-1.5 text-sm text-[#C8BED6] font-light">
+              <p className="mt-1 text-xs sm:text-sm text-[#C8BED6] font-light">
                 A calculator hints at the music — only a human ear can read the song.
               </p>
             </div>

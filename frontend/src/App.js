@@ -363,19 +363,28 @@ const Hero = () => {
               <div className="absolute -inset-3 sm:-inset-5 rounded-2xl border border-[#D4AF37]/30" />
               <div className="absolute -inset-1.5 rounded-2xl bg-gradient-to-br from-[#D4AF37]/30 via-transparent to-[#9370DB]/20 blur-xl opacity-60" />
               <img
-                src="/saandiip-photo.jpg"
+                src="/saandiip-namaste.png"
                 alt="Newalkkar Saandiip — Numerologist, Vaastu Consultant & Mobile Numerologist"
                 loading="eager"
                 fetchpriority="high"
                 className="relative rounded-2xl w-full object-cover aspect-[4/5] border border-[#D4AF37]/40"
                 data-testid="hero-portrait"
               />
-              <div className="absolute -bottom-4 left-3 sm:left-5 right-3 sm:right-5 bg-[#0F0518]/85 backdrop-blur-md border border-[#D4AF37]/35 rounded-xl px-4 sm:px-5 py-3 sm:py-4">
-                <div className="font-serif text-base sm:text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+              {/* Caption card */}
+              <div className="relative -mt-6 mx-3 sm:mx-5 bg-[#0F0518]/90 backdrop-blur-md border border-[#D4AF37]/40 rounded-xl px-5 py-4 sm:py-5 text-center">
+                <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
                   Newalkkar Saandiip
                 </div>
-                <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.24em] text-[#D4AF37] mt-0.5">
-                  Numerologist · Vaastu · Mobile Numerology
+                <div className="mt-2 flex flex-wrap justify-center gap-x-2 gap-y-1.5">
+                  <span className="font-serif italic text-xs sm:text-sm text-[#F3D060]">Numerologist</span>
+                  <span className="text-[#D4AF37]/50 text-xs sm:text-sm">·</span>
+                  <span className="font-serif italic text-xs sm:text-sm text-[#F3D060]">Vaastu</span>
+                  <span className="text-[#D4AF37]/50 text-xs sm:text-sm">·</span>
+                  <span className="font-serif italic text-xs sm:text-sm text-[#F3D060]">Mobile Numerology</span>
+                </div>
+                <div className="gold-divider w-12 mx-auto my-3" />
+                <div className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#C8BED6]/85">
+                  Trusted across India · Hundreds of families
                 </div>
               </div>
             </div>
@@ -391,17 +400,34 @@ const About = () => {
   return (
     <section id="about" data-testid="about-section" className="relative py-28 md:py-36">
       <div className="max-w-7xl mx-auto px-6 md:px-10 grid lg:grid-cols-12 gap-14 items-center">
-        {/* Portrait / Visual */}
+        {/* Decorative panel (no duplicate photo) */}
         <div className="lg:col-span-5 reveal">
           <div className="relative">
             <div className="absolute -inset-6 border border-[#D4AF37]/25 rounded-2xl" />
-            <img
-              src="/saandiip-photo.jpg"
-              alt="Newalkkar Saandiip"
-              loading="lazy"
-              decoding="async"
-              className="relative rounded-2xl w-full object-cover aspect-[4/5]"
-            />
+            <div className="relative rounded-2xl aspect-[4/5] overflow-hidden border border-[#D4AF37]/30 bg-gradient-to-br from-[#1A0B2E] via-[#25123E] to-[#0F0518] flex flex-col items-center justify-center p-8 text-center">
+              <div className="absolute inset-0 opacity-25">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-square rounded-full border border-[#D4AF37]/40 slow-spin" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] aspect-square rounded-full border border-[#D4AF37]/30 slow-spin-reverse" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] aspect-square rounded-full border border-[#D4AF37]/20 slow-spin" />
+              </div>
+              <div className="relative">
+                <div className="v-label mb-6">Guiding Principle</div>
+                <p
+                  className="font-serif italic text-2xl sm:text-3xl text-[#F8F5F0] leading-snug"
+                  style={{ fontWeight: 400 }}
+                >
+                  "Every name is a mantra.
+                  <br />
+                  Every number is a frequency.
+                  <br />
+                  Every space is a memory."
+                </p>
+                <div className="gold-divider w-16 mx-auto my-6" />
+                <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37]">
+                  — Newalkkar Saandiip
+                </p>
+              </div>
+            </div>
             <div className="absolute -bottom-6 -right-6 bg-[#1A0B2E] border border-[#D4AF37]/25 rounded-2xl px-6 py-5 backdrop-blur-md">
               <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37]">
                 Trusted Across India
