@@ -151,19 +151,6 @@ export default function NameNumerology() {
             Name <em className="gold-shimmer not-italic font-medium">Numerology</em> Calculator
           </h1>
 
-          {/* Quick link to Personal Year */}
-          <Link
-            to="/personal-year"
-            data-testid="calc-top-personal-year-link"
-            className="mt-4 inline-flex items-center gap-2 text-sm sm:text-base text-[#F3D060] hover:text-[#fff2c2] transition-colors group"
-          >
-            <CalendarHeart size={16} className="text-[#D4AF37] group-hover:rotate-6 transition-transform" />
-            <span className="font-serif italic" style={{ fontWeight: 500 }}>
-              Calculate your Personal Year too
-            </span>
-            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-
           <p className="mt-4 sm:mt-5 text-base text-[#C8BED6] font-light leading-relaxed">
             Enter your full birth name to discover three guiding vibrations —
             <span className="text-[#F8F5F0]"> Expression</span> (destiny),
@@ -221,9 +208,30 @@ export default function NameNumerology() {
           )}
         </form>
 
+        {/* Personal Year cross-link — always visible, immediately below the form */}
+        <Link
+          to="/personal-year"
+          data-testid="calc-to-personal-year"
+          className="mt-5 sm:mt-6 glass-card p-5 sm:p-6 flex items-center gap-4 hover:border-[#D4AF37]/55 transition-all"
+        >
+          <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
+            <CalendarHeart size={20} strokeWidth={1.2} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="v-label mb-1">Free Tool · Next Step</div>
+            <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+              Calculate your <span className="gold-shimmer">Personal Year</span> too
+            </div>
+            <p className="mt-1 text-xs sm:text-sm text-[#C8BED6] font-light">
+              See what this year holds — ruling lord, opportunities & gentle guidance.
+            </p>
+          </div>
+          <ArrowRight size={18} className="text-[#D4AF37] shrink-0" />
+        </Link>
+
         {/* Result */}
         {result && (
-          <section id="result" className="mt-16 reveal is-visible">
+          <section id="result" className="mt-10 sm:mt-14 reveal is-visible">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
               <div className="lg:col-span-2">
                 <FeaturedCard
@@ -347,27 +355,6 @@ export default function NameNumerology() {
                 <WhatsAppIcon size={20} /> Book Consultation
               </a>
             </div>
-
-            {/* Cross-link to Personal Year — appears right below result */}
-            <Link
-              to="/personal-year"
-              data-testid="calc-to-personal-year"
-              className="mt-6 sm:mt-8 glass-card p-5 sm:p-7 flex items-center gap-4 hover:border-[#D4AF37]/55 transition-all"
-            >
-              <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
-                <CalendarHeart size={22} strokeWidth={1.2} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="v-label mb-1">Next Step</div>
-                <div className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
-                  Now calculate your <span className="gold-shimmer">Personal Year</span>
-                </div>
-                <p className="mt-1 text-xs sm:text-sm text-[#C8BED6] font-light">
-                  Discover what this year holds — ruling lord, opportunities & gentle guidance.
-                </p>
-              </div>
-              <ArrowRight size={18} className="text-[#D4AF37] shrink-0" />
-            </Link>
           </section>
         )}
 
