@@ -150,6 +150,20 @@ export default function NameNumerology() {
           >
             Name <em className="gold-shimmer not-italic font-medium">Numerology</em> Calculator
           </h1>
+
+          {/* Quick link to Personal Year */}
+          <Link
+            to="/personal-year"
+            data-testid="calc-top-personal-year-link"
+            className="mt-4 inline-flex items-center gap-2 text-sm sm:text-base text-[#F3D060] hover:text-[#fff2c2] transition-colors group"
+          >
+            <CalendarHeart size={16} className="text-[#D4AF37] group-hover:rotate-6 transition-transform" />
+            <span className="font-serif italic" style={{ fontWeight: 500 }}>
+              Calculate your Personal Year too
+            </span>
+            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
+
           <p className="mt-4 sm:mt-5 text-base text-[#C8BED6] font-light leading-relaxed">
             Enter your full birth name to discover three guiding vibrations —
             <span className="text-[#F8F5F0]"> Expression</span> (destiny),
