@@ -328,11 +328,23 @@ const Hero = () => {
             </div>
 
             {/* Pricing reassurance */}
-            <p className="mt-3 font-serif italic text-sm sm:text-base text-[#F3D060] leading-relaxed">
-              <span className="text-[#D4AF37] not-italic">✦</span> At a{" "}
-              <span className="text-[#fff2c2]">nominal &amp; minimum fee</span> — accessible
-              guidance for every family, no hidden costs.
-            </p>
+            <div
+              className="mt-4 sm:mt-5 inline-flex items-start gap-3 px-4 sm:px-5 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-[#D4AF37]/15 via-[#F3D060]/12 to-[#D4AF37]/15 border border-[#D4AF37]/45"
+              style={{ boxShadow: "0 0 30px -10px rgba(212,175,55,0.3)" }}
+            >
+              <span className="text-[#F3D060] text-xl leading-none">✦</span>
+              <p
+                className="font-serif text-base sm:text-lg md:text-xl leading-snug text-[#F8F5F0]"
+                style={{ fontWeight: 500 }}
+              >
+                At a{" "}
+                <span className="gold-shimmer" style={{ fontWeight: 700 }}>
+                  nominal &amp; minimum fee
+                </span>
+                <span className="text-[#C8BED6] font-light italic"> — accessible guidance for every family,</span>
+                <span className="text-[#fff2c2]"> no hidden costs.</span>
+              </p>
+            </div>
 
             {/* Trust line + CTAs */}
             <div className="mt-6 sm:mt-7">
