@@ -327,6 +327,13 @@ const Hero = () => {
               </span>
             </div>
 
+            {/* Pricing reassurance */}
+            <p className="mt-3 font-serif italic text-sm sm:text-base text-[#F3D060] leading-relaxed">
+              <span className="text-[#D4AF37] not-italic">✦</span> At a{" "}
+              <span className="text-[#fff2c2]">nominal &amp; minimum fee</span> — accessible
+              guidance for every family, no hidden costs.
+            </p>
+
             {/* Trust line + CTAs */}
             <div className="mt-6 sm:mt-7">
               <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[#F4A742] mb-3">
