@@ -112,7 +112,7 @@ export default function NameNumerology() {
   };
 
   return (
-    <div className="grain relative min-h-screen bg-[#0F0518] text-[#F8F5F0]">
+    <div className="grain relative min-h-screen overflow-x-hidden bg-[#0F0518] text-[#F8F5F0]">
       {/* Decorative glows */}
       <div className="radial-glow w-[560px] h-[560px] -top-40 -left-40 bg-[#9370DB]/25" />
       <div className="radial-glow w-[480px] h-[480px] top-[20%] right-[-160px] bg-[#D4AF37]/15" />

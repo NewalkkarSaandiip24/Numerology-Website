@@ -1191,7 +1191,7 @@ function Home() {
   });
   useReveal();
   return (
-    <div className="App grain relative min-h-screen bg-[#0F0518] text-[#F8F5F0]">
+    <div className="App grain relative min-h-screen overflow-x-hidden bg-[#0F0518] text-[#F8F5F0]">
       <Nav />
       <main>
         <Hero />
