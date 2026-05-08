@@ -1,0 +1,29 @@
+# Cache hashed build assets aggressively (Create-React-App emits content-hashed file names)
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cache compressed media for 30 days
+/*.webp
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/*.jpg
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/*.png
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+/*.svg
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Cache fonts forever (immutable)
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Always fetch fresh HTML so users get latest deploy
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Sitemap and robots — small daily refresh window
+/robots.txt
+  Cache-Control: public, max-age=86400
+/sitemap.xml
+  Cache-Control: public, max-age=86400

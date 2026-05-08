@@ -82,8 +82,16 @@ const Nav = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 20);
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   useEffect(() => {
@@ -235,10 +243,11 @@ const Hero = () => {
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="https://images.unsplash.com/photo-1767727239273-5ed97a1986b4?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzJ8MHwxfHNlYXJjaHw0fHxhYnN0cmFjdCUyMGNvc21pYyUyMGdvbGRlbiUyMGdlb21ldHJ5fGVufDB8fHx8MTc3NzgxMjE0MHww&ixlib=rb-4.1.0&q=85"
+          src="https://images.unsplash.com/photo-1767727239273-5ed97a1986b4?w=1600&q=60&auto=format&fm=webp"
           alt=""
-          loading="eager"
-          fetchpriority="high"
+          loading="lazy"
+          decoding="async"
+          aria-hidden="true"
           className="w-full h-full object-cover opacity-30"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#0F0518]/80 via-[#0F0518]/65 to-[#0F0518]" />
@@ -381,14 +390,30 @@ const Hero = () => {
             <div className="relative max-w-md mx-auto lg:mx-0 lg:ml-auto">
               <div className="absolute -inset-3 sm:-inset-5 rounded-2xl border border-[#D4AF37]/30" />
               <div className="absolute -inset-1.5 rounded-2xl bg-gradient-to-br from-[#D4AF37]/30 via-transparent to-[#9370DB]/20 blur-xl opacity-60" />
-              <img
-                src="/saandiip-namaste.png"
-                alt="Newalkkar Saandiip — Numerologist, Vaastu Consultant & Mobile Numerologist"
-                loading="eager"
-                fetchpriority="high"
-                className="relative rounded-2xl w-full object-cover aspect-[4/5] border border-[#D4AF37]/40"
-                data-testid="hero-portrait"
-              />
+              <picture>
+                <source
+                  media="(max-width: 767px)"
+                  srcSet="/saandiip-namaste-sm.webp"
+                  type="image/webp"
+                />
+                <source
+                  media="(max-width: 767px)"
+                  srcSet="/saandiip-namaste-sm.jpg"
+                  type="image/jpeg"
+                />
+                <source srcSet="/saandiip-namaste.webp" type="image/webp" />
+                <img
+                  src="/saandiip-namaste.jpg"
+                  alt="Newalkkar Saandiip — Numerologist, Vaastu Consultant & Mobile Numerologist"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                  width={480}
+                  height={600}
+                  className="relative rounded-2xl w-full object-cover aspect-[4/5] border border-[#D4AF37]/40"
+                  data-testid="hero-portrait"
+                />
+              </picture>
               {/* Caption card */}
               <div className="relative -mt-6 mx-3 sm:mx-5 bg-[#0F0518]/90 backdrop-blur-md border border-[#D4AF37]/40 rounded-xl px-5 py-4 sm:py-5 text-center">
                 <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
