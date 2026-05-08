@@ -146,13 +146,13 @@ const YEAR_INFO = {
 export default function PersonalYear() {
   useSEO({
     title:
-      "Personal Year Calculator (Free) | Newalkkar Saandiip — Numerology",
+      "Personal Year Calculator (Free) | Online Numerology Consultation — Newalkkar Saandiip",
     description:
-      "Free Personal Year Calculator. Find your numerological Personal Year, ruling lord, opportunities and gentle cautions for the year ahead. By Newalkkar Saandiip — Mobile Numerologist & Vastu Consultant.",
+      "Free Personal Year Calculator by India's trusted Numerologist Newalkkar Saandiip. Find your numerological Personal Year, ruling lord, opportunities and gentle cautions. Online Numerology Consultation, Name Numerology, Mobile Number Numerology, Business Name Numerology and Vastu Consultant services.",
     keywords:
-      "personal year calculator, numerology personal year, personal year 2026, personal year number, life cycle numerology, ruling planet year, Newalkkar Saandiip",
+      "personal year calculator, numerology personal year, Online Numerology Consultation, Numerologist in India, Name Numerology, Mobile Number Numerology, Business Name Numerology, Vastu Consultant, BNN Astrology, Newalkkar Saandiip",
     canonical: "https://newalkkarsaandiip.in/personal-year",
-    ogImage: "https://newalkkarsaandiip.in/logo.png",
+    ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
 
   const [dob, setDob] = useState("");

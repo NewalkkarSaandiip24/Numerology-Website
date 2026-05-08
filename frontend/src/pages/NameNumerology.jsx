@@ -53,13 +53,14 @@ const CHALDEAN_TABLE = [
 /* ---------- Page ---------- */
 export default function NameNumerology() {
   useSEO({
-    title: "Name Numerology Calculator (Free) — Chaldean | Newalkkar Saandiip",
+    title:
+      "Free Name Numerology Calculator (Chaldean) | Online Numerology Consultation — Newalkkar Saandiip",
     description:
-      "Free Name Numerology Calculator using the Chaldean system. Instantly find your Name Number, Soul Urge & Personality Number. Master numbers 11, 22, 33 supported. By India's trusted Mobile Numerologist & Vastu Consultant Newalkkar Saandiip.",
+      "Free online Name Numerology Calculator using the Chaldean system. Instantly find your Name Number, Soul Urge & Personality Number. Trusted by India's leading Numerologist Newalkkar Saandiip — also offering Mobile Number Numerology, Business Name Numerology and Vastu Consultation.",
     keywords:
-      "name numerology calculator, name numerology, free name numerology, chaldean name numerology, soul urge number, personality number, expression number, master numbers, indian numerology calculator, name correction numerology, Newalkkar Saandiip",
+      "Name Numerology, Name Numerology Calculator, free name numerology, chaldean numerology calculator, soul urge number, expression number, Online Numerology Consultation, Numerologist in India, Mobile Number Numerology, Business Name Numerology, Vastu Consultant, BNN Astrology, Newalkkar Saandiip",
     canonical: "https://newalkkarsaandiip.in/name-numerology",
-    ogImage: "https://newalkkarsaandiip.in/consultant-portrait.png",
+    ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
 
   const [name, setName] = useState("");

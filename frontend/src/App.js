@@ -290,6 +290,14 @@ const Hero = () => {
               <span className="gold-shimmer">Change Your Life.</span>
             </h1>
 
+            {/* SEO sub-line */}
+            <p className="mt-3 text-sm sm:text-base text-[#C8BED6]/85 font-light leading-relaxed max-w-2xl">
+              <span className="text-[#F3D060] font-medium">Numerologist in India</span> ·
+              Online Numerology Consultation, Name Numerology, Mobile Number Numerology,
+              Business Name Numerology, Vastu Consultant &amp; BNN Astrology guidance by
+              <span className="text-[#F8F5F0]"> Newalkkar Saandiip</span>.
+            </p>
+
             {/* Sub-question */}
             <p
               className="mt-5 text-lg sm:text-xl text-[#F8F5F0] font-light"
@@ -490,37 +498,40 @@ const About = () => {
         <div className="lg:col-span-7 reveal">
           <div className="flex items-center gap-3 mb-6">
             <span className="h-[1px] w-10 bg-[#D4AF37]" />
-            <span className="v-label">The Practitioner</span>
+            <span className="v-label">About Newalkkar Saandiip</span>
           </div>
           <h2
             className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] text-[#F8F5F0] tracking-tight"
             style={{ fontWeight: 300 }}
           >
-            A quiet art of <em className="gold-shimmer not-italic font-medium">alignment</em>,
-            practised with devotion.
+            India's trusted <em className="gold-shimmer not-italic font-medium">Numerologist &amp; Vastu Consultant</em> — practised with devotion.
           </h2>
           <div className="mt-8 gold-divider w-24" />
 
           <div className="mt-8 space-y-5 text-[#C8BED6] text-base md:text-lg leading-relaxed font-light">
             <p>
               I am <span className="text-[#F8F5F0]">Newalkkar Saandiip</span> — a
-              dedicated student of the silent language that numbers speak: in our names,
-              in the ten digits we carry on our phone, in the four walls we call home. My
-              work sits at the crossing of three sciences — <span className="text-[#F8F5F0]">Mobile
-              Numerology</span>, <span className="text-[#F8F5F0]">Name &amp; Business
-              Numerology</span>, and <span className="text-[#F8F5F0]">Vaastu Shastra</span>.
+              <span className="text-[#F3D060]"> Numerologist in India</span> dedicated to
+              the silent language that numbers speak: in our names, in the ten digits we
+              carry on our phone, in the four walls we call home. My work sits at the
+              crossing of three sciences — <span className="text-[#F8F5F0]">Mobile Number
+              Numerology</span>, <span className="text-[#F8F5F0]">Name &amp; Business Name
+              Numerology</span>, and <span className="text-[#F8F5F0]">Vaastu Shastra</span>
+              — with BNN Astrology as a complementary lens.
             </p>
             <p>
               I do not believe in superstition. I believe in <em className="text-[#D4AF37] not-italic">vibration</em>
               — that every syllable, every digit, every direction carries a frequency, and
               that when these frequencies agree, life becomes gentler, clearer, more
-              prosperous. My consultations are personal, deeply considered and rooted in
-              the Chaldean, Pythagorean and Vaastu Purush Mandala traditions.
+              prosperous. Every <span className="text-[#F3D060]">Online Numerology
+              Consultation</span> is personal, deeply considered and rooted in the
+              Chaldean, Pythagorean and Vaastu Purush Mandala traditions.
             </p>
             <p>
-              Whether you are correcting a name, choosing a lucky mobile number, or
-              planning the energy flow of a new home or business — you will find here an
-              honest, patient and trustworthy guide.
+              Whether you are looking for <span className="text-[#F8F5F0]">name
+              correction</span>, choosing a <span className="text-[#F8F5F0]">lucky mobile
+              number</span>, or planning the energy flow of a new home or business — you
+              will find here an honest, patient and trustworthy guide.
             </p>
           </div>
 
@@ -557,27 +568,27 @@ const About = () => {
 const services = [
   {
     icon: Phone,
-    title: "Mobile Numerology",
+    title: "Mobile Number Numerology",
     tag: "01 / Frequency",
-    desc: "The ten digits you carry everywhere vibrate with every call, message and transaction. I analyse your number against your birth chart and suggest corrections that quietly shift your luck, clarity and opportunities.",
+    desc: "The ten digits you carry everywhere vibrate with every call, message and transaction. Through Mobile Number Numerology I analyse your number against your birth chart and recommend a lucky mobile number that quietly improves luck, clarity and opportunities.",
   },
   {
     icon: User,
-    title: "Name Numerology",
+    title: "Name Numerology & Name Correction",
     tag: "02 / Identity",
-    desc: "Your name is called into existence a thousand times a day. Through Chaldean and Pythagorean systems I decode its present vibration, and if needed propose a corrected spelling that aligns with your soul and destiny numbers.",
+    desc: "Your name is called a thousand times a day. Using the Chaldean and Pythagorean systems of Name Numerology I decode its present vibration, and where needed propose a corrected spelling that aligns with your soul, destiny and personal year.",
   },
   {
     icon: Compass,
-    title: "Vaastu Consultation",
+    title: "Vastu Consultant — Homes & Offices",
     tag: "03 / Space",
-    desc: "Homes, offices, showrooms, plots — space carries memory. Using the Vaastu Purush Mandala I audit your directions, entrances, zones and elements, and prescribe non-invasive remedies that restore the flow of prana.",
+    desc: "Homes, offices, showrooms and plots — space carries memory. As a trusted Vastu Consultant in India I audit your directions, entrances, zones and elements via the Vaastu Purush Mandala, and prescribe simple, non-invasive remedies that restore the flow of prana.",
   },
   {
     icon: Building2,
-    title: "Business Name Correction",
+    title: "Business Name Numerology",
     tag: "04 / Prosperity",
-    desc: "A business name is a living mantra. I align your brand, trade name, logo and signage date with the numerological pulse of its founders — so growth stops feeling like a fight.",
+    desc: "A business name is a living mantra. Through Business Name Numerology I align your brand, trade name, logo and signage date with the numerological pulse of its founders — so growth stops feeling like a fight and prosperity flows naturally.",
   },
 ];
 
@@ -590,26 +601,25 @@ const Services = () => {
     >
       <div className="radial-glow w-[540px] h-[540px] -top-20 right-[-120px] bg-[#D4AF37]/12 z-0" />
       <div className="max-w-7xl mx-auto px-6 md:px-10 relative">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 reveal">
-          <div className="max-w-2xl">
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-[1px] w-10 bg-[#D4AF37]" />
-              <span className="v-label">Services Offered</span>
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-8 reveal">
+            <div className="max-w-2xl">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="h-[1px] w-10 bg-[#D4AF37]" />
+                <span className="v-label">Services Offered Across India</span>
+              </div>
+              <h2
+                className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] text-[#F8F5F0] tracking-tight"
+                style={{ fontWeight: 300 }}
+              >
+                Name Numerology, Vastu &amp; <em className="gold-shimmer not-italic font-medium">Mobile Number</em> Numerology
+              </h2>
             </div>
-            <h2
-              className="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.05] text-[#F8F5F0] tracking-tight"
-              style={{ fontWeight: 300 }}
-            >
-              Four disciplines.
-              <br />
-              One <em className="gold-shimmer not-italic font-medium">coherent life</em>.
-            </h2>
+            <p className="md:max-w-sm text-[#C8BED6] leading-relaxed font-light">
+              Online Numerology Consultation, Vastu Consultant services and BNN Astrology
+              guidance — bespoke, never templated. Each report is followed by an
+              unhurried personal conversation.
+            </p>
           </div>
-          <p className="md:max-w-sm text-[#C8BED6] leading-relaxed font-light">
-            Each consultation is bespoke — never a template. Findings are delivered in a
-            quiet, written report, followed by an unhurried conversation.
-          </p>
-        </div>
 
         <div className="mt-16 grid md:grid-cols-2 gap-6 md:gap-8">
           {services.map((s, i) => {
@@ -735,6 +745,112 @@ const Testimonials = () => {
     </section>
   );
 };
+
+/* ---------- FAQ ---------- */
+const FAQ_ITEMS = [
+  {
+    q: "Who is the best Numerologist in India for online consultation?",
+    a: "Newalkkar Saandiip is a highly trusted Numerologist in India, offering Online Numerology Consultation across the country. He specialises in Name Numerology, Mobile Number Numerology, Business Name Numerology, Vastu Consultant services and BNN Astrology guidance — all at a nominal, family-friendly fee.",
+  },
+  {
+    q: "What is Name Numerology and how does it help my life?",
+    a: "Name Numerology decodes the vibrational frequency of your name. Each letter is mapped to a number using the Chaldean system; the totals reveal your Expression Number (destiny), Soul Urge Number (heart's desire) and Personality Number. Correcting a misaligned name can quietly improve career, relationships, money and clarity.",
+  },
+  {
+    q: "How does Mobile Number Numerology work?",
+    a: "Mobile Number Numerology analyses the vibrations of the ten digits you carry every day, against your birth chart. The right number quietly attracts opportunities, money flow and clarity, while a misaligned one can drain energy. We provide a personalised lucky mobile number recommendation as part of the consultation.",
+  },
+  {
+    q: "Do you provide Business Name Numerology?",
+    a: "Yes. Business Name Numerology aligns your brand name, trade name, logo and signage with the numerological pulse of the founders — so growth becomes natural rather than forced. We have helped startups, family businesses and shop owners across India and abroad.",
+  },
+  {
+    q: "Is online Vastu Consultant service available?",
+    a: "Yes. Online Vastu Consultant service is available — share your home, office or shop floor plan and we deliver a detailed Vaastu Purush Mandala audit, plus simple non-invasive remedies that restore the flow of prana, prosperity and harmony.",
+  },
+  {
+    q: "How can I book an Online Numerology Consultation with Newalkkar Saandiip?",
+    a: "Click the green 'Book Consultation' button anywhere on this site, or message +91 99290 59153 directly on WhatsApp. Newalkkar Saandiip personally replies to every request, usually within a few hours. The first reply is always free.",
+  },
+];
+
+const FAQItem = ({ q, a, idx }) => {
+  const [open, setOpen] = useState(idx === 0);
+  return (
+    <div
+      className="glass-card overflow-hidden"
+      data-testid={`faq-item-${idx}`}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full text-left p-5 sm:p-6 flex items-start justify-between gap-4 hover:bg-[#D4AF37]/5 transition-colors"
+        aria-expanded={open}
+      >
+        <span
+          className="font-serif text-base sm:text-lg md:text-xl text-[#F8F5F0] leading-snug"
+          style={{ fontWeight: 500 }}
+        >
+          {q}
+        </span>
+        <span
+          className={`shrink-0 mt-1 h-7 w-7 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] transition-transform duration-300 ${
+            open ? "rotate-45" : ""
+          }`}
+          aria-hidden="true"
+        >
+          +
+        </span>
+      </button>
+      <div
+        className={`grid transition-all duration-500 ease-out ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="px-5 sm:px-6 pb-5 sm:pb-6 -mt-1 text-[#C8BED6] font-light leading-relaxed text-sm sm:text-base">
+            {a}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FAQ = () => (
+  <section
+    id="faq"
+    data-testid="faq-section"
+    className="relative py-24 md:py-32"
+  >
+    <div className="max-w-5xl mx-auto px-5 sm:px-6 md:px-10">
+      <div className="text-center mb-12 reveal">
+        <div className="flex items-center justify-center gap-3 mb-5">
+          <span className="h-[1px] w-10 bg-[#D4AF37]" />
+          <span className="v-label">Frequently Asked</span>
+          <span className="h-[1px] w-10 bg-[#D4AF37]" />
+        </div>
+        <h2
+          className="font-serif text-3xl sm:text-4xl md:text-5xl leading-[1.1] text-[#F8F5F0] tracking-tight"
+          style={{ fontWeight: 300 }}
+        >
+          Numerology &amp; <em className="gold-shimmer not-italic font-medium">Vastu</em> Questions, Answered
+        </h2>
+        <p className="mt-4 text-[#C8BED6] font-light max-w-2xl mx-auto">
+          Everything clients commonly ask about Online Numerology Consultation, Mobile
+          Number Numerology, Business Name Numerology and Vastu Consultant services in
+          India.
+        </p>
+      </div>
+
+      <div className="space-y-3 sm:space-y-4 reveal">
+        {FAQ_ITEMS.map((item, i) => (
+          <FAQItem key={i} idx={i} q={item.q} a={item.a} />
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 /* ---------- Contact ---------- */
 const Contact = () => {
@@ -1064,13 +1180,14 @@ const WhatsAppFloat = () => (
 /* ---------- Home (single-page) ---------- */
 function Home() {
   useSEO({
-    title: "Newalkkar Saandiip | Mobile Numerologist, Name Numerologist & Vastu Consultant — India",
+    title:
+      "Newalkkar Saandiip — Numerologist in India | Name Numerology, Mobile Number Numerology, Vastu Consultant",
     description:
-      "Newalkkar Saandiip is an Indian Mobile Numerologist, Name Numerologist and Vastu Consultant with 15+ years of practice. Book a personal consultation for name correction, lucky mobile numbers, business numerology and Vastu remedies.",
+      "Top-rated Numerologist in India offering Online Numerology Consultation, Name Numerology, Mobile Number Numerology, Business Name Numerology and Vastu Consultant services. BNN Astrology guidance by Newalkkar Saandiip. Book at a nominal fee.",
     keywords:
-      "Newalkkar Saandiip, mobile numerologist, name numerologist, vastu consultant, numerologist india, name correction, lucky mobile number, business numerology, chaldean numerology, vastu shastra",
+      "Name Numerology, Numerologist in India, Online Numerology Consultation, Mobile Number Numerology, Business Name Numerology, Vastu Consultant, BNN Astrology, Newalkkar Saandiip, lucky mobile number, name correction, numerology India, vastu shastra, chaldean numerology",
     canonical: "https://newalkkarsaandiip.in/",
-    ogImage: "https://newalkkarsaandiip.in/consultant-portrait.png",
+    ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
   useReveal();
   return (
@@ -1081,6 +1198,7 @@ function Home() {
         <About />
         <Services />
         <Testimonials />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
