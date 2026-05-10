@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, AlertTriangle, ShieldAlert, Hash, CalendarHeart } from "lucide-react";
+import { ArrowLeft, ArrowRight, AlertTriangle, ShieldAlert, Hash, CalendarHeart, Sparkles, CheckCircle2 } from "lucide-react";
 import Logo from "../components/Logo";
+import WhatsAppIcon from "../components/WhatsAppIcon";
 import useSEO from "../hooks/useSEO";
 import {
   digitSumWithSteps,
@@ -21,11 +22,11 @@ const STATUS_COLOR = {
 export default function MobileCompatibility() {
   useSEO({
     title:
-      "Mobile Number Compatibility Checker | Mobile Numerology by Newalkkar Saandiip",
+      "Mobile Number Compatibility Checker | Lucky Mobile Number by Newalkkar Saandiip — Best Numerologist in India",
     description:
-      "Free Mobile Number Compatibility Checker for authorized clients — pair-by-pair Mobile Numerology analysis, Kaal Sarp Dosh & Pitra Dosh detection and total digit-sum vibration by Newalkkar Saandiip, India's trusted Numerologist & Vastu Consultant.",
+      "Free Mobile Number Compatibility Checker by Newalkkar Saandiip — India's trusted Numerologist & Vastu Consultant. Pair-by-pair Mobile Numerology analysis, Lucky Mobile Number guidance, Kaal Sarp Dosh & Pitra Dosh detection, total digit-sum vibration. Authorized clients only.",
     keywords:
-      "Mobile Number Compatibility, Mobile Numerology, lucky mobile number, mobile number numerology calculator, Kaal Sarp Dosh, Pitra Dosh, Newalkkar Saandiip, Numerologist in India, Vastu Consultant, Online Numerology Consultation",
+      "Mobile Number Compatibility Checker, Mobile Number Numerology, Lucky Mobile Number, Mobile Numerology India, Best Numerologist in India, Online Numerology Consultation, Numerology Calculator, Kaal Sarp Dosh, Pitra Dosh, Numerology pair analysis, Newalkkar Saandiip, Numerologist for Business, Numerologist for Career, Name Correction, Business Name Numerology, Online Vastu Tips, Vastu Consultant Online, Indian Numerologist",
     canonical: "https://newalkkarsaandiip.in/mobile-compatibility",
     ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
@@ -324,7 +325,7 @@ export default function MobileCompatibility() {
                               {c.label}
                             </span>
                           </td>
-                          <td className="p-3 align-top text-[#F8F5F0]/90 leading-relaxed font-light text-sm">{r.detail}</td>
+                          <td className="p-3 align-top text-[#F8F5F0] leading-relaxed font-normal text-base md:text-[17px]">{r.detail}</td>
                         </tr>
                       );
                     })}
@@ -352,10 +353,91 @@ export default function MobileCompatibility() {
                           {c.label}
                         </span>
                       </div>
-                      <p className="text-[13px] leading-relaxed text-[#F8F5F0]/90 font-light">{r.detail}</p>
+                      <p className="text-[15px] leading-relaxed text-[#F8F5F0] font-normal">{r.detail}</p>
                     </div>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* ===== Full Consultation CTA — prominent, persuasive ===== */}
+            <div
+              data-testid="mc-consultation-cta"
+              className="relative overflow-hidden rounded-2xl border-2 p-6 sm:p-8 md:p-10"
+              style={{
+                borderColor: "rgba(212,175,55,0.65)",
+                background:
+                  "linear-gradient(135deg, rgba(212,175,55,0.18) 0%, rgba(147,112,219,0.16) 50%, rgba(244,167,66,0.16) 100%)",
+                boxShadow: "0 0 40px -10px rgba(212,175,55,0.45)",
+              }}
+            >
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-[#D4AF37]/20 blur-3xl pointer-events-none" />
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 rounded-full bg-[#9370DB]/20 blur-3xl pointer-events-none" />
+
+              <div className="relative">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 mb-4">
+                  <Sparkles size={14} className="text-[#F3D060]" />
+                  <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060]" style={{ fontWeight: 600 }}>
+                    Recommended Next Step
+                  </span>
+                </div>
+
+                <h3
+                  className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#F8F5F0] leading-tight"
+                  style={{ fontWeight: 500 }}
+                >
+                  Don't stop at one number — take a{" "}
+                  <span className="gold-shimmer" style={{ fontWeight: 700 }}>
+                    Full Numerology Consultation
+                  </span>{" "}
+                  and unlock complete abundance in your life.
+                </h3>
+
+                <p className="mt-4 text-base sm:text-lg text-[#F8F5F0]/95 leading-relaxed font-light max-w-3xl">
+                  Your mobile number is just <em className="text-[#F3D060] not-italic">one</em> piece of the cosmic puzzle.
+                  When name vibration, business identity, mobile number and the energy of your home all align together —
+                  prosperity, peace and growth flow naturally. Let
+                  <span className="text-[#F3D060]"> Newalkkar Saandiip ji</span> personally guide you through a complete reading.
+                </p>
+
+                <ul className="mt-6 grid sm:grid-cols-2 gap-x-6 gap-y-3 max-w-3xl">
+                  {[
+                    "Complete Numerology Reading — driver, conductor & destiny",
+                    "Name Correction (Chaldean + Pythagorean alignment)",
+                    "Business Name Numerology — for new ventures & rebrands",
+                    "Online Vastu Tips — homes, offices & shops",
+                    "Personal Year Forecast & lucky mobile recommendation",
+                    "Practical remedies — no expensive rituals",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-[#F8F5F0] text-[15px] sm:text-base font-light">
+                      <CheckCircle2 size={18} className="text-[#7ed99b] shrink-0 mt-0.5" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-7 sm:mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                  <a
+                    href="https://wa.me/919929059153?text=Namaste%20Newalkkar%20Saandiip%20ji%2C%20I%20would%20like%20to%20take%20a%20Full%20Numerology%20Consultation%20%E2%80%94%20including%20Name%20Correction%2C%20Business%20Name%20Numerology%2C%20Mobile%20Number%20Numerology%20and%20Online%20Vastu%20guidance.%20Kindly%20share%20the%20next%20available%20slot."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="mc-cta-whatsapp"
+                    className="btn-whatsapp justify-center sm:justify-start text-base sm:text-lg"
+                  >
+                    <WhatsAppIcon size={22} /> Book Full Consultation Now
+                  </a>
+                  <a
+                    href="tel:+919929059153"
+                    data-testid="mc-cta-call"
+                    className="btn-ghost justify-center sm:justify-start text-base"
+                  >
+                    Or call +91 99290 59153
+                  </a>
+                </div>
+
+                <p className="mt-5 text-xs sm:text-sm text-[#F8F5F0]/70 font-light italic">
+                  At a nominal &amp; minimum fee — accessible guidance for every family, no hidden costs.
+                </p>
               </div>
             </div>
 

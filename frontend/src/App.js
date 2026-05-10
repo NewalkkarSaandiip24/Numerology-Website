@@ -1197,11 +1197,11 @@ const CallFloat = () => (
 function Home() {
   useSEO({
     title:
-      "Newalkkar Saandiip — Numerologist in India | Name Numerology, Mobile Number Numerology, Vastu Consultant",
+      "Newalkkar Saandiip — Best Numerologist in India | Name Numerology, Mobile Number Numerology, Vastu Consultant Online",
     description:
-      "Top-rated Numerologist in India offering Online Numerology Consultation, Name Numerology, Mobile Number Numerology, Business Name Numerology and Vastu Consultant services. BNN Astrology guidance by Newalkkar Saandiip. Book at a nominal fee.",
+      "Best Numerologist in India — Newalkkar Saandiip offers Online Numerology Consultation, Name Correction, Mobile Number Compatibility Checker, Business Name Numerology, Online Vastu Tips and BNN Astrology guidance. Lucky mobile number, Kaal Sarp & Pitra Dosh remedies at a nominal fee. Book on WhatsApp.",
     keywords:
-      "Name Numerology, Numerologist in India, Online Numerology Consultation, Mobile Number Numerology, Business Name Numerology, Vastu Consultant, BNN Astrology, Newalkkar Saandiip, lucky mobile number, name correction, numerology India, vastu shastra, chaldean numerology",
+      "Best Numerologist in India, Top Numerologist in India, Famous Numerologist in India, Online Numerologist, Numerology Consultation Online, Name Numerology, Name Correction, Mobile Number Numerology, Mobile Number Compatibility Checker, Lucky Mobile Number, Business Name Numerology, Brand Name Numerology, Vastu Consultant Online, Online Vastu Tips, BNN Astrology, Kaal Sarp Dosh, Pitra Dosh, Chaldean Numerology, Personal Year Calculator, Newalkkar Saandiip, Numerologist for Business, Numerologist for Marriage, Numerologist for Career, Indian Numerologist Online",
     canonical: "https://newalkkarsaandiip.in/",
     ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
