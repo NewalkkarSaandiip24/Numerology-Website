@@ -1,0 +1,60 @@
+{
+  "summary": "Iteration_4 regression after (a) removal of 'Modified Number for Pair Analysis' section, (b) responsive mobile-card layout (sm:hidden cards / hidden sm:block desktop table), (c) SEO upgrade (bigger meta description+keywords+ogImage; new WebApplication JSON-LD entry for /mobile-compatibility; sitemap.xml entry; defer attr on emergent-main.js), (d) two new authorized owner mobiles (9929059153, 9829312193 expires 2030-12-31). Backend 11/11 pytest cases pass. All frontend critical flows + regressions pass. NOTE: Frontend supervisor needed a manual restart for new public/index.html (CRA HtmlWebpackPlugin caches public/index.html at startup) to be served.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/personal-year", "issues": ["(Carryover, out of scope) Date input renders as native browser picker (mm/dd/yyyy placeholder) instead of shadcn calendar — same as prev iters."]},
+      {"screen": "Hero <img>", "issues": ["(Carryover) React DOM-prop warning fetchpriority->fetchPriority in /app/frontend/src/App.js."]}
+    ]
+  },
+  "tests_executed": [
+    "pytest /app/backend/tests/test_mobile_compat.py -> 11 passed in 1.83s (PASS)",
+    "curl GET /api/check-authorized/9929059153 -> {authorized:true,name:'Newalkkar Saandiip',expires_on:'2030-12-31'} (PASS)",
+    "curl GET /api/check-authorized/9829312193 -> {authorized:true,name:'Newalkkar Saandiip',expires_on:'2030-12-31'} (PASS)",
+    "curl GET /api/check-authorized/9876543210 -> {authorized:true,name:'Test Client',expires_on:'2026-12-31'} (PASS)",
+    "GET /sitemap.xml -> contains <loc>https://newalkkarsaandiip.in/mobile-compatibility</loc> (PASS)",
+    "GET / -> JSON-LD includes @id ending '/mobile-compatibility#calculator' AND <script src='.../emergent-main.js' defer> (PASS, after frontend restart to pick up public/index.html)",
+    "Frontend /mobile-compatibility document.title = 'Mobile Number Compatibility Checker | Mobile Numerology by Newalkkar Saandiip' (PASS)",
+    "Frontend /mobile-compatibility meta[name=description] contains Kaal Sarp Dosh & Pitra Dosh (PASS)",
+    "Frontend mc-restricted-notice visible; mc-mobile placeholder = 'Enter mobile number without country Code' (PASS)",
+    "Frontend submit 1111111111 -> mc-auth-error visible with mc-admin-phone='+91 99290 59153'; NO WhatsApp wa.me/whatsapp.com link inside mc-auth-error; NO 'Request Access' button/link element (PASS)",
+    "Frontend submit AUTHORIZED 9876543210 on viewport 1280x1024 -> mc-pair-table renders, mc-row-0..mc-row-8 ALL visible, mc-modified count=0 (PASS), mc-card-0 NOT visible (PASS)",
+    "Frontend viewport switched to 390x844 -> mc-card-0..mc-card-8 ALL visible; mc-row-0 NOT visible (PASS — responsive layout works)",
+    "Frontend submit AUTHORIZED OWNER 9929059153 -> mc-total-card + mc-pair-table render with full result (PASS)",
+    "Frontend /admin: admin-login-mobile=9929059153 / password=2193 -> dashboard (PASS)",
+    "Frontend /admin: admin-add-btn -> admin-form-mobile=8877665544, name=TEST_QA_iter4, expiry=2026-12-31 -> row-8877665544 added (PASS)",
+    "Frontend /admin: row-remove-8877665544 confirm-dialog accepted -> row removed from active list (PASS)",
+    "Frontend /admin: admin-logout-btn -> back to admin-login-form (PASS)",
+    "Frontend regression: /, /name-numerology, /personal-year all 200 with correct titles (PASS)"
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_mobile_compat.py",
+    "/app/test_reports/pytest/mobile_compat_iter4.xml"
+  ],
+  "action_items": [
+    "(Operational note) public/index.html changes require `sudo supervisorctl restart frontend` to take effect because CRA's HtmlWebpackPlugin reads it at startup. The two SEO additions in this iteration (defer attr + /mobile-compatibility#calculator JSON-LD) only became visible after I restarted the frontend service. Main agent should be aware so deploys/HMR don't silently miss SEO updates.",
+    "(Cosmetic, carryover from iter_2/iter_3) Replace fetchpriority -> fetchPriority on hero <img> in /app/frontend/src/App.js to silence React DOM-prop warning."
+  ],
+  "critical_code_review_comments": [
+    "MobileCompatibility.jsx (381 lines) is borderline; if more sections are added, consider splitting result-card / pair-table / alerts into sub-components.",
+    "(Carryover) seed_admin() not idempotent on password rotation — bcrypt hash kept stale if ADMIN_DEFAULT_PASSWORD env changes; fix by always upserting on startup.",
+    "(Carryover) /api/admin/login lacks brute-force lockout / rate limiting — playbook expects 5-fail lockout.",
+    "(Carryover) JWT stored in localStorage 'ns_admin_token' (XSS exposure) — playbook prefers httpOnly cookies.",
+    "(Carryover) expires_on stored as free-form string with `except: pass` on date parse — switch to Pydantic `date` field.",
+    "(Carryover) FastAPI deprecated @app.on_event('startup') — migrate to lifespan handler.",
+    "JSON-LD WebApplication block for /mobile-compatibility correctly uses 'availability':'LimitedAvailability' which truthfully reflects the authorized-only access model — good SEO hygiene."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (11/11 pytest + 3/3 check-authorized curls)", "frontend": "100% (mobile-compat new layout + SEO + admin + regression)"},
+  "test_credentials": "Admin 9929059153/2193 OR 9829312193/2193 (env-driven). Authorized clients: 9876543210, 9929059153, 9829312193.",
+  "seed_data_creation": "Test added+removed 7011220033 (backend pytest) and 8877665544 (frontend admin); both ended up in history. No active leftovers.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter_4 = full PASS. Mobile-compat result page now: (1) mc-modified is removed entirely (count=0 verified), (2) responsive: at viewport>=640 desktop table mc-row-0..8 visible & cards hidden; at viewport<640 mc-card-0..8 visible & rows hidden, (3) SEO upgrade verified end-to-end (title, meta description with Kaal Sarp/Pitra, sitemap entry, JSON-LD WebApplication node with @id ending '/mobile-compatibility#calculator', defer attr on emergent-main.js). Both owner mobiles (9929059153, 9829312193) authorized with expires 2030-12-31. IMPORTANT: When public/index.html changes, restart frontend supervisor for HtmlWebpackPlugin to pick up changes — I had to do this once during this run.",
+  "rca of the issue": "N/A — no functional issues. Only operational note: CRA caches public/index.html at startup, so SEO/HTML-shell changes need a frontend restart, not just hot-reload."
+}

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Phone, AlertTriangle, Sparkles, ShieldAlert, RefreshCcw, Hash, CalendarHeart } from "lucide-react";
+import { ArrowLeft, ArrowRight, AlertTriangle, ShieldAlert, Hash, CalendarHeart } from "lucide-react";
 import Logo from "../components/Logo";
 import useSEO from "../hooks/useSEO";
 import {
@@ -20,10 +20,14 @@ const STATUS_COLOR = {
 
 export default function MobileCompatibility() {
   useSEO({
-    title: "Check Your Mobile Number Compatibility | Newalkkar Saandiip",
+    title:
+      "Mobile Number Compatibility Checker | Mobile Numerology by Newalkkar Saandiip",
     description:
-      "Authorized clients only — Mobile Number Compatibility Checker. Mobile Number Numerology, pair analysis, Kaal Sarp & Pitra Dosh detection by Newalkkar Saandiip.",
+      "Free Mobile Number Compatibility Checker for authorized clients — pair-by-pair Mobile Numerology analysis, Kaal Sarp Dosh & Pitra Dosh detection and total digit-sum vibration by Newalkkar Saandiip, India's trusted Numerologist & Vastu Consultant.",
+    keywords:
+      "Mobile Number Compatibility, Mobile Numerology, lucky mobile number, mobile number numerology calculator, Kaal Sarp Dosh, Pitra Dosh, Newalkkar Saandiip, Numerologist in India, Vastu Consultant, Online Numerology Consultation",
     canonical: "https://newalkkarsaandiip.in/mobile-compatibility",
+    ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
 
   const [name, setName] = useState("");
@@ -280,41 +284,17 @@ export default function MobileCompatibility() {
               </div>
             )}
 
-            {/* Modified note */}
-            <div className="glass-card p-5 sm:p-6" data-testid="mc-modified">
-              <div className="flex items-center gap-2 mb-3">
-                <RefreshCcw size={14} className="text-[#D4AF37]" />
-                <span className="v-label">Modified Number for Pair Analysis</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {result.modified.map((d, i) => (
-                  <div
-                    key={i}
-                    className={`min-w-[44px] h-12 flex items-center justify-center rounded-lg border ${
-                      result.digits[i] === 0 ? "border-[#F4A742]/55 bg-[#F4A742]/12 text-[#F4A742]" : "border-[#D4AF37]/30 bg-[#D4AF37]/5 text-[#F8F5F0]"
-                    }`}
-                    style={{ fontFamily: "'Outfit', sans-serif", fontSize: "1.35rem", fontWeight: 600 }}
-                  >
-                    {d}
-                  </div>
-                ))}
-              </div>
-              {result.digits.some((d) => d === 0) && (
-                <p className="mt-3 text-xs text-[#C8BED6]/75 font-light">
-                  Each <span className="text-[#F4A742]">0</span> has been replaced by its left-neighbour digit before pair analysis (numerological convention).
-                </p>
-              )}
-            </div>
-
             {/* Pair Table */}
             <div className="glass-card overflow-hidden" data-testid="mc-pair-table">
-              <div className="px-5 sm:px-6 pt-5 sm:pt-6 pb-3">
+              <div className="px-4 sm:px-6 pt-5 sm:pt-6 pb-3">
                 <div className="v-label mb-1">Pair-by-Pair Analysis</div>
-                <div className="font-serif text-xl sm:text-2xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                <div className="font-serif text-lg sm:text-xl md:text-2xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
                   9 vibrations of your mobile number
                 </div>
               </div>
-              <div className="overflow-x-auto">
+
+              {/* Desktop / tablet table */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead className="bg-[#1A0B2E]/70">
                     <tr className="text-left">
@@ -350,6 +330,32 @@ export default function MobileCompatibility() {
                     })}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Mobile-only card list (below sm breakpoint) */}
+              <div className="sm:hidden divide-y divide-[#D4AF37]/10">
+                {result.rows.map((r, i) => {
+                  const c = STATUS_COLOR[r.status];
+                  return (
+                    <div key={i} data-testid={`mc-card-${i}`} className="p-4">
+                      <div className="flex items-center gap-3 mb-2.5">
+                        <span
+                          className="inline-flex items-center justify-center min-w-[52px] h-9 px-2 rounded-lg font-mono font-semibold text-base"
+                          style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}
+                        >
+                          {r.pair}
+                        </span>
+                        <span
+                          className="px-2.5 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.18em]"
+                          style={{ background: c.bg, color: c.text, border: `1px solid ${c.border}` }}
+                        >
+                          {c.label}
+                        </span>
+                      </div>
+                      <p className="text-[13px] leading-relaxed text-[#F8F5F0]/90 font-light">{r.detail}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
