@@ -1,0 +1,62 @@
+{
+  "summary": "End-to-end testing of the new Mobile Number Compatibility full-stack feature (admin + public). 11/11 backend pytest cases pass; all 10 frontend Playwright assertions pass. No critical bugs found.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Hero <img>", "issues": ["React console warning: Invalid DOM property 'fetchpriority' — should be camelCase 'fetchPriority'. Cosmetic only, doesn't break functionality. Located in /app/frontend/src/App.js around line 420."]}
+    ]
+  },
+  "tests_executed": [
+    "Backend POST /api/admin/login wrong password -> 401 PASS",
+    "Backend POST /api/admin/login mobile=9999999999 (not allowed) -> 401 PASS",
+    "Backend POST /api/admin/login 9929059153/2193 -> 200 with token PASS",
+    "Backend GET /api/admin/users without token -> 401 PASS",
+    "Backend GET /api/admin/users with junk token -> 401 PASS",
+    "Backend GET /api/admin/users with valid token -> 200 list PASS",
+    "Backend POST /api/admin/users -> 200 creates active user; duplicate active mobile -> 400; soft-delete -> 200; appears in /history; disappears from /users; /api/check-authorized goes True->False with reason='not_authorized' PASS",
+    "Backend DELETE /api/admin/users/{unknown_id} -> 404 PASS",
+    "Backend GET /api/check-authorized/9876543210 -> authorized=true with name+expires_on PASS",
+    "Backend GET /api/check-authorized/1111111111 -> authorized=false reason=not_authorized PASS",
+    "Backend GET /api/check-authorized/123 -> authorized=false reason=invalid PASS",
+    "Frontend /mobile-compatibility shows mc-restricted-notice with 'Newalkkar Saandiip' + '+91 99290 59153' PASS",
+    "Frontend has NO 'Request Access' WhatsApp button anywhere on the page PASS",
+    "Frontend submitting unauthorized 1111111111 -> mc-auth-error card with mc-admin-phone='+91 99290 59153' PASS",
+    "Frontend submitting authorized 9876543210 -> mc-total-card + mc-modified + mc-pair-table render with mc-row-0..mc-row-8 (9 rows) PASS",
+    "Frontend nav-mobile-compatibility-link visible in desktop nav, href=/mobile-compatibility PASS",
+    "Frontend /admin login 9929059153/2193 -> dashboard (admin-logout-btn visible) PASS",
+    "Frontend /admin add user 8888888899 -> appears as row-8888888899 in Active table PASS",
+    "Frontend /admin remove -> appears under tab-history PASS",
+    "Frontend /admin admin-logout-btn -> back to admin-login-form PASS"
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_mobile_compat.py",
+    "/app/test_reports/pytest/mobile_compat.xml"
+  ],
+  "action_items": [
+    "(Cosmetic) Replace `fetchpriority` attribute with `fetchPriority` (camelCase) on the hero <img> in /app/frontend/src/App.js to silence the React DOM-property warning."
+  ],
+  "critical_code_review_comments": [
+    "server.py: `seed_admin()` is NOT idempotent w.r.t. password rotation — it only inserts a hash if the doc is missing. If the default password is ever changed via env, existing deployments will keep the old hash. Consider always upserting based on a configured DEFAULT_PASSWORD env var.",
+    "server.py: ADMIN_MOBILES and DEFAULT_PASSWORD are hard-coded constants. For production, these should come from env vars (DEFAULT_PASSWORD especially — currently '2193' is in source).",
+    "server.py: No brute-force lockout / rate limiting on /api/admin/login — the playbook expects 5-fail lockout. Currently any number of password attempts are allowed.",
+    "server.py: JWT is returned in JSON and stored in localStorage on the frontend (key 'ns_admin_token'); the playbook prefers httpOnly cookie auth. XSS would expose the admin token. Consider migrating to httpOnly Secure cookie.",
+    "server.py: `expires_on` is stored as a free-form string and parsed with fromisoformat in /api/check-authorized; if a non-ISO value is ever inserted, the silent `except: pass` swallows the error and treats the user as still authorized. Validate `expires_on` strictly on POST (use date type in Pydantic).",
+    "server.py uses deprecated `@app.on_event('startup')` — FastAPI now recommends lifespan handlers.",
+    "AdminPage.jsx and App.js are large; could be split, but acceptable for current scope."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_mobile_compat.py (new)"
+  ],
+  "success_rate": {"backend": "100% (11/11)", "frontend": "100% (10/10)"},
+  "test_credentials": "Admin 9929059153 / 2193 (verified). Seeded authorized client 9876543210 (verified).",
+  "seed_data_creation": "Test created+removed mobile 7011220033 (backend test) and 8888888899 (frontend test); both ended in 'removed' status (history). No active leftover beyond the original 9876543210 seed.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend regression suite at /app/backend/tests/test_mobile_compat.py (pytest, 11 cases). All Mobile Compatibility flows confirmed end-to-end: nav link, restricted notice, unauthorized->mc-auth-error with admin contact (no WhatsApp Request-Access button), authorized 9876543210 -> 9 pair rows. Admin /admin: login, add, remove (soft-delete), tab-history, logout all work. Frontend testids: admin-login-{mobile,password,submit}, admin-{add,logout,refresh}-btn, admin-form-{mobile,name,expiry,submit}, row-{mobile}, row-remove-{mobile}, tab-active, tab-history, mc-{restricted-notice,form,name,dob,mobile,submit,error,auth-error,admin-phone,total-card,modified,pair-table,row-0..8}.",
+  "rca of the issue": "N/A — no functional issues. Only a cosmetic React DOM-prop warning (fetchpriority -> fetchPriority) and a few hardening recommendations (rate-limit, env-driven password, httpOnly cookie auth, strict expires_on validation)."
+}

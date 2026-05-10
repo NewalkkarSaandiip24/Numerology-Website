@@ -119,6 +119,27 @@ export default function MobileCompatibility() {
             (Kaal Sarp, Pitra) and the total digit sum — analysed instantly using
             Mobile Number Numerology.
           </p>
+
+          {/* Restricted access notice */}
+          <div
+            data-testid="mc-restricted-notice"
+            className="mt-6 flex gap-3 p-4 sm:p-5 rounded-xl border bg-[#D4AF37]/8"
+            style={{ borderColor: "rgba(212,175,55,0.45)" }}
+          >
+            <ShieldAlert className="text-[#D4AF37] shrink-0 mt-0.5" size={20} />
+            <div>
+              <div className="font-serif text-base sm:text-lg text-[#F3D060]" style={{ fontWeight: 600 }}>
+                Please enter the Authorized mobile number only to proceed
+              </div>
+              <p className="mt-1 text-sm text-[#C8BED6] font-light leading-relaxed">
+                Access to this checker is restricted. If your mobile number has not been
+                authorized, please contact the Administrator —
+                <span className="text-[#F8F5F0]"> Newalkkar Saandiip</span> at
+                <span className="text-[#F8F5F0]"> +91 99290 59153</span> — to register
+                your details before using this tool.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Form */}
@@ -182,18 +203,22 @@ export default function MobileCompatibility() {
               </div>
               <div className="flex-1">
                 <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
-                  Permission required
+                  Mobile number not authorized
                 </div>
                 <p className="mt-2 text-[#C8BED6] font-light leading-relaxed">{authError}</p>
-                <a
-                  href="https://wa.me/919929059153?text=Namaste%20Newalkkar%20Saandiip%20ji%2C%20kindly%20grant%20me%20access%20to%20the%20Mobile%20Number%20Compatibility%20checker.%20My%20mobile%3A%20"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-whatsapp mt-5 text-sm"
-                  data-testid="mc-request-access"
-                >
-                  Request Access on WhatsApp
-                </a>
+                <div className="mt-4 p-4 rounded-lg border border-[#D4AF37]/25 bg-[#1A0B2E]/60">
+                  <div className="v-label mb-2">Contact the Administrator</div>
+                  <div className="font-serif text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                    Newalkkar Saandiip
+                  </div>
+                  <div className="font-mono text-sm text-[#F3D060] mt-1" data-testid="mc-admin-phone">
+                    +91 99290 59153
+                  </div>
+                  <p className="mt-2 text-xs sm:text-sm text-[#C8BED6]/80 font-light leading-relaxed">
+                    Kindly share your full name, date of birth and mobile number with the
+                    Administrator to get your number authorized for compatibility analysis.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -327,27 +352,6 @@ export default function MobileCompatibility() {
                 </table>
               </div>
             </div>
-
-            {/* Cross-link */}
-            <Link
-              to="/admin"
-              data-testid="mc-check-another"
-              className="glass-card p-5 sm:p-6 flex items-center gap-4 hover:border-[#D4AF37]/55 transition-all"
-            >
-              <div className="h-11 w-11 rounded-full border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
-                <Phone size={18} />
-              </div>
-              <div className="flex-1">
-                <div className="v-label mb-1">Next</div>
-                <div className="font-serif text-base sm:text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>
-                  Check another mobile number compatibility →
-                </div>
-                <p className="mt-1 text-xs sm:text-sm text-[#C8BED6] font-light">
-                  Sign in as administrator to authorize and analyse another number.
-                </p>
-              </div>
-              <ArrowRight size={18} className="text-[#D4AF37]" />
-            </Link>
 
             {/* Other tools cross-links */}
             <div className="grid sm:grid-cols-2 gap-4">

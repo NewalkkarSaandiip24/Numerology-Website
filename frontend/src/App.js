@@ -27,6 +27,8 @@ import BookingModal from "./components/BookingModal";
 import useSEO from "./hooks/useSEO";
 const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
 const PersonalYear = React.lazy(() => import("./pages/PersonalYear"));
+const MobileCompatibility = React.lazy(() => import("./pages/MobileCompatibility"));
+const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -105,6 +107,7 @@ const Nav = () => {
     ["Services", "#services"],
     ["Name Numerology Calculator", "/name-numerology"],
     ["Personal Year", "/personal-year"],
+    ["Mobile Compatibility", "/mobile-compatibility"],
     ["Contact", "#contact"],
   ];
   const sanitize = (label) =>
@@ -1225,6 +1228,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/name-numerology" element={<NameNumerology />} />
             <Route path="/personal-year" element={<PersonalYear />} />
+            <Route path="/mobile-compatibility" element={<MobileCompatibility />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </React.Suspense>
       </BookingProvider>
