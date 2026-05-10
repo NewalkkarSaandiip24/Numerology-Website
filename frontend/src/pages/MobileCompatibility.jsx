@@ -38,6 +38,9 @@ export default function MobileCompatibility() {
   const [submittedMobile, setSubmittedMobile] = useState("");
   const [checking, setChecking] = useState(false);
   const [authError, setAuthError] = useState("");
+  // Owner-session: once a user authenticates with their authorized mobile, they
+  // can analyse additional family numbers without re-authorizing.
+  const [authorizedOwner, setAuthorizedOwner] = useState(null); // { mobile, name }
 
   const result = useMemo(() => {
     if (!submittedMobile) return null;
@@ -70,6 +73,17 @@ export default function MobileCompatibility() {
       return;
     }
 
+    // If owner-session is already active, skip the backend authorization check
+    // and let them analyse any (family) number directly.
+    if (authorizedOwner) {
+      setSubmittedMobile(m);
+      setTimeout(() => {
+        const el = document.getElementById("mc-result");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
+      return;
+    }
+
     setChecking(true);
     try {
       const r = await publicApi.checkAuthorized(m);
@@ -81,6 +95,7 @@ export default function MobileCompatibility() {
         );
         return;
       }
+      setAuthorizedOwner({ mobile: m, name: r.name || name.trim() });
       setSubmittedMobile(m);
       setTimeout(() => {
         const el = document.getElementById("mc-result");
@@ -91,6 +106,21 @@ export default function MobileCompatibility() {
     } finally {
       setChecking(false);
     }
+  };
+
+  // "Check another mobile number" — keeps the owner session, clears mobile field,
+  // scrolls to the form. Next submit will skip authorization (owner already verified).
+  const handleCheckAnother = () => {
+    setMobile("");
+    setSubmittedMobile("");
+    setError("");
+    setAuthError("");
+    setTimeout(() => {
+      const el = document.getElementById("mc-form-anchor");
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      const input = document.querySelector('[data-testid="mc-mobile"]');
+      if (input) input.focus();
+    }, 80);
   };
 
   return (
@@ -148,7 +178,25 @@ export default function MobileCompatibility() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} data-testid="mc-form" className="glass-card mt-7 sm:mt-9 p-5 sm:p-7" noValidate>
+        <div id="mc-form-anchor" />
+
+        {authorizedOwner && (
+          <div
+            data-testid="mc-owner-banner"
+            className="mt-7 sm:mt-9 flex items-center gap-3 p-4 rounded-xl border bg-[#7ed99b]/10"
+            style={{ borderColor: "rgba(126,217,155,0.45)" }}
+          >
+            <CheckCircle2 size={20} className="text-[#7ed99b] shrink-0" />
+            <div className="text-sm sm:text-base text-[#F8F5F0] font-light">
+              <span className="text-[#7ed99b] font-medium">Verified.</span> You are signed in
+              as <span className="text-[#F3D060]">{authorizedOwner.name}</span>
+              <span className="text-[#C8BED6]/85"> ({authorizedOwner.mobile})</span>.
+              Enter another family / friend mobile below to analyse it.
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} data-testid="mc-form" className={`glass-card ${authorizedOwner ? 'mt-3' : 'mt-7 sm:mt-9'} p-5 sm:p-7`} noValidate>
           <div className="grid sm:grid-cols-3 gap-4">
             <div>
               <label className="v-label block mb-1.5">Full Name</label>
@@ -359,6 +407,30 @@ export default function MobileCompatibility() {
                 })}
               </div>
             </div>
+
+            {/* "Check another mobile number" CTA — Recommended Next Step (in-page, no re-auth) */}
+            <button
+              type="button"
+              onClick={handleCheckAnother}
+              data-testid="mc-check-another-btn"
+              className="w-full glass-card p-5 sm:p-6 flex items-center gap-4 text-left transition-all hover:border-[#D4AF37]/55 hover:bg-[#D4AF37]/5"
+              style={{ borderColor: "rgba(212,175,55,0.45)" }}
+            >
+              <div className="h-12 w-12 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] shrink-0">
+                <Sparkles size={22} />
+              </div>
+              <div className="flex-1">
+                <div className="v-label mb-1">Recommended Next Step</div>
+                <div className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+                  Check another mobile number →
+                </div>
+                <p className="mt-1 text-sm sm:text-[15px] text-[#C8BED6] font-light leading-relaxed">
+                  Analyse a family member or friend's mobile number using your already-verified access.
+                  No need to log in again.
+                </p>
+              </div>
+              <ArrowRight size={20} className="text-[#D4AF37] shrink-0" />
+            </button>
 
             {/* ===== Full Consultation CTA — prominent, persuasive ===== */}
             <div
