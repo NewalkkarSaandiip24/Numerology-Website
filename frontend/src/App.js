@@ -1180,6 +1180,19 @@ const WhatsAppFloat = () => (
   </a>
 );
 
+/* ---------- Floating Click-to-Call Button (mobile only) ---------- */
+const CallFloat = () => (
+  <a
+    href={`tel:+${WHATSAPP_NUMBER}`}
+    data-testid="floating-call-btn"
+    aria-label="Call Newalkkar Saandiip"
+    className="md:hidden fixed bottom-[100px] left-5 z-40 h-14 w-14 rounded-full text-[#0F0518] flex items-center justify-center shadow-lg shadow-[#D4AF37]/40 hover:scale-110 transition-transform duration-300 call-float-pulse"
+    style={{ background: "linear-gradient(135deg, #F3D060 0%, #D4AF37 100%)" }}
+  >
+    <Phone size={26} strokeWidth={2.2} fill="#0F0518" />
+  </a>
+);
+
 /* ---------- Home (single-page) ---------- */
 function Home() {
   useSEO({
@@ -1206,6 +1219,7 @@ function Home() {
       </main>
       <Footer />
       <WhatsAppFloat />
+      <CallFloat />
     </div>
   );
 }
