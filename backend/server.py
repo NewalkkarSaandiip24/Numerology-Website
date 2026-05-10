@@ -22,8 +22,8 @@ db = client[os.environ['DB_NAME']]
 
 JWT_SECRET = os.environ['JWT_SECRET']
 JWT_ALG = "HS256"
-ADMIN_MOBILES = {"9929059153", "9829312193"}
-DEFAULT_PASSWORD = "2193"
+ADMIN_MOBILES = {m.strip() for m in os.environ['ADMIN_MOBILES'].split(',') if m.strip()}
+DEFAULT_PASSWORD = os.environ['ADMIN_DEFAULT_PASSWORD']
 TOKEN_TTL_HOURS = 12
 
 app = FastAPI()
