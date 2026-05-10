@@ -1,0 +1,57 @@
+{
+  "summary": "Regression after CSS-only visual upgrades (.v-label 0.82rem #F3D060 weight 500, table headers, contact-form labels) and env-var refactor of admin creds. 11/11 backend pytest cases pass; all frontend checks pass. Both admin mobiles 9929059153 and 9829312193 log in with password 2193 (env-driven). No regressions detected.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Hero <img>", "issues": ["(Carryover from iter_2) React DOM-prop warning: 'fetchpriority' should be camelCase 'fetchPriority' in /app/frontend/src/App.js. Cosmetic only."]}
+    ]
+  },
+  "tests_executed": [
+    "pytest /app/backend/tests/test_mobile_compat.py -> 11 passed in 1.93s (PASS)",
+    "curl POST /api/admin/login {mobile:9929059153,password:2193} -> 200 with token (PASS)",
+    "curl POST /api/admin/login {mobile:9829312193,password:2193} -> 200 with token (PASS, env-driven multi-admin works)",
+    "Frontend /mobile-compatibility: mc-restricted-notice visible (PASS)",
+    "Frontend /mobile-compatibility: mc-mobile placeholder == 'Enter mobile number without country Code' (PASS)",
+    "Frontend /mobile-compatibility: no Request Access button/link element on page (PASS)",
+    "Frontend /mobile-compatibility: .v-label computed style fontSize=13.12px color=rgb(243,208,96) fontWeight=500 (PASS — matches 0.82rem #F3D060 weight 500)",
+    "Frontend /mobile-compatibility: submit 1111111111 -> mc-auth-error visible with mc-admin-phone='+91 99290 59153' (PASS)",
+    "Frontend /mobile-compatibility: submit authorized 9876543210 -> mc-total-card + mc-modified + mc-pair-table with mc-row-0..mc-row-8 all 9 rows (PASS)",
+    "Frontend /admin: login 9929059153/2193 -> dashboard (PASS)",
+    "Frontend /admin: expand admin-add-btn, add 8877665544 -> row visible in active table (PASS)",
+    "Frontend /admin: remove 8877665544 -> appears in tab-history (PASS)",
+    "Frontend /admin: admin-logout-btn -> back to admin-login-form (PASS)",
+    "Frontend /admin: SECOND admin login 9829312193/2193 -> dashboard renders (PASS)",
+    "Frontend /: nav-mobile-compatibility-link present, href=/mobile-compatibility (PASS)",
+    "Frontend /: home page .v-label computed style fontSize=13.12px color=rgb(243,208,96) fontWeight=500 (PASS)",
+    "Frontend /: contact form fill name+mobile, click 'Send on WhatsApp' -> popup to api.whatsapp.com/send/?phone=919929059153&text=... (PASS — opens WhatsApp deep-link with prefilled message)"
+  ],
+  "test_report_links": [
+    "/app/backend/tests/test_mobile_compat.py",
+    "/app/test_reports/pytest/mobile_compat_iter3.xml"
+  ],
+  "action_items": [
+    "(Cosmetic, carryover) Replace fetchpriority -> fetchPriority on hero <img> in /app/frontend/src/App.js to silence React DOM-prop warning.",
+    "(Note) Review request mentioned 'wa.me URL'; actual implementation uses api.whatsapp.com/send/ which is functionally equivalent (both deep-link to WhatsApp). No action needed unless brand consistency requires the short wa.me form."
+  ],
+  "critical_code_review_comments": [
+    "server.py admin creds are now env-driven via ADMIN_MOBILES (comma-split) and ADMIN_DEFAULT_PASSWORD — refactor verified working for both mobiles.",
+    "(Carryover) seed_admin() still not idempotent w.r.t. password rotation — if ADMIN_DEFAULT_PASSWORD env value changes, existing admin docs keep the old bcrypt hash. Consider always upserting on startup.",
+    "(Carryover) No brute-force lockout / rate limiting on /api/admin/login — 5-fail lockout from playbook still missing.",
+    "(Carryover) JWT stored in localStorage 'ns_admin_token' (XSS exposure) — playbook prefers httpOnly cookies.",
+    "(Carryover) expires_on stored as free-form string with silent except: pass on parse — strict Pydantic date type recommended.",
+    "(Carryover) FastAPI deprecated @app.on_event('startup') — migrate to lifespan handler."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (11/11 pytest + 2/2 multi-admin curl)", "frontend": "100% (all critical flows + visual sanity)"},
+  "test_credentials": "Admin 9929059153/2193 and 9829312193/2193 (both env-driven, both verified). Authorized client 9876543210 (seeded, verified).",
+  "seed_data_creation": "Test created+removed 7011220033 (backend) and 8877665544 (frontend); both ended in 'removed' status (history tab). No active leftovers.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Iter_3 = full regression PASS after visual/CSS-only changes and env-var refactor of admin creds. .v-label computed style verified 13.12px (0.82rem) #F3D060 weight 500 on both /mobile-compatibility and / (Home contact form). Both admin mobiles in ADMIN_MOBILES env var login successfully. Mobile-compatibility placeholder matches new copy. Admin add/remove/history/logout flow intact. Contact form 'Send on WhatsApp' opens api.whatsapp.com/send/ deep-link with phone=919929059153 and prefilled Namaste message.",
+  "rca of the issue": "N/A — no functional issues. Cosmetic fetchpriority React warning carryover only."
+}
