@@ -417,7 +417,7 @@ const Hero = () => {
                   src="/saandiip-namaste.jpg"
                   alt="Newalkkar Saandiip — Numerologist, Vaastu Consultant & Mobile Numerologist"
                   loading="eager"
-                  fetchpriority="high"
+                  fetchPriority="high"
                   decoding="async"
                   width={480}
                   height={600}

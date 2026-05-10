@@ -29,7 +29,7 @@ Build an elegant business website for Newalkkarsaandiip (Mobile Numerologist, Na
 7. Footer — brand, nav, reach info
 8. Floating WhatsApp button (bottom-left) for quick contact
 
-## What's Been Implemented (Dec 2025)
+## What's Been Implemented (Dec 2025 → Feb 2026)
 - Full single-page site with 7 sections
 - Custom SVG sacred-geometry logo
 - WhatsApp deep-link contact form with validation (name required, 10-digit mobile required)
@@ -37,10 +37,25 @@ Build an elegant business website for Newalkkarsaandiip (Mobile Numerologist, Na
 - Responsive layout (mobile + desktop)
 - All data-testid attributes present for testing
 - SEO meta description & custom title
+- **Name Numerology Calculator** (`/name-numerology`) and **Personal Year Calculator** (`/personal-year`)
+- Performance: WebP images, async fonts, _headers cache rules
+- Advanced SEO: JSON-LD, sitemap.xml, optimized meta + canonical
+- **(Feb 10, 2026) Mobile Number Compatibility — full-stack feature**
+  - FastAPI + MongoDB backend with JWT-auth admin panel
+  - Endpoints: `/api/admin/login`, `/api/admin/users` (CRUD + history), `/api/check-authorized/{mobile}`
+  - Admin mobiles `9929059153` and `9829312193`, password `2193` (seeded once into `admin_meta`)
+  - `/admin` dashboard: login, add/remove authorized clients, active + removed history tabs
+  - `/mobile-compatibility` public page: form gated by authorization check
+    - Restricted-access notice on entry (data-testid `mc-restricted-notice`)
+    - Unauthorized → "contact administrator" card (no WhatsApp request-access button)
+    - Authorized → digit-sum, zero-modification, 9-pair analysis, Kaal Sarp / Pitra dosh + repeat alerts
+  - "Mobile Compatibility" link visible in main desktop Nav
+  - 21/21 E2E test cases passing (iteration_2.json)
 
 ## Backlog (Next Action Items)
 - **P0**: Deploy to Emergent and hook up the custom domain `newalkkarsaandiip.in` (requires user to update DNS at their registrar after Emergent deployment)
-- **P1**: Add a simple "Free mini numerology check" lead-magnet (calculates driver/conductor from DOB) to capture more leads — strong conversion lever for this business
+- **P1**: Hardening (per code review): rate-limit admin login, move DEFAULT_PASSWORD to env, strict ISO date validation on `expires_on`, migrate from on_event → lifespan, consider httpOnly cookie for JWT
+- **P1**: Email-based password reset for admin (deferred per user request)
 - **P1**: Add blog/articles section for SEO (numerology insights)
 - **P2**: Add favicon + OG image using the gold logo
 - **P2**: Add Hindi language toggle
