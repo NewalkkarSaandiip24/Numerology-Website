@@ -55,7 +55,14 @@ Build an elegant business website for Newalkkarsaandiip (Mobile Numerologist, Na
   - `.v-label` font-size 0.7rem → 0.82rem, color `#D4AF37` → brighter `#F3D060`, weight 500, tighter spacing
   - Contact form labels (Home), table headers (`/admin`, `/mobile-compatibility`) all bumped to bigger, brighter gold
   - Verified at 13.12px / rgb(243,208,96) / weight 500 by automated regression
-- **Regression suite**: `/app/backend/tests/test_mobile_compat.py` (11 cases). Iteration_3 = 100% pass.
+- **(Feb 10, 2026) Click-to-Call mobile float** — `tel:+919929059153` button with gold pulse ring, mobile-only (`md:hidden`), stacked above WhatsApp float
+- **(Feb 10, 2026) /mobile-compatibility refinement**
+  - Removed "Modified Number for Pair Analysis" section entirely (logic kept internal)
+  - Added responsive mobile-card layout (`mc-card-0..8`) for viewports <640px; desktop table (`mc-row-0..8`) at 640px+
+  - SEO: bigger title, expanded description+keywords, og:image, JSON-LD WebApplication node, sitemap entry
+  - Owner mobiles `9929059153` & `9829312193` authorized as compatibility clients until 2030-12-31
+- **(Feb 10, 2026) Speed**: deferred third-party `emergent-main.js` script in `index.html`
+- **Regression suite**: `/app/backend/tests/test_mobile_compat.py` (11 cases). Iteration_4 = 100% pass.
 
 ## Backlog (Next Action Items)
 - **P0**: Deploy to Emergent and hook up the custom domain `newalkkarsaandiip.in` (requires user to update DNS at their registrar after Emergent deployment)
