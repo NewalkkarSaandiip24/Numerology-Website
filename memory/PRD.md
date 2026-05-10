@@ -43,14 +43,19 @@ Build an elegant business website for Newalkkarsaandiip (Mobile Numerologist, Na
 - **(Feb 10, 2026) Mobile Number Compatibility — full-stack feature**
   - FastAPI + MongoDB backend with JWT-auth admin panel
   - Endpoints: `/api/admin/login`, `/api/admin/users` (CRUD + history), `/api/check-authorized/{mobile}`
-  - Admin mobiles `9929059153` and `9829312193`, password `2193` (seeded once into `admin_meta`)
+  - Admin mobiles + password seeded from env vars `ADMIN_MOBILES` / `ADMIN_DEFAULT_PASSWORD` (deployment-ready)
   - `/admin` dashboard: login, add/remove authorized clients, active + removed history tabs
   - `/mobile-compatibility` public page: form gated by authorization check
     - Restricted-access notice on entry (data-testid `mc-restricted-notice`)
-    - Unauthorized → "contact administrator" card (no WhatsApp request-access button)
+    - Mobile field placeholder: "Enter mobile number without country Code"
+    - Unauthorized → "Contact the Administrator" card with Newalkkar Saandiip name + +91 99290 59153 (no WhatsApp request-access button)
     - Authorized → digit-sum, zero-modification, 9-pair analysis, Kaal Sarp / Pitra dosh + repeat alerts
   - "Mobile Compatibility" link visible in main desktop Nav
-  - 21/21 E2E test cases passing (iteration_2.json)
+- **(Feb 10, 2026) Site-wide readability upgrade**
+  - `.v-label` font-size 0.7rem → 0.82rem, color `#D4AF37` → brighter `#F3D060`, weight 500, tighter spacing
+  - Contact form labels (Home), table headers (`/admin`, `/mobile-compatibility`) all bumped to bigger, brighter gold
+  - Verified at 13.12px / rgb(243,208,96) / weight 500 by automated regression
+- **Regression suite**: `/app/backend/tests/test_mobile_compat.py` (11 cases). Iteration_3 = 100% pass.
 
 ## Backlog (Next Action Items)
 - **P0**: Deploy to Emergent and hook up the custom domain `newalkkarsaandiip.in` (requires user to update DNS at their registrar after Emergent deployment)
