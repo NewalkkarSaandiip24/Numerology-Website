@@ -991,7 +991,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="c-name"
-                    className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] block mb-2"
+                    className="v-label block mb-2"
                   >
                     Your Name
                   </label>
@@ -1010,7 +1010,7 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="c-mobile"
-                    className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] block mb-2"
+                    className="v-label block mb-2"
                   >
                     Mobile Number
                   </label>
@@ -1030,9 +1030,9 @@ const Contact = () => {
                 <div>
                   <label
                     htmlFor="c-note"
-                    className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#D4AF37] block mb-2"
+                    className="v-label block mb-2"
                   >
-                    Message <span className="text-[#C8BED6]/50 normal-case tracking-normal">(optional)</span>
+                    Message <span className="text-[#C8BED6]/60 normal-case tracking-normal">(optional)</span>
                   </label>
                   <textarea
                     id="c-note"

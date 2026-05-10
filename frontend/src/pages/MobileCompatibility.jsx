@@ -175,7 +175,7 @@ export default function MobileCompatibility() {
                 inputMode="tel"
                 className="field-input"
                 data-testid="mc-mobile"
-                placeholder="10-digit mobile"
+                placeholder="Enter mobile number without country Code"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value.replace(/\D/g, "").slice(0, 10))}
                 autoComplete="tel"
@@ -318,9 +318,9 @@ export default function MobileCompatibility() {
                 <table className="w-full text-sm">
                   <thead className="bg-[#1A0B2E]/70">
                     <tr className="text-left">
-                      <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Combination</th>
-                      <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Status</th>
-                      <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Detail</th>
+                      <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Combination</th>
+                      <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Status</th>
+                      <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Detail</th>
                     </tr>
                   </thead>
                   <tbody>

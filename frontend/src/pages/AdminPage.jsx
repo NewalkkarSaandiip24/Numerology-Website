@@ -239,10 +239,10 @@ const UserTable = ({ rows, mode, onRemove, loading }) => {
       <table className="w-full text-sm">
         <thead className="bg-[#1A0B2E]/60">
           <tr className="text-left">
-            <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Mobile</th>
-            <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Name</th>
-            <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">{mode === "active" ? "Authorized On" : "Removed On"}</th>
-            <th className="p-3 font-mono text-[10px] uppercase tracking-[0.2em] text-[#D4AF37]">Expires</th>
+            <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Mobile</th>
+            <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Name</th>
+            <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">{mode === "active" ? "Authorized On" : "Removed On"}</th>
+            <th className="p-3 font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] text-[#F3D060]">Expires</th>
             {mode === "active" && <th className="p-3"></th>}
           </tr>
         </thead>

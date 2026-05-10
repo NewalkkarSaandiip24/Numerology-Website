@@ -300,10 +300,18 @@ body {
 /* Vertical label */
 .v-label {
     font-family: "Azeret Mono", monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.32em;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--gold);
+    color: #F3D060;
+    font-weight: 500;
+}
+@media (max-width: 640px) {
+    .v-label {
+        font-size: 0.78rem;
+        letter-spacing: 0.16em;
+    }
 }
 
 /* Radial glow */
