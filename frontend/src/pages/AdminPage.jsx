@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Plus, Trash2, History, RefreshCw, LogOut, Lock, Phone, User, Calendar, Shield } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, History, RefreshCw, LogOut, Lock, Phone, User, Calendar, Shield, BookOpen, Image as ImageIcon, X } from "lucide-react";
 import Logo from "../components/Logo";
 import useSEO from "../hooks/useSEO";
 import { adminApi, getToken, clearToken, formatErr } from "../lib/api";
@@ -211,6 +211,9 @@ export default function AdminPage() {
 
         {/* Table */}
         <UserTable rows={tab === "active" ? active : history} mode={tab} onRemove={handleRemove} loading={loading} />
+
+        {/* ===== Blog Management Section ===== */}
+        <BlogManager />
       </main>
     </div>
   );
@@ -281,6 +284,324 @@ function formatDateTime(iso) {
   } catch {
     return iso;
   }
+}
+
+/* ============= Blog Manager (admin) ============= */
+function BlogManager() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [imageBase64, setImageBase64] = useState("");
+  const [imageName, setImageName] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const refresh = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const data = await adminApi.listBlogs ? await adminApi.listBlogs() : await publicListBlogs();
+      setBlogs(data);
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleFile = (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) {
+      setError("Please choose an image file.");
+      return;
+    }
+    if (f.size > 2 * 1024 * 1024) {
+      setError("Image is over 2 MB. Please choose a smaller image.");
+      return;
+    }
+    const r = new FileReader();
+    r.onload = () => {
+      setImageBase64(r.result);
+      setImageName(f.name);
+      setError("");
+    };
+    r.readAsDataURL(f);
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setContent("");
+    setImageBase64("");
+    setImageName("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (title.trim().length < 2) {
+      setError("Please enter a title.");
+      return;
+    }
+    if (content.trim().length < 2) {
+      setError("Please enter the blog content.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await adminApi.createBlog({
+        title: title.trim(),
+        content: content.trim(),
+        image_base64: imageBase64 || null,
+      });
+      resetForm();
+      setShowForm(false);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (id, title) => {
+    if (!window.confirm(`Delete the blog "${title}"? This cannot be undone.`)) return;
+    try {
+      await adminApi.deleteBlog(id);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    }
+  };
+
+  return (
+    <section className="mt-14" data-testid="blog-manager">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+        <div>
+          <div className="v-label mb-2">Numerology & Vastu Blog</div>
+          <h2 className="font-serif text-2xl sm:text-3xl" style={{ fontWeight: 400 }}>
+            Manage <span className="gold-shimmer">Blogs</span>
+          </h2>
+          <p className="mt-2 text-sm text-[#C8BED6] font-light max-w-2xl">
+            Publish articles to the public Blogs page. Add a heading, an optional cover image and the content body.
+            Each blog also has its own SEO page automatically.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setShowForm((v) => !v)}
+          data-testid="blog-add-btn"
+          className="btn-gold text-sm"
+        >
+          <Plus size={16} /> {showForm ? "Cancel" : "Add Blog"}
+        </button>
+      </div>
+
+      {showForm && (
+        <form onSubmit={handleSubmit} data-testid="blog-form" className="glass-card p-5 sm:p-6 mb-6">
+          <div className="space-y-5">
+            {/* Title with clear button */}
+            <div>
+              <label className="v-label block mb-1.5">Blog Heading / Title</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  className="field-input pr-10"
+                  data-testid="blog-form-title"
+                  placeholder="e.g. How a Lucky Mobile Number Can Change Your Life"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  maxLength={200}
+                />
+                {title && (
+                  <button
+                    type="button"
+                    onClick={() => setTitle("")}
+                    data-testid="blog-form-title-clear"
+                    aria-label="Clear title"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-7 w-7 rounded-full hover:bg-[#D4AF37]/15 text-[#C8BED6] hover:text-[#D4AF37] flex items-center justify-center transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Image upload */}
+            <div>
+              <label className="v-label block mb-1.5">Cover Image (optional, max 2 MB)</label>
+              {!imageBase64 ? (
+                <label
+                  htmlFor="blog-image-input"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg border border-dashed border-[#D4AF37]/40 hover:border-[#D4AF37]/70 hover:bg-[#D4AF37]/5 cursor-pointer transition-colors"
+                >
+                  <ImageIcon size={18} className="text-[#D4AF37]" />
+                  <span className="text-sm text-[#C8BED6] font-light">
+                    Click to upload an image (JPG / PNG / WebP)
+                  </span>
+                  <input
+                    id="blog-image-input"
+                    data-testid="blog-form-image"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFile}
+                    className="hidden"
+                  />
+                </label>
+              ) : (
+                <div className="flex items-start gap-4 p-3 rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/5">
+                  <img src={imageBase64} alt={imageName} className="w-24 h-24 object-cover rounded-md border border-[#D4AF37]/30" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm text-[#F8F5F0] truncate">{imageName}</div>
+                    <div className="text-xs text-[#C8BED6]/70 mt-1">Image attached</div>
+                    <button
+                      type="button"
+                      onClick={() => { setImageBase64(""); setImageName(""); }}
+                      data-testid="blog-form-image-clear"
+                      className="mt-2 inline-flex items-center gap-1.5 text-xs text-red-300 hover:text-red-200 transition-colors px-2 py-1 rounded border border-red-400/30 hover:border-red-400/60"
+                    >
+                      <Trash2 size={12} /> Remove image
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Content with clear button */}
+            <div>
+              <label className="v-label block mb-1.5">Content / Body</label>
+              <div className="relative">
+                <textarea
+                  rows={8}
+                  className="field-input pr-10"
+                  data-testid="blog-form-content"
+                  placeholder="Write your article here — use blank lines to separate paragraphs."
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  maxLength={20000}
+                />
+                {content && (
+                  <button
+                    type="button"
+                    onClick={() => setContent("")}
+                    data-testid="blog-form-content-clear"
+                    aria-label="Clear content"
+                    className="absolute right-2 top-2 h-7 w-7 rounded-full hover:bg-[#D4AF37]/15 text-[#C8BED6] hover:text-[#D4AF37] flex items-center justify-center transition-colors"
+                  >
+                    <X size={14} />
+                  </button>
+                )}
+              </div>
+              <div className="mt-1 text-xs text-[#C8BED6]/60 font-mono">
+                {content.length} / 20000
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-1">
+              <button
+                type="submit"
+                disabled={submitting}
+                data-testid="blog-form-submit"
+                className="btn-gold disabled:opacity-50"
+              >
+                <Plus size={16} /> {submitting ? "Publishing…" : "Publish Blog"}
+              </button>
+              <button
+                type="button"
+                onClick={() => { resetForm(); setShowForm(false); }}
+                className="btn-ghost"
+              >
+                Cancel
+              </button>
+            </div>
+
+            {error && (
+              <div data-testid="blog-form-error" className="px-3 py-2 rounded-lg border border-red-400/40 bg-red-500/10 text-red-200 text-xs">
+                {error}
+              </div>
+            )}
+          </div>
+        </form>
+      )}
+
+      {!showForm && error && (
+        <div className="mb-4 px-4 py-3 rounded-lg border border-red-400/40 bg-red-500/10 text-red-200 text-sm">
+          {error}
+        </div>
+      )}
+
+      {/* Blog list */}
+      {loading && blogs.length === 0 ? (
+        <div className="text-center py-10 text-[#C8BED6]/70 font-mono text-xs uppercase tracking-[0.2em]">
+          Loading…
+        </div>
+      ) : blogs.length === 0 ? (
+        <div className="text-center py-10 text-[#C8BED6]/60 border border-dashed border-[#D4AF37]/25 rounded-xl">
+          <BookOpen size={28} className="mx-auto mb-3 text-[#D4AF37]/45" strokeWidth={1.3} />
+          No blogs yet. Click <span className="text-[#D4AF37]">Add Blog</span> above to publish your first article.
+        </div>
+      ) : (
+        <div className="grid sm:grid-cols-2 gap-4">
+          {blogs.map((b) => (
+            <div
+              key={b.id}
+              data-testid={`blog-row-${b.slug}`}
+              className="glass-card overflow-hidden flex"
+            >
+              <div className="w-28 sm:w-32 shrink-0 bg-gradient-to-br from-[#1A0B2E] to-[#0F0518] flex items-center justify-center">
+                {b.image_base64 ? (
+                  <img src={b.image_base64} alt={b.title} className="w-full h-full object-cover" />
+                ) : (
+                  <BookOpen size={24} className="text-[#D4AF37]/40" strokeWidth={1.2} />
+                )}
+              </div>
+              <div className="flex-1 p-4 flex flex-col min-w-0">
+                <div className="font-serif text-base sm:text-lg text-[#F8F5F0] line-clamp-2" style={{ fontWeight: 500 }}>
+                  {b.title}
+                </div>
+                <div className="mt-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[#C8BED6]/60">
+                  {formatDateTime(b.created_at)}
+                </div>
+                <p className="mt-2 text-xs text-[#C8BED6] line-clamp-2 font-light">{b.content}</p>
+                <div className="mt-auto pt-3 flex items-center gap-3">
+                  <Link
+                    to={`/blogs/${b.slug}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-mono uppercase tracking-[0.2em] text-[#D4AF37] hover:text-[#F3D060]"
+                    data-testid={`blog-row-view-${b.slug}`}
+                  >
+                    View →
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(b.id, b.title)}
+                    data-testid={`blog-row-delete-${b.slug}`}
+                    className="ml-auto inline-flex items-center gap-1.5 text-xs text-red-300 hover:text-red-200 transition-colors px-2 py-1 rounded border border-red-400/30 hover:border-red-400/60"
+                  >
+                    <Trash2 size={12} /> Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// Fallback list helper if adminApi doesn't have listBlogs (defensive)
+async function publicListBlogs() {
+  const { publicApi } = await import("../lib/api");
+  return publicApi.listBlogs();
 }
 
 /* ============= Login Form ============= */

@@ -29,6 +29,8 @@ const NameNumerology = React.lazy(() => import("./pages/NameNumerology"));
 const PersonalYear = React.lazy(() => import("./pages/PersonalYear"));
 const MobileCompatibility = React.lazy(() => import("./pages/MobileCompatibility"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage"));
+const Blogs = React.lazy(() => import("./pages/Blogs"));
+const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -105,9 +107,10 @@ const Nav = () => {
   const links = [
     ["About", "#about"],
     ["Services", "#services"],
-    ["Name Numerology Calculator", "/name-numerology"],
+    ["Name Numerology", "/name-numerology"],
     ["Personal Year", "/personal-year"],
     ["Mobile Compatibility", "/mobile-compatibility"],
+    ["Blogs", "/blogs"],
     ["Contact", "#contact"],
   ];
   const sanitize = (label) =>
@@ -135,11 +138,11 @@ const Nav = () => {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-7 xl:gap-9">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
           {links.map(([label, href]) => {
             const isRoute = href.startsWith("/");
             const cls =
-              "font-mono text-[10px] xl:text-[11px] uppercase tracking-[0.14em] xl:tracking-[0.16em] [word-spacing:-0.25em] text-[#C8BED6] hover:text-[#D4AF37] transition-colors duration-300 whitespace-nowrap";
+              "font-serif text-[15px] xl:text-base text-[#F8F5F0] hover:text-[#F3D060] transition-colors duration-300 whitespace-nowrap relative nav-link-underline";
             return isRoute ? (
               <Link key={href} to={href} data-testid={sanitize(label)} className={cls}>
                 {label}
@@ -1243,6 +1246,8 @@ function App() {
             <Route path="/name-numerology" element={<NameNumerology />} />
             <Route path="/personal-year" element={<PersonalYear />} />
             <Route path="/mobile-compatibility" element={<MobileCompatibility />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/:slug" element={<BlogDetail />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </React.Suspense>

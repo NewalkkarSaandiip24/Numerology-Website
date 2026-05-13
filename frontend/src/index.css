@@ -14,6 +14,29 @@
     --border-gold: rgba(212, 175, 55, 0.2);
 }
 
+/* Nav link gold underline animation */
+.nav-link-underline {
+    position: relative;
+    padding-bottom: 4px;
+    letter-spacing: 0.01em;
+}
+.nav-link-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    width: 0;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #f3d060, transparent);
+    transition: width 0.35s ease;
+}
+.nav-link-underline:hover::after {
+    width: 100%;
+}
+
+
 * {
     box-sizing: border-box;
 }

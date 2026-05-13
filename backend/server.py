@@ -112,6 +112,32 @@ class CheckAuthOut(BaseModel):
     reason: Optional[str] = None
 
 
+# ============ Blog models ============
+import re
+
+def slugify(s: str) -> str:
+    s = re.sub(r"[^a-zA-Z0-9\s-]", "", s.lower()).strip()
+    s = re.sub(r"\s+", "-", s)[:80]
+    return s or "untitled"
+
+
+class BlogIn(BaseModel):
+    title: str = Field(min_length=2, max_length=200)
+    content: str = Field(min_length=2, max_length=20000)
+    image_base64: Optional[str] = None  # data URL or raw base64; <2MB enforced server-side
+
+
+class BlogOut(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    slug: str
+    title: str
+    content: str
+    image_base64: Optional[str] = None
+    created_at: str
+    updated_at: str
+
+
 # ============ Seed admin password on startup ============
 async def seed_admin():
     doc = await db.admin_meta.find_one({"_id": "password"}, {"_id": 0})
@@ -127,6 +153,8 @@ async def seed_admin():
 async def _startup():
     await seed_admin()
     await db.authorized_users.create_index("mobile")
+    await db.blogs.create_index("slug", unique=True)
+    await db.blogs.create_index("created_at")
 
 
 # ============ Public ============
@@ -215,6 +243,68 @@ async def remove_user(user_id: str, _: str = Depends(require_admin)):
     )
     if result.matched_count == 0:
         raise HTTPException(status_code=404, detail="User not found.")
+    return {"ok": True}
+
+
+# ============ Blogs (public list + admin CRUD) ============
+def _validate_image_size(image_b64: Optional[str]):
+    if not image_b64:
+        return
+    # Strip data URL prefix if present
+    raw = image_b64.split(",", 1)[1] if image_b64.startswith("data:") else image_b64
+    # Rough check: base64 length * 0.75 = bytes. Cap at 2MB.
+    if len(raw) * 0.75 > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="Image too large. Please use an image under 2 MB.")
+
+
+async def _unique_slug(base: str) -> str:
+    slug = base
+    i = 2
+    while await db.blogs.find_one({"slug": slug}, {"_id": 0, "slug": 1}):
+        slug = f"{base}-{i}"
+        i += 1
+    return slug
+
+
+@api_router.get("/blogs", response_model=List[BlogOut])
+async def list_blogs_public():
+    """Public — used by /blogs page."""
+    docs = await db.blogs.find({}, {"_id": 0}).sort("created_at", -1).to_list(200)
+    return docs
+
+
+@api_router.get("/blogs/{slug}", response_model=BlogOut)
+async def get_blog_public(slug: str):
+    doc = await db.blogs.find_one({"slug": slug}, {"_id": 0})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Blog not found.")
+    return doc
+
+
+@api_router.post("/admin/blogs", response_model=BlogOut)
+async def create_blog(payload: BlogIn, _: str = Depends(require_admin)):
+    _validate_image_size(payload.image_base64)
+    base_slug = slugify(payload.title)
+    slug = await _unique_slug(base_slug)
+    now = now_iso()
+    doc = {
+        "id": str(uuid.uuid4()),
+        "slug": slug,
+        "title": payload.title.strip(),
+        "content": payload.content.strip(),
+        "image_base64": payload.image_base64,
+        "created_at": now,
+        "updated_at": now,
+    }
+    await db.blogs.insert_one(doc.copy())
+    return doc
+
+
+@api_router.delete("/admin/blogs/{blog_id}")
+async def delete_blog(blog_id: str, _: str = Depends(require_admin)):
+    result = await db.blogs.delete_one({"id": blog_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Blog not found.")
     return {"ok": True}
 
 

@@ -39,11 +39,32 @@ export const adminApi = {
     const { data } = await axios.delete(`${API}/admin/users/${id}`, { headers: authHeaders() });
     return data;
   },
+  listBlogs: async () => {
+    // blogs are publicly listable — reuse public endpoint
+    const { data } = await axios.get(`${API}/blogs`);
+    return data;
+  },
+  createBlog: async (payload) => {
+    const { data } = await axios.post(`${API}/admin/blogs`, payload, { headers: authHeaders() });
+    return data;
+  },
+  deleteBlog: async (id) => {
+    const { data } = await axios.delete(`${API}/admin/blogs/${id}`, { headers: authHeaders() });
+    return data;
+  },
 };
 
 export const publicApi = {
   checkAuthorized: async (mobile) => {
     const { data } = await axios.get(`${API}/check-authorized/${mobile}`);
+    return data;
+  },
+  listBlogs: async () => {
+    const { data } = await axios.get(`${API}/blogs`);
+    return data;
+  },
+  getBlog: async (slug) => {
+    const { data } = await axios.get(`${API}/blogs/${slug}`);
     return data;
   },
 };
