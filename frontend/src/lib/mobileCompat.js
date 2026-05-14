@@ -34,7 +34,7 @@ export const PAIR_DATA = {
   "52": { s: "good", t: "Strong interest in occult science (astrology, numerology, tarot, healing). Magical & healing powers, air travel." },
   "26": { s: "bad", t: "Never give to students. Education obstruction, distractions, love affairs, female–MIL friction, child-birth issues, less sperm count (male)." },
   "62": { s: "average", t: "Education and family balance — situational. Watch for distractions, female–MIL friction; can be neutralised with the right surrounding pairs." },
-  "27": { s: "good", t: "Spiritual maturity, deep thinker, intuitive — supportive for advisors, healers, occult science, research." },
+  "27": { s: "bad", t: "WORST — joint / muscle / knee / back / neck pain, career ups & downs, urinary infections, reproductive disease." },
   "72": { s: "bad", t: "WORST — joint / muscle / knee / back / neck pain, career ups & downs, urinary infections, reproductive disease." },
   "28": { s: "bad", t: "Vish-yog — partnership unsuitable, depression / suicidal tendencies, jealousy, hospital expenses, water leakage, possibility of 2 marriages in family." },
   "82": { s: "bad", t: "Vish-yog — partnership unsuitable, depression / suicidal tendencies, jealousy, hospital expenses, water leakage, possibility of 2 marriages in family." },
