@@ -10,8 +10,8 @@
 
 export const PAIR_DATA = {
   // Good
-  "12": { s: "good", t: "Saves money & resources, attractive face, supportive life partner." },
-  "21": { s: "average", t: "Attractive face, but tends to over-spend money." },
+  "12": { s: "good", t: "Attractive face. Saves money & resources. Helpful / supportive life partner." },
+  "21": { s: "bad", t: "Attractive face — but paise ko kharch bahut karte hai. Over-expenditure, money slips away easily." },
   "13": { s: "good", t: "Good advisor, good education, respected & popular in their circle. Strong combination for professionals." },
   "31": { s: "good", t: "Good advisor, good education, respected & popular in their circle. Strong combination for professionals." },
   "14": { s: "bad", t: "MOST troublesome — Loans, legal notices, indigestion / joint pain / bone issues, accidents / surgeries, slow recovery." },
