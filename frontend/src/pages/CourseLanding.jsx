@@ -223,97 +223,103 @@ const COURSES = {
   "mobile-numerology": {
     slug: "mobile-numerology",
     label: "Mobile Numerology",
-    hero_kicker: "Live 1-Day Intensive",
-    hero_h1: "Your Mobile Number Is Either Multiplying Your Money — Or Quietly Blocking It. Find Out Which One in 1 Day.",
-    hero_sub: "Master the complete Mobile Numerology system in a single intensive session — pair-by-pair analysis, Kaal Sarp / Pitra dosh detection, lucky totals, and how to pick the perfect number for your Birth Number.",
-    cta: "Yes, Teach Me Mobile Numerology",
-    cta_short: "Reserve My Seat",
-    price: 49,
+    theme: "light",
+    free: true,
+    hero_kicker: "Free Live Masterclass — Limited Seats",
+    hero_h1: "Your Mobile Number Is Silently Blocking Your Success — And You're Carrying It With You Every Single Day.",
+    hero_sub: "The number on your SIM is vibrating into every call, every transaction, every relationship. If it carries even ONE wrong pair — your money, health and peace are leaking without you knowing. In this free 1-day masterclass, learn exactly how to read it before it costs you another year.",
+    cta: "Yes, Claim My Free Seat",
+    cta_short: "Join FREE Masterclass",
+    price: 0,
     original_price: 2999,
     date: "Coming Sunday",
     language: "English + Hindi",
     time: "9:00 PM IST",
     platform: "Live On Zoom",
     pains: [
-      "Income looks decent — but savings just don't build.",
-      "Career growth slowed down right after a SIM change.",
-      "Relationship friction increased — unexplained.",
-      "Sleep disturbed, mood swings, restless mind.",
-      "You sense your number is 'off' but don't know how to verify it.",
-      "Family member's number — you suspect dosh but cannot prove.",
+      "You earn well — but money mysteriously slips away every month.",
+      "Career growth slowed down right after you got that SIM.",
+      "Marriage friction, sleep issues, restless mind — all started silently.",
+      "Health going down — joint pain, BP, headaches without medical reason.",
+      "Family member's number — you suspect dosh but cannot prove it.",
+      "You've heard 'mobile number matters' but nobody explained how to verify yours.",
     ],
     why_blocks: [
-      { icon: Phone, h: "Wrong Total", t: "Your mobile-total digit should be friendly with your Birth Number and Destiny Number. Most people don't even know theirs." },
-      { icon: AlertTriangle, h: "Bad Pair Combinations", t: "39 specific 2-digit pairs (14, 16, 27, 28, 38, 45, 48 …) create silent damage when present in your number." },
-      { icon: Zap, h: "Kaal Sarp / Pitra Dosh", t: "Certain digit triplets inside a number create karmic blocks. You'll learn to spot them in any 10-digit number." },
-      { icon: Trophy, h: "Profession Mismatch", t: "Lucky internal numbers differ for doctors, businessmen, students, artists, govt-job seekers. Learn the table." },
-      { icon: Sparkles, h: "Repetition Patterns", t: "Why 1-3 repeats of 1,3,5,6,9 are good — and why 4 or more times of any digit can flip results to negative." },
-      { icon: Heart, h: "Family & Spouse", t: "Read the numbers of everyone close to you — spouse, parents, children — and protect their abundance." },
+      { icon: AlertTriangle, h: "Your Number May Hold A 'Killer' Pair", t: "Pairs like 14, 27, 48 silently trigger loans, surgeries, joint pain and financial losses. One pair in your last 6 digits is enough." },
+      { icon: Phone, h: "Wrong Total = Blocked Abundance", t: "If your mobile-total digit fights your Birth Number, every transaction through that SIM works against you." },
+      { icon: Zap, h: "Kaal Sarp / Pitra Dosh Inside Numbers", t: "Most people don't know that digit-triplets like 3-4-7 or 2-7-9 create karmic blocks INSIDE a mobile number." },
+      { icon: Heart, h: "Your Family Is At Risk Too", t: "Spouse, parents, children — if their numbers carry doshas, the whole household energy shifts. Learn to protect them all." },
+      { icon: Trophy, h: "The Wrong Number Costs You Years", t: "Most people change SIM 3-4 times in 10 years — without checking even once. Imagine compounding that mistake." },
+      { icon: Sparkles, h: "Hidden Bonuses Inside The Class", t: "We'll reveal lucky-mobile-totals for every profession AND a 'Quick-Check 3-Step Audit' you can use on any number in 60 seconds." },
     ],
     modules: [
-      ["Mobile Total Calculation & Selection", [
-        "How to calculate the total digit-sum of any 10-digit number.",
-        "Why 1, 3, 5, 6 and 7 are recommended totals — and when 7 is not.",
-        "Friendly compounds for each total (37, 46, 55, 64 for total 1 etc.)",
+      ["The 60-Second Mobile Number Audit", [
+        "Saandiip ji's exact 3-step method to check any 10-digit number in under a minute.",
+        "How to spot the deadliest pair the moment you see a new SIM.",
       ]],
-      ["The Zero-Modification Rule", [
-        "Why 0 needs to be replaced before pair-analysis.",
-        "When 10/30/50/60/90 patterns are auspicious in last digits.",
+      ["The Zero-Modification Rule (No One Teaches This)", [
+        "Why 0 must be replaced before pair-analysis — and the exact rule.",
+        "When 10/30/50/60/90 patterns are blessings — and when they aren't.",
       ]],
-      ["Bad Pair Combinations (Complete List)", [
-        "All 39 bad pairs explained with health, money and relationship effects.",
-        "How to avoid them when buying a new SIM.",
+      ["39 Bad Pair Combinations (The Full List)", [
+        "Every pair from 14 to 98 — what it does to health, money, relationships.",
+        "The TOP 5 most dangerous pairs you must avoid at any cost.",
       ]],
-      ["Neutral & Good Pair Combinations", [
-        "8 neutral pairs and how surrounding digits flip them.",
-        "30+ good pairs that actively support growth.",
+      ["Kaal Sarp Dosh In Your Number", [
+        "The 3-4-7 pattern: how to find it inside any 10-digit number.",
+        "Practical remedies — no expensive pooja, no fear-mongering.",
       ]],
-      ["Kaal Sarp Dosh in Numbers (3, 4, 7)", [
-        "Identifying the dosh inside any mobile number.",
-        "Practical remedies and replacement strategy.",
+      ["Pitra Dosh In Your Number", [
+        "The 2-7-9 pattern and what it means for your bloodline.",
+        "Why your ancestors' karma may be vibrating through your SIM.",
       ]],
-      ["Pitra Dosh in Numbers (2, 7, 9)", [
-        "Detecting Pitra Dosh patterns.",
-        "Why your family's contact list may be hiding it."
+      ["Lucky Numbers by Profession", [
+        "Doctor / Engineer / Lawyer / Business / Govt / Sports — the exact internals.",
+        "The complete profession-lucky-number table revealed live.",
       ]],
-      ["Profession Lucky Numbers Table", [
-        "Doctor / Engineer / Lawyer / Business / Govt-Job / Sportsperson lucky internals.",
-        "How to pick a number that matches your career path.",
-      ]],
-      ["Repetition Rules & Danger Patterns", [
-        "Why 11, 33, 55, 66, 99 are powerful — and when they over-fire.",
-        "Why 11111, 2222, 4444, 8888 are dangerous patterns.",
+      ["Repetition Patterns: Power vs Poison", [
+        "Why 1, 3, 5, 6, 9 repeating 2-3 times is GOOD — and when it flips.",
+        "The danger zone: 4444, 8888, 2222, 6666 patterns.",
       ]],
     ],
+    bonuses: [
+      ["BONUS 1", "Saandiip ji's Personal '60-Second Mobile Audit' Checklist", "A printable PDF you can use on any number for the rest of your life — worth ₹999."],
+      ["BONUS 2", "The Lucky-Mobile-Total Table for 20 Professions", "Exact compound numbers (37, 46, 55, 64 …) recommended for doctors, businessmen, students, artists — worth ₹1,499."],
+      ["BONUS 3", "Live Q&A: Saandiip ji Personally Reads 5 Mobile Numbers", "Random attendees get their actual mobile number analysed on screen — value priceless."],
+    ],
     for_whom: [
-      "You're about to buy a new SIM and want to choose wisely.",
-      "You want to verify the current number you've been using for years.",
-      "You want to read the numbers of family, friends and business partners.",
-      "You want a practical skill to add to your consulting or astrology practice.",
+      "You suspect your mobile number is hurting you — and want a way to verify.",
+      "You're about to buy a new SIM and want to choose smartly the first time.",
+      "You want to protect your spouse, parents and children's numbers too.",
+      "You want a practical lifetime skill that can also become a side income.",
     ],
     testimonials: [
       ["Priya Khurana", "Gurgaon",
-       "I had no idea my mobile number had a Pitra Dosh pattern. Changed it after the workshop. Within 6 weeks two old clients returned and paid pending invoices."],
+       "I had no idea my mobile number had a Pitra Dosh pattern. Changed it after the masterclass. Within 6 weeks two old clients returned and paid pending invoices."],
       ["Manish Doshi", "Mumbai",
        "Saandiip ji's pair-by-pair method is so clear that I caught a 27 in my brother's number and we replaced his SIM the next day. His back pain reduced noticeably."],
       ["Riya Singh", "Lucknow",
-       "Best ₹99 I've spent. I now run a small WhatsApp service evaluating numbers for friends, charging ₹500 each. Already paid back 10x."],
+       "Best free masterclass I've ever attended. I now charge ₹500 per number consultation for friends and family. Already 10+ clients in one month."],
       ["Anuj Verma", "Hyderabad",
        "I'm an astrologer and this added a powerful new layer to my consultations. Clients love getting their mobile read in the same session."],
     ],
     faqs: [
+      ["Is this really FREE?",
+       "Yes — 100% free for the first 200 registrations only. After that the seat closes. We do not ask for any payment to attend."],
+      ["What's the catch?",
+       "There is none. Saandiip ji wants every Indian family to know whether their mobile number is hurting them. If after the class you wish to take a personal consultation, you may — but the masterclass itself is fully free."],
       ["Do I need to know numerology before this?",
-       "No prior knowledge needed. Mobile Numerology is taught from absolute basics in this 1-day intensive."],
+       "No prior knowledge needed. Mobile Numerology is taught from absolute basics in this masterclass."],
       ["Will I be able to analyse any number after this?",
-       "Yes — by end of Day 1 you'll evaluate any 10-digit number in under 60 seconds."],
+       "Yes — by end of the masterclass you'll evaluate any 10-digit number in under 60 seconds using Saandiip ji's checklist."],
       ["Will I get a recording?",
-       "Yes, available for 7 days after the workshop."],
+       "Recording is shared with attendees only — for 7 days. Cannot be re-shared publicly."],
+      ["Will I get the 3 bonuses?",
+       "Yes — all 3 bonuses (the 60-Second Audit Checklist PDF, the Profession Lucky-Total Table, and the live number reading) are included for every registered attendee."],
       ["Can this become a side income?",
-       "Many students charge ₹300–₹2,000 per mobile-number consultation. Even 2 per week can cover your monthly course investment many times over."],
-      ["Will the bad pairs hurt me if I just keep using the same number?",
-       "The vibrations continue to influence — but you'll learn practical remedies you can apply even without changing the SIM."],
-      ["Refund?",
-       "Non-refundable due to limited live seats. Please confirm availability before registering."],
+       "Many past attendees charge ₹300–₹2,000 per mobile-number consultation. Two consultations per week can easily cover a month's grocery."],
+      ["What if I can't attend live?",
+       "Recording is shared with registered attendees. But live attendance is strongly recommended — Saandiip ji reads attendees' real numbers live, which is the most valuable part."],
     ],
   },
 };
@@ -333,28 +339,29 @@ function useCountdown() {
 }
 
 /* ===== FAQ Accordion ===== */
-function FaqItem({ q, a, i }) {
+function FaqItem({ q, a, i, theme }) {
   const [open, setOpen] = useState(i === 0);
+  const isLight = theme === "light";
   return (
     <div
       data-testid={`faq-item-${i}`}
-      className="border-b border-[#D4AF37]/15"
+      className={`border-b ${isLight ? 'border-[#5B0B1F]/15' : 'border-[#D4AF37]/15'} last:border-b-0`}
     >
       <button
         type="button"
         onClick={() => setOpen(o => !o)}
         className="w-full text-left py-5 flex items-start justify-between gap-4"
       >
-        <span className="font-serif text-base sm:text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+        <span className={`font-serif text-lg sm:text-xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>
           {q}
         </span>
         <ChevronDown
-          size={20}
-          className={`text-[#D4AF37] shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
+          size={22}
+          className={`${isLight ? 'text-[#5B0B1F]' : 'text-[#D4AF37]'} shrink-0 transition-transform ${open ? "rotate-180" : ""}`}
         />
       </button>
       {open && (
-        <p className="pb-5 text-[#C8BED6] font-light leading-relaxed text-[15px]">
+        <p className={`pb-5 font-normal leading-[1.6] text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'}`}>
           {a}
         </p>
       )}
@@ -363,7 +370,7 @@ function FaqItem({ q, a, i }) {
 }
 
 /* ===== Registration form ===== */
-function RegisterForm({ course, onSuccess }) {
+function RegisterForm({ course, theme, onSuccess }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -380,11 +387,12 @@ function RegisterForm({ course, onSuccess }) {
 
     setBusy(true);
     try {
-      // Save lead (silent — non-blocking)
       try { await publicApi.submitCourseLead({ course: course.slug, name, email, mobile: m }); } catch {}
-      // Open WhatsApp with prefilled enrollment
+      const intro = course.free
+        ? `I'd like to claim my FREE seat for the ${course.label} Masterclass`
+        : `I would like to register for the ${course.label} workshop`;
       const msg = encodeURIComponent(
-        `Namaste Newalkkar Saandiip ji,%0A%0AI would like to register for the ${course.label} workshop.%0A%0AName: ${name}%0AEmail: ${email}%0AMobile: ${m}%0A%0AKindly share the joining details.`
+        `Namaste Newalkkar Saandiip ji,%0A%0A${intro}.%0A%0AName: ${name}%0AEmail: ${email}%0AMobile: ${m}%0A%0AKindly share the joining details.`
       );
       window.open(`https://wa.me/919929059153?text=${msg}`, "_blank", "noopener");
       onSuccess && onSuccess({ name, email, mobile: m });
@@ -395,45 +403,35 @@ function RegisterForm({ course, onSuccess }) {
     }
   };
 
+  const inputCls = theme === "light"
+    ? "w-full px-4 py-4 text-base sm:text-lg rounded-lg bg-white border-2 border-[#D4AF37]/35 focus:border-[#5B0B1F] outline-none text-[#2A1A2C] placeholder-[#6B5567]/70"
+    : "w-full px-4 py-3 rounded-lg bg-[#1A0B2E] border border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-[#F8F5F0] placeholder-[#C8BED6]/50";
+
   return (
     <form onSubmit={submit} data-testid="course-form" className="space-y-3">
-      <input
-        data-testid="course-name"
-        type="text"
-        placeholder="Full Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="w-full px-4 py-3 rounded-lg bg-[#1A0B2E] border border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-[#F8F5F0] placeholder-[#C8BED6]/50"
-      />
-      <input
-        data-testid="course-email"
-        type="email"
-        placeholder="Email Address"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="w-full px-4 py-3 rounded-lg bg-[#1A0B2E] border border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-[#F8F5F0] placeholder-[#C8BED6]/50"
-      />
-      <input
-        data-testid="course-mobile"
-        type="tel"
-        inputMode="tel"
-        placeholder="WhatsApp number (10 digits, no country code)"
-        value={mobile}
-        onChange={(e) => setMobile(e.target.value)}
-        className="w-full px-4 py-3 rounded-lg bg-[#1A0B2E] border border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-[#F8F5F0] placeholder-[#C8BED6]/50"
-      />
-      {err && <div data-testid="course-form-error" className="text-sm text-red-300">{err}</div>}
+      <input data-testid="course-name" type="text" placeholder="Full Name" value={name}
+        onChange={(e) => setName(e.target.value)} className={inputCls} />
+      <input data-testid="course-email" type="email" placeholder="Email Address" value={email}
+        onChange={(e) => setEmail(e.target.value)} className={inputCls} />
+      <input data-testid="course-mobile" type="tel" inputMode="tel"
+        placeholder="WhatsApp number (10 digits, no country code)" value={mobile}
+        onChange={(e) => setMobile(e.target.value)} className={inputCls} />
+      {err && <div data-testid="course-form-error" className={`text-sm ${theme === "light" ? "text-red-700" : "text-red-300"}`}>{err}</div>}
       <button
         type="submit"
         disabled={busy}
         data-testid="course-form-submit"
-        className="w-full mt-2 px-5 py-4 rounded-full text-white font-bold text-base sm:text-lg shadow-lg disabled:opacity-60"
+        className="w-full mt-2 px-5 py-4 sm:py-5 rounded-full text-white font-bold text-base sm:text-xl shadow-lg disabled:opacity-60"
         style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
       >
-        {busy ? "Processing…" : `🟢 ${course.cta_short} — ₹${course.price}`}
+        {busy ? "Processing…" : (course.free
+          ? `🎁 ${course.cta_short} — 100% FREE`
+          : `🟢 ${course.cta_short} — ₹${course.price}`)}
       </button>
-      <p className="text-xs text-[#C8BED6]/70 text-center">
-        ⏳ Limited seats — pay ₹{course.price} on WhatsApp after submitting
+      <p className={`text-xs sm:text-sm text-center ${theme === "light" ? "text-[#6B5567]" : "text-[#C8BED6]/70"}`}>
+        {course.free
+          ? "⏳ Limited free seats — WhatsApp opens automatically to confirm your seat"
+          : `⏳ Limited seats — pay ₹${course.price} on WhatsApp after submitting`}
       </p>
     </form>
   );
@@ -465,55 +463,118 @@ export default function CourseLanding() {
     return () => { document.head.removeChild(m); };
   }, []);
 
+  // ---- THEME tokens ----
+  const isLight = course.theme === "light";
+  const T = isLight ? {
+    bg: "bg-[#FBF5EF]",
+    bgAlt: "bg-[#F5EAD8]",
+    bgCard: "bg-white",
+    text: "text-[#2A1A2C]",
+    textMuted: "text-[#6B5567]",
+    textSoft: "text-[#5B0B1F]/85",
+    h1Color: "text-[#5B0B1F]",
+    h2Color: "text-[#3B0413]",
+    accent: "text-[#5B0B1F]",
+    accentGold: "text-[#B8881A]",
+    border: "border-[#5B0B1F]/20",
+    borderStrong: "border-[#5B0B1F]/45",
+    cardBg: "bg-white",
+    sectionAltBg: "bg-[#F5EAD8]/60",
+    formCardStyle: { borderColor: "rgba(91,11,31,0.35)", background: "linear-gradient(160deg, #FFFFFF 0%, #FBF5EF 100%)" },
+    finalCtaStyle: { borderColor: "rgba(91,11,31,0.35)", background: "linear-gradient(135deg, #FFFFFF 0%, #FBF5EF 100%)" },
+  } : {
+    bg: "bg-[#0F0518]",
+    bgAlt: "bg-[#0F0518]/80",
+    bgCard: "bg-[#1A0B2E]/60",
+    text: "text-[#F8F5F0]",
+    textMuted: "text-[#C8BED6]",
+    textSoft: "text-[#C8BED6]",
+    h1Color: "text-[#F8F5F0]",
+    h2Color: "text-[#F8F5F0]",
+    accent: "text-[#F3D060]",
+    accentGold: "text-[#F3D060]",
+    border: "border-[#D4AF37]/25",
+    borderStrong: "border-[#D4AF37]/55",
+    cardBg: "bg-[#1A0B2E]/60",
+    sectionAltBg: "bg-[#0F0518]/80",
+    formCardStyle: { borderColor: "rgba(212,175,55,0.55)", background: "linear-gradient(160deg, rgba(91,11,31,0.85) 0%, rgba(26,11,46,0.95) 100%)" },
+    finalCtaStyle: { borderColor: "rgba(212,175,55,0.55)", background: "linear-gradient(135deg, rgba(91,11,31,0.85) 0%, rgba(26,11,46,0.95) 100%)" },
+  };
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#0F0518] text-[#F8F5F0]" data-testid="course-landing">
+    <div className={`min-h-screen overflow-x-hidden ${T.bg} ${T.text}`} data-testid="course-landing" data-theme={isLight ? "light" : "dark"}>
       {/* Top urgency bar */}
-      <div className="bg-gradient-to-r from-[#5B0B1F] via-[#7A0E29] to-[#5B0B1F] py-2 text-center text-xs sm:text-sm font-medium tracking-wide">
-        ⚡ <span className="text-[#F3D060]">Special Launch Price ₹{course.price}</span> — Expires in <span className="text-[#F3D060] font-mono">{time}</span> ⚡
+      <div className="bg-gradient-to-r from-[#5B0B1F] via-[#7A0E29] to-[#5B0B1F] py-2.5 text-center text-sm sm:text-base font-medium tracking-wide text-white">
+        {course.free ? (
+          <>⚡ <span className="text-[#F3D060] font-bold">100% FREE Masterclass</span> — Limited Seats · Closes in <span className="text-[#F3D060] font-mono">{time}</span> ⚡</>
+        ) : (
+          <>⚡ <span className="text-[#F3D060]">Special Launch Price ₹{course.price}</span> — Expires in <span className="text-[#F3D060] font-mono">{time}</span> ⚡</>
+        )}
       </div>
 
       {/* Minimal header */}
-      <header className="border-b border-[#D4AF37]/15">
+      <header className={`border-b ${T.border}`}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           <a href="/" className="flex items-center gap-3">
-            <Logo size={34} />
+            <Logo size={36} />
             <div>
-              <div className="font-serif text-sm sm:text-base text-[#F8F5F0]" style={{ fontWeight: 500 }}>Newalkkar Saandiip</div>
-              <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[#D4AF37] font-mono">Numerologist · Vaastu · Life Coach</div>
+              <div className={`font-serif text-base sm:text-lg ${T.text}`} style={{ fontWeight: 600 }}>Newalkkar Saandiip</div>
+              <div className={`text-[11px] sm:text-xs uppercase tracking-[0.18em] ${T.accentGold} font-mono`}>Numerologist · Vaastu · Life Coach</div>
             </div>
           </a>
           <a
             href="https://wa.me/919929059153"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-2 text-sm text-[#F3D060] hover:text-white transition-colors"
+            className={`hidden sm:inline-flex items-center gap-2 text-sm font-medium ${isLight ? 'text-[#5B0B1F] hover:text-[#3B0413]' : 'text-[#F3D060] hover:text-white'} transition-colors`}
             data-testid="header-whatsapp"
           >
-            <WhatsAppIcon size={16} /> +91 99290 59153
+            <WhatsAppIcon size={18} /> +91 99290 59153
           </a>
         </div>
       </header>
 
       {/* ===== HERO ===== */}
       <section className="relative px-4 sm:px-6 pt-10 sm:pt-14 pb-14">
-        <div className="absolute inset-0 -z-0 opacity-40 pointer-events-none"
-             style={{ background: "radial-gradient(ellipse at top, rgba(212,175,55,0.18), transparent 60%)" }} />
-        <div className="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-[1.15fr_1fr] gap-10 items-start">
+        <div className="absolute inset-0 -z-0 opacity-50 pointer-events-none"
+             style={{ background: isLight
+               ? "radial-gradient(ellipse at top, rgba(212,175,55,0.18), transparent 60%)"
+               : "radial-gradient(ellipse at top, rgba(212,175,55,0.18), transparent 60%)" }} />
+        <div className="max-w-6xl mx-auto relative z-10 grid lg:grid-cols-[1.1fr_1fr] gap-10 items-start">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#D4AF37]/45 bg-[#D4AF37]/8 mb-5">
-              <Sparkles size={13} className="text-[#F3D060]" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060]" style={{ fontWeight: 600 }}>
+            <div className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${isLight ? 'border-2 border-[#5B0B1F]/45 bg-[#5B0B1F]/8' : 'border border-[#D4AF37]/45 bg-[#D4AF37]/8'} mb-5`}>
+              <Sparkles size={14} className={isLight ? "text-[#5B0B1F]" : "text-[#F3D060]"} />
+              <span className={`font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>
                 {course.hero_kicker}
               </span>
             </div>
+
+            {/* Trust badge with author photo */}
+            <div className={`mb-6 flex items-center gap-3 sm:gap-4 p-3 rounded-2xl ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'bg-[#1A0B2E]/60 border border-[#D4AF37]/30'} shadow-lg w-fit`}>
+              <img
+                src="/saandiip-namaste.webp"
+                alt="Newalkkar Saandiip — Numerologist & Vaastu Consultant"
+                className={`h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover border-2 ${isLight ? 'border-[#5B0B1F]/40' : 'border-[#D4AF37]/60'}`}
+                loading="eager"
+              />
+              <div>
+                <div className={`font-serif text-base sm:text-lg ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 700 }}>
+                  Newalkkar Saandiip
+                </div>
+                <div className={`text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] ${isLight ? 'text-[#5B0B1F]/70' : 'text-[#D4AF37]'}`}>
+                  20+ Yrs · 10k+ Lives · Trusted Across India
+                </div>
+              </div>
+            </div>
+
             <h1
-              className="font-serif text-3xl sm:text-4xl lg:text-[44px] leading-[1.1] tracking-tight text-[#F8F5F0]"
-              style={{ fontWeight: 500 }}
+              className={`font-serif text-[28px] sm:text-4xl lg:text-[52px] leading-[1.08] tracking-tight ${T.h1Color}`}
+              style={{ fontWeight: 700 }}
               data-testid="hero-h1"
             >
               {course.hero_h1}
             </h1>
-            <p className="mt-5 text-base sm:text-lg text-[#C8BED6] font-light leading-relaxed max-w-[58ch]">
+            <p className={`mt-5 text-lg sm:text-xl lg:text-[22px] ${isLight ? 'text-[#3B0413]' : T.textMuted} font-light leading-[1.55] max-w-[58ch]`}>
               {course.hero_sub}
             </p>
 
@@ -525,60 +586,84 @@ export default function CourseLanding() {
                 [Clock, course.time],
                 [Video, course.platform],
               ].map(([Icon, label], i) => (
-                <div key={i} className="flex items-center gap-2 px-3 py-2.5 rounded-lg border border-[#D4AF37]/25 bg-[#1A0B2E]/60">
-                  <Icon size={15} className="text-[#D4AF37] shrink-0" />
-                  <span className="text-xs sm:text-sm text-[#F8F5F0] font-light">{label}</span>
+                <div key={i} className={`flex items-center gap-2 px-3 py-3 rounded-lg ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'bg-[#1A0B2E]/60 border border-[#D4AF37]/25'}`}>
+                  <Icon size={16} className={isLight ? "text-[#5B0B1F] shrink-0" : "text-[#D4AF37] shrink-0"} />
+                  <span className={`text-sm sm:text-base ${T.text} font-medium`}>{label}</span>
                 </div>
               ))}
             </div>
 
-            {/* Pain bullets */}
-            <ul className="mt-7 space-y-2.5 max-w-[60ch]">
-              {course.pains.map((p, i) => (
-                <li key={i} className="flex items-start gap-2 text-[15px] sm:text-base text-[#F8F5F0]/95 font-light">
-                  <span className="text-[#F4A742] mt-0.5">●</span>
-                  <span>{p}</span>
-                </li>
-              ))}
-            </ul>
+            {/* Pain bullets (fear-based) */}
+            <div className={`mt-7 p-5 sm:p-6 rounded-2xl ${isLight ? 'bg-[#FBE7E5] border-2 border-[#C03A2B]/35' : 'bg-red-900/15 border border-red-400/30'}`}>
+              <div className={`font-mono text-xs uppercase tracking-[0.2em] mb-3 ${isLight ? 'text-[#7A1E15]' : 'text-red-300'}`} style={{ fontWeight: 700 }}>
+                ⚠️ Warning signs your mobile number is hurting you
+              </div>
+              <ul className="space-y-2.5">
+                {course.pains.map((p, i) => (
+                  <li key={i} className={`flex items-start gap-2.5 text-base sm:text-lg ${isLight ? 'text-[#3B0413]' : 'text-[#F8F5F0]'} font-medium leading-[1.5]`}>
+                    <span className={isLight ? "text-[#C03A2B] mt-0.5" : "text-[#F4A742] mt-0.5"}>●</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Form card */}
           <div className="lg:sticky lg:top-6 self-start w-full">
-            <div className="rounded-2xl border-2 p-6 sm:p-7 shadow-2xl"
-                 style={{
-                   borderColor: "rgba(212,175,55,0.55)",
-                   background: "linear-gradient(160deg, rgba(91,11,31,0.85) 0%, rgba(26,11,46,0.95) 100%)"
-                 }}>
+            <div className="rounded-2xl border-2 p-6 sm:p-8 shadow-2xl"
+                 style={T.formCardStyle}>
+              {course.free && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white text-xs font-bold uppercase tracking-wider shadow-lg"
+                     style={{ position: "relative", marginTop: "-3rem", marginBottom: "1rem", width: "fit-content", marginLeft: "auto", marginRight: "auto" }}>
+                  ⚡ 100% FREE — Limited Seats
+                </div>
+              )}
               <div className="text-center mb-5">
-                <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">Reserve Your Seat</div>
-                <div className="font-serif text-2xl sm:text-3xl text-[#F8F5F0] leading-tight" style={{ fontWeight: 500 }}>
-                  Join The Live <span className="gold-shimmer">{course.label}</span> Workshop
+                <div className={`font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>
+                  {course.free ? "Claim Your Free Seat" : "Reserve Your Seat"}
                 </div>
-                <div className="mt-3 flex items-center justify-center gap-3">
-                  <span className="text-2xl sm:text-3xl font-bold text-[#F3D060]" data-testid="course-price">₹{course.price}</span>
-                  <span className="text-lg text-[#C8BED6] line-through">₹{course.original_price}</span>
-                  <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-[#7ED99B]/20 border border-[#7ED99B]/50 text-[#7ED99B] font-bold">
-                    Save {Math.round((1 - course.price/course.original_price) * 100)}%
-                  </span>
+                <div className={`font-serif text-2xl sm:text-[28px] leading-tight ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 700 }}>
+                  Join The Live{" "}
+                  <span className={isLight ? "text-[#B8881A]" : "gold-shimmer"}>{course.label}</span>
+                  {" "}Masterclass
                 </div>
+                {course.free ? (
+                  <div className="mt-4 flex items-center justify-center gap-3">
+                    <span className="text-4xl sm:text-5xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }} data-testid="course-price">FREE</span>
+                    <div className="flex flex-col items-start">
+                      <span className={`text-base ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-[#7ED99B]/25 border border-[#7ED99B]/55 text-[#1F4F2A] font-bold">
+                        for 1st 200 only
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="mt-3 flex items-center justify-center gap-3">
+                    <span className={`text-3xl sm:text-4xl font-bold ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} data-testid="course-price">₹{course.price}</span>
+                    <span className={`text-lg ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-[#7ED99B]/20 border border-[#7ED99B]/50 text-[#1F4F2A] font-bold">
+                      Save {Math.round((1 - course.price/course.original_price) * 100)}%
+                    </span>
+                  </div>
+                )}
               </div>
 
               {submitted ? (
                 <div data-testid="course-thankyou" className="text-center py-6">
-                  <CheckCircle2 size={48} className="text-[#7ED99B] mx-auto mb-3" />
-                  <div className="font-serif text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>Thank you!</div>
-                  <p className="mt-2 text-sm text-[#C8BED6] font-light">
+                  <CheckCircle2 size={56} className="text-[#7ED99B] mx-auto mb-3" />
+                  <div className={`font-serif text-2xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>Thank you!</div>
+                  <p className={`mt-2 text-base ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-light`}>
                     WhatsApp is opening — please send the prefilled message to confirm your seat
                     with Newalkkar Saandiip ji.
                   </p>
                 </div>
               ) : (
-                <RegisterForm course={course} onSuccess={() => setSubmitted(true)} />
+                <RegisterForm course={course} theme={course.theme} onSuccess={() => setSubmitted(true)} />
               )}
 
-              <div className="mt-5 flex items-center justify-center gap-2 text-xs text-[#C8BED6]/70">
-                <ShieldCheck size={14} className="text-[#7ED99B]" />
+              <div className={`mt-5 flex items-center justify-center gap-2 text-xs sm:text-sm ${isLight ? 'text-[#5B0B1F]' : 'text-[#C8BED6]/70'}`}>
+                <ShieldCheck size={16} className="text-[#7ED99B]" />
                 100% Live · Recording for 7 days · Certificate included
               </div>
             </div>
@@ -587,22 +672,22 @@ export default function CourseLanding() {
       </section>
 
       {/* ===== WHY YOU NEED THIS ===== */}
-      <section className="px-4 sm:px-6 py-14 bg-[#0F0518]/80 border-y border-[#D4AF37]/15">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${T.sectionAltBg} border-y ${T.border}`}>
         <div className="max-w-6xl mx-auto">
-          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-center text-[#F8F5F0] leading-tight" style={{ fontWeight: 500 }}>
+          <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl text-center ${T.h2Color} leading-tight`} style={{ fontWeight: 700 }}>
             If any of this feels familiar… <br className="hidden sm:block" />
-            it's time to understand <span className="gold-shimmer">{course.label}</span> properly.
+            it's time to understand <span className={isLight ? "text-[#B8881A]" : "gold-shimmer"}>{course.label}</span> properly.
           </h2>
           <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {course.why_blocks.map((b, i) => {
               const Icon = b.icon;
               return (
-                <div key={i} className="glass-card p-6 hover:border-[#D4AF37]/45 transition-all">
-                  <div className="h-11 w-11 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] mb-4">
-                    <Icon size={20} />
+                <div key={i} className={`${isLight ? 'bg-white border-2 border-[#5B0B1F]/15 hover:border-[#5B0B1F]/40' : 'glass-card hover:border-[#D4AF37]/45'} p-6 sm:p-7 rounded-2xl shadow-md transition-all`}>
+                  <div className={`h-12 w-12 rounded-full flex items-center justify-center mb-4 ${isLight ? 'bg-[#5B0B1F]/10 border-2 border-[#5B0B1F]/35 text-[#5B0B1F]' : 'bg-[#D4AF37]/15 border border-[#D4AF37]/45 text-[#D4AF37]'}`}>
+                    <Icon size={22} />
                   </div>
-                  <h3 className="font-serif text-lg text-[#F8F5F0]" style={{ fontWeight: 500 }}>{b.h}</h3>
-                  <p className="mt-2 text-[14px] sm:text-[15px] text-[#C8BED6] font-light leading-relaxed">{b.t}</p>
+                  <h3 className={`font-serif text-xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>{b.h}</h3>
+                  <p className={`mt-2 text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-normal leading-[1.55]`}>{b.t}</p>
                 </div>
               );
             })}
@@ -610,15 +695,57 @@ export default function CourseLanding() {
         </div>
       </section>
 
+      {/* ===== HIDDEN BONUSES (free courses only) ===== */}
+      {course.free && course.bonuses && (
+        <section className={`px-4 sm:px-6 py-14 sm:py-16`}>
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-10">
+              <div className={`inline-block px-4 py-1.5 rounded-full mb-3 ${isLight ? 'bg-[#5B0B1F] text-[#F3D060]' : 'bg-[#D4AF37]/20 text-[#F3D060] border border-[#D4AF37]/40'}`}>
+                <span className="font-mono text-xs uppercase tracking-[0.22em]" style={{ fontWeight: 700 }}>🎁 Hidden Free Bonuses</span>
+              </div>
+              <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl ${T.h2Color} leading-tight`} style={{ fontWeight: 700 }}>
+                Plus, You Walk Away With{" "}
+                <span className={isLight ? "text-[#B8881A]" : "gold-shimmer"}>3 Premium Bonuses</span>
+                {" "}— Worth ₹{course.bonuses.reduce((a,b)=>a+(b[2].match(/₹([\d,]+)/)?parseInt(b[2].match(/₹([\d,]+)/)[1].replace(/,/g,'')):0),0).toLocaleString('en-IN')}+
+              </h2>
+              <p className={`mt-3 text-base sm:text-lg ${T.textMuted} max-w-2xl mx-auto`}>
+                These are unlocked only for those who attend live — kept secret until the
+                masterclass starts.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-3 gap-5">
+              {course.bonuses.map(([tag, title, desc], i) => (
+                <div key={i}
+                  data-testid={`bonus-${i}`}
+                  className={`relative p-6 sm:p-7 rounded-2xl border-2 shadow-md ${isLight ? 'bg-white border-[#5B0B1F]/25 hover:border-[#5B0B1F]/55' : 'bg-[#1A0B2E]/60 border-[#D4AF37]/35 hover:border-[#D4AF37]/65'} transition-all`}>
+                  <div className={`absolute -top-3 left-5 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] ${isLight ? 'bg-[#5B0B1F] text-[#F3D060]' : 'bg-[#F3D060] text-[#5B0B1F]'}`} style={{ fontWeight: 700 }}>
+                    {tag}
+                  </div>
+                  <div className={`mt-2 inline-flex items-center gap-1.5 mb-3 px-2.5 py-1 rounded-full ${isLight ? 'bg-[#7ED99B]/20 border border-[#1F4F2A]/35' : 'bg-[#7ED99B]/20 border border-[#7ED99B]/55'}`}>
+                    <span className={`text-[10px] font-mono uppercase tracking-wider ${isLight ? 'text-[#1F4F2A]' : 'text-[#7ED99B]'}`} style={{ fontWeight: 700 }}>FREE for attendees</span>
+                  </div>
+                  <h3 className={`font-serif text-lg sm:text-xl leading-tight ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>
+                    {title}
+                  </h3>
+                  <p className={`mt-2 text-sm sm:text-base ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} leading-relaxed font-normal`}>
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ===== MODULES ===== */}
-      <section className="px-4 sm:px-6 py-14">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${T.bg}`}>
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">CURRICULUM</div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+            <div className={`font-mono text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>CURRICULUM</div>
+            <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl ${T.h2Color}`} style={{ fontWeight: 700 }}>
               What You'll Master In These Sessions
             </h2>
-            <p className="mt-3 text-[#C8BED6] font-light max-w-2xl mx-auto">
+            <p className={`mt-3 text-base sm:text-lg ${T.textMuted} font-light max-w-2xl mx-auto`}>
               Not random tips. A structured, practical foundation you can apply the same day.
             </p>
           </div>
@@ -627,17 +754,17 @@ export default function CourseLanding() {
               <div
                 key={i}
                 data-testid={`module-${i}`}
-                className="glass-card p-5 sm:p-6 flex gap-4"
+                className={`p-5 sm:p-7 flex gap-4 rounded-2xl shadow-sm ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'glass-card'}`}
               >
-                <div className="h-10 w-10 rounded-full bg-[#5B0B1F] border-2 border-[#D4AF37] text-[#F3D060] font-serif font-bold text-base flex items-center justify-center shrink-0">
+                <div className={`h-12 w-12 rounded-full font-serif font-bold text-lg flex items-center justify-center shrink-0 ${isLight ? 'bg-[#5B0B1F] text-[#F3D060] border-2 border-[#B8881A]' : 'bg-[#5B0B1F] border-2 border-[#D4AF37] text-[#F3D060]'}`}>
                   {i + 1}
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-serif text-lg sm:text-xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>{title}</h3>
+                  <h3 className={`font-serif text-xl sm:text-2xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>{title}</h3>
                   <ul className="mt-2 space-y-1.5">
                     {lines.map((ln, j) => (
-                      <li key={j} className="flex items-start gap-2 text-[14px] sm:text-[15px] text-[#C8BED6] font-light leading-relaxed">
-                        <CheckCircle2 size={14} className="text-[#7ED99B] mt-1 shrink-0" />
+                      <li key={j} className={`flex items-start gap-2 text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-normal leading-[1.55]`}>
+                        <CheckCircle2 size={16} className={isLight ? "text-[#1F4F2A] mt-1.5 shrink-0" : "text-[#7ED99B] mt-1.5 shrink-0"} />
                         <span>{ln}</span>
                       </li>
                     ))}
@@ -651,22 +778,22 @@ export default function CourseLanding() {
             <a
               href="#register"
               onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
-              className="inline-flex items-center gap-3 px-7 py-4 rounded-full text-white font-bold text-base sm:text-lg shadow-xl"
+              className="inline-flex items-center gap-3 px-7 py-4 sm:px-8 sm:py-5 rounded-full text-white font-bold text-base sm:text-lg shadow-xl"
               style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
               data-testid="cta-modules"
             >
               {course.cta} <ArrowRight size={18} />
             </a>
-            <div className="mt-3 text-xs text-[#C8BED6]/70 uppercase tracking-wider">Hurry up — seats are filling fast</div>
+            <div className={`mt-3 text-xs sm:text-sm uppercase tracking-wider ${isLight ? 'text-[#5B0B1F]/80' : 'text-[#C8BED6]/70'}`}>Hurry up — seats are filling fast</div>
           </div>
         </div>
       </section>
 
       {/* ===== MENTOR ===== */}
-      <section className="px-4 sm:px-6 py-14 bg-gradient-to-b from-transparent to-[#0F0518]">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${isLight ? 'bg-gradient-to-b from-[#FBF5EF] to-[#F5EAD8]/70' : 'bg-gradient-to-b from-transparent to-[#0F0518]'}`}>
         <div className="max-w-5xl mx-auto grid md:grid-cols-[1fr_1.4fr] gap-10 items-center">
           <div className="relative">
-            <div className="aspect-square rounded-2xl overflow-hidden border-2 border-[#D4AF37]/55 shadow-2xl">
+            <div className={`aspect-square rounded-2xl overflow-hidden border-2 shadow-2xl ${isLight ? 'border-[#5B0B1F]/40' : 'border-[#D4AF37]/55'}`}>
               <img
                 src="/saandiip-namaste.webp"
                 alt="Newalkkar Saandiip"
@@ -674,31 +801,31 @@ export default function CourseLanding() {
                 loading="lazy"
               />
             </div>
-            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-[#5B0B1F] border border-[#D4AF37] text-[#F3D060] font-mono text-[10px] uppercase tracking-[0.22em] whitespace-nowrap">
+            <div className={`absolute -bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] whitespace-nowrap ${isLight ? 'bg-[#5B0B1F] text-[#F3D060]' : 'bg-[#5B0B1F] border border-[#D4AF37] text-[#F3D060]'}`} style={{ fontWeight: 700 }}>
               Your Mentor
             </div>
           </div>
           <div>
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">MEET YOUR MENTOR</div>
-            <h2 className="font-serif text-3xl sm:text-4xl text-[#F8F5F0] leading-tight" style={{ fontWeight: 500 }}>
+            <div className={`font-mono text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>MEET YOUR MENTOR</div>
+            <h2 className={`font-serif text-4xl sm:text-5xl leading-tight ${T.h2Color}`} style={{ fontWeight: 700 }}>
               Newalkkar Saandiip
             </h2>
-            <p className="mt-1 text-[#D4AF37] italic">Numerologist · Vaastu Consultant · Life Coach</p>
+            <p className={`mt-1 italic text-lg ${isLight ? 'text-[#B8881A]' : 'text-[#D4AF37]'}`}>Numerologist · Vaastu Consultant · Life Coach</p>
             <div className="mt-5 grid grid-cols-3 gap-4 max-w-lg">
               {[["20+", "Years"], ["10k+", "Lives Touched"], ["5,000+", "Consultations"]].map(([n, l], i) => (
                 <div key={i} className="text-center">
-                  <div className="font-serif text-2xl sm:text-3xl text-[#F3D060]" style={{ fontWeight: 700 }}>{n}</div>
-                  <div className="text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[#C8BED6] mt-1">{l}</div>
+                  <div className={`font-serif text-3xl sm:text-4xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 800 }}>{n}</div>
+                  <div className={`text-[11px] sm:text-xs uppercase tracking-[0.18em] mt-1 ${T.textMuted}`} style={{ fontWeight: 600 }}>{l}</div>
                 </div>
               ))}
             </div>
-            <p className="mt-6 text-[#C8BED6] font-light leading-relaxed">
+            <p className={`mt-6 text-base sm:text-lg font-normal leading-[1.6] ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'}`}>
               For over two decades, Newalkkar Saandiip ji has helped families across India align
               their name, mobile number, business and home with the right energies — using a
               structured logic-first approach rooted in Chaldean numerology and classical Vastu.
               No fear-based remedies, no expensive rituals — just clarity and practical action.
             </p>
-            <p className="mt-4 text-[#C8BED6] font-light leading-relaxed">
+            <p className={`mt-4 text-base sm:text-lg font-normal leading-[1.6] ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'}`}>
               His mission: make this knowledge accessible to every Indian family — so you can
               read the numbers yourself, protect your loved ones, and even build a respected
               side income as a consultant.
@@ -708,30 +835,30 @@ export default function CourseLanding() {
       </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      <section className="px-4 sm:px-6 py-14 border-y border-[#D4AF37]/15">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 border-y ${T.border} ${T.sectionAltBg}`}>
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">SUCCESS STORIES</div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+            <div className={`font-mono text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>SUCCESS STORIES</div>
+            <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl ${T.h2Color}`} style={{ fontWeight: 700 }}>
               From our previous students
             </h2>
           </div>
           <div className="grid sm:grid-cols-2 gap-5">
             {course.testimonials.map(([name, city, quote], i) => (
-              <div key={i} className="glass-card p-6 sm:p-7">
+              <div key={i} className={`p-6 sm:p-7 rounded-2xl shadow-md ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'glass-card'}`}>
                 <div className="flex gap-0.5 mb-3">
-                  {Array(5).fill(0).map((_,k) => <Star key={k} size={14} fill="#F3D060" stroke="#F3D060" />)}
+                  {Array(5).fill(0).map((_,k) => <Star key={k} size={16} fill="#F3D060" stroke="#F3D060" />)}
                 </div>
-                <p className="text-[15px] sm:text-base text-[#F8F5F0] font-light leading-relaxed italic">
+                <p className={`text-base sm:text-lg font-normal leading-[1.55] italic ${isLight ? 'text-[#2A1A2C]' : 'text-[#F8F5F0]'}`}>
                   "{quote}"
                 </p>
                 <div className="mt-4 flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full bg-[#D4AF37]/15 border border-[#D4AF37]/45 flex items-center justify-center text-[#D4AF37] font-serif font-bold">
+                  <div className={`h-10 w-10 rounded-full font-serif font-bold flex items-center justify-center ${isLight ? 'bg-[#5B0B1F]/10 border-2 border-[#5B0B1F]/35 text-[#5B0B1F]' : 'bg-[#D4AF37]/15 border border-[#D4AF37]/45 text-[#D4AF37]'}`}>
                     {name[0]}
                   </div>
                   <div>
-                    <div className="font-serif text-[#F8F5F0]" style={{ fontWeight: 500 }}>{name}</div>
-                    <div className="text-xs text-[#C8BED6]/70">{city}</div>
+                    <div className={`font-serif text-base ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>{name}</div>
+                    <div className={`text-xs ${T.textMuted}`}>{city}</div>
                   </div>
                 </div>
               </div>
@@ -741,19 +868,19 @@ export default function CourseLanding() {
       </section>
 
       {/* ===== FOR WHOM ===== */}
-      <section className="px-4 sm:px-6 py-14">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${T.bg}`}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">IS THIS FOR YOU?</div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
-              This workshop is for you if…
+            <div className={`font-mono text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>IS THIS FOR YOU?</div>
+            <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl ${T.h2Color}`} style={{ fontWeight: 700 }}>
+              This masterclass is for you if…
             </h2>
           </div>
           <ul className="grid sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
             {course.for_whom.map((it, i) => (
-              <li key={i} className="flex items-start gap-3 glass-card p-5">
-                <CheckCircle2 size={20} className="text-[#7ED99B] shrink-0 mt-0.5" />
-                <span className="text-[15px] sm:text-base text-[#F8F5F0] font-light leading-relaxed">{it}</span>
+              <li key={i} className={`flex items-start gap-3 p-5 rounded-2xl shadow-sm ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'glass-card'}`}>
+                <CheckCircle2 size={22} className={isLight ? "text-[#1F4F2A] shrink-0 mt-0.5" : "text-[#7ED99B] shrink-0 mt-0.5"} />
+                <span className={`text-base sm:text-lg font-normal leading-[1.55] ${isLight ? 'text-[#2A1A2C]' : 'text-[#F8F5F0]'}`}>{it}</span>
               </li>
             ))}
           </ul>
@@ -761,81 +888,88 @@ export default function CourseLanding() {
       </section>
 
       {/* ===== FAQ ===== */}
-      <section className="px-4 sm:px-6 py-14 bg-[#0F0518]/80 border-y border-[#D4AF37]/15">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${T.sectionAltBg} border-y ${T.border}`}>
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-10">
-            <div className="font-mono text-[11px] uppercase tracking-[0.22em] text-[#F3D060] mb-2">FAQ</div>
-            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#F8F5F0]" style={{ fontWeight: 500 }}>
+            <div className={`font-mono text-xs uppercase tracking-[0.22em] mb-2 ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>FAQ</div>
+            <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl ${T.h2Color}`} style={{ fontWeight: 700 }}>
               Frequently Asked Questions
             </h2>
           </div>
-          <div className="rounded-2xl border border-[#D4AF37]/25 bg-[#1A0B2E]/40 px-5 sm:px-7">
+          <div className={`rounded-2xl border-2 px-5 sm:px-7 shadow-md ${isLight ? 'bg-white border-[#5B0B1F]/25' : 'border-[#D4AF37]/25 bg-[#1A0B2E]/40'}`}>
             {course.faqs.map(([q, a], i) => (
-              <FaqItem key={i} q={q} a={a} i={i} />
+              <FaqItem key={i} q={q} a={a} i={i} theme={course.theme} />
             ))}
           </div>
         </div>
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="px-4 sm:px-6 py-14">
+      <section className={`px-4 sm:px-6 py-14 sm:py-16 ${T.bg}`}>
         <div className="max-w-3xl mx-auto text-center">
-          <div className="rounded-3xl p-8 sm:p-12 border-2"
-               style={{
-                 borderColor: "rgba(212,175,55,0.55)",
-                 background: "linear-gradient(135deg, rgba(91,11,31,0.85) 0%, rgba(26,11,46,0.95) 100%)"
-               }}>
-            <Sparkles size={28} className="text-[#F3D060] mx-auto mb-4" />
-            <h2 className="font-serif text-3xl sm:text-4xl text-[#F8F5F0] leading-tight" style={{ fontWeight: 500 }}>
-              Your life is too important to leave to chance.
+          <div className="rounded-3xl p-8 sm:p-12 border-2 shadow-2xl"
+               style={T.finalCtaStyle}>
+            <Sparkles size={32} className={isLight ? "text-[#5B0B1F] mx-auto mb-4" : "text-[#F3D060] mx-auto mb-4"} />
+            <h2 className={`font-serif text-3xl sm:text-4xl md:text-5xl leading-tight ${T.h2Color}`} style={{ fontWeight: 700 }}>
+              {course.free
+                ? "Don't keep guessing whether your number is hurting you."
+                : "Your life is too important to leave to chance."}
             </h2>
-            <p className="mt-3 text-[#C8BED6] font-light">
-              Take 2 days, learn the system, and start making informed choices about your name,
-              mobile, business and family.
+            <p className={`mt-4 text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-normal leading-[1.55]`}>
+              {course.free
+                ? "Spend one evening with Newalkkar Saandiip ji — and walk away knowing exactly what your mobile number is doing for or against your life."
+                : "Take 2 days, learn the system, and start making informed choices about your name, mobile, business and family."}
             </p>
-            <div className="mt-7 flex items-center justify-center gap-3">
-              <span className="text-3xl sm:text-4xl font-bold text-[#F3D060]">₹{course.price}</span>
-              <span className="text-xl text-[#C8BED6] line-through">₹{course.original_price}</span>
-            </div>
+            {course.free ? (
+              <div className="mt-7 flex items-center justify-center gap-3">
+                <span className="text-5xl sm:text-6xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }}>FREE</span>
+                <span className={`text-xl ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
+              </div>
+            ) : (
+              <div className="mt-7 flex items-center justify-center gap-3">
+                <span className={`text-4xl sm:text-5xl font-bold ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`}>₹{course.price}</span>
+                <span className={`text-xl ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
+              </div>
+            )}
             <a
               href="#register"
               onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
               data-testid="final-cta"
-              className="inline-flex items-center gap-3 mt-6 px-8 py-4 rounded-full text-white font-bold text-base sm:text-lg shadow-xl"
+              className="inline-flex items-center gap-3 mt-7 px-8 py-4 sm:px-10 sm:py-5 rounded-full text-white font-bold text-base sm:text-xl shadow-xl"
               style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
             >
-              {course.cta} <ArrowRight size={18} />
+              {course.cta} <ArrowRight size={20} />
             </a>
-            <div className="mt-4 text-xs text-[#C8BED6]/70 uppercase tracking-wider">
-              ⏳ Offer expires in <span className="text-[#F3D060] font-mono">{time}</span>
+            <div className={`mt-4 text-xs sm:text-sm uppercase tracking-wider ${isLight ? 'text-[#5B0B1F]/80' : 'text-[#C8BED6]/70'}`}>
+              ⏳ Offer expires in <span className={`font-mono ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`}>{time}</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="px-4 sm:px-6 py-8 bg-[#0F0518] border-t border-[#D4AF37]/15">
+      <footer className={`px-4 sm:px-6 py-8 ${isLight ? 'bg-[#F5EAD8]/60 border-t-2 border-[#5B0B1F]/15' : 'bg-[#0F0518] border-t border-[#D4AF37]/15'}`}>
         <div className="max-w-6xl mx-auto text-center">
-          <div className="font-serif text-base text-[#F3D060]" style={{ fontWeight: 500 }}>Newalkkar Saandiip</div>
-          <div className="mt-1 text-xs text-[#C8BED6]/70">
+          <div className={`font-serif text-lg ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>Newalkkar Saandiip</div>
+          <div className={`mt-1 text-sm ${T.textMuted}`}>
             Numerologist · Vaastu Consultant · Life Coach · +91 99290 59153 · newalkkarsaandiip.in
           </div>
-          <div className="mt-3 text-[10px] text-[#C8BED6]/45">
+          <div className={`mt-3 text-[11px] ${isLight ? 'text-[#6B5567]/65' : 'text-[#C8BED6]/45'}`}>
             © {new Date().getFullYear()} Newalkkar Saandiip. All rights reserved.
           </div>
         </div>
       </footer>
 
       {/* Sticky mobile CTA */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-[#0F0518]/95 border-t border-[#D4AF37]/30 backdrop-blur">
+      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur border-t ${isLight ? 'bg-white/95 border-[#5B0B1F]/30' : 'bg-[#0F0518]/95 border-[#D4AF37]/30'}`}>
         <a
           href="#register"
           onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
-          className="flex items-center justify-center gap-2 w-full py-3 rounded-full text-white font-bold shadow-lg"
+          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full text-white font-bold text-base shadow-lg"
           style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
           data-testid="sticky-cta"
         >
-          🟢 {course.cta_short} — ₹{course.price}
+          {course.free ? "🎁 Join FREE Masterclass" : `🟢 ${course.cta_short} — ₹${course.price}`}
         </a>
       </div>
     </div>
