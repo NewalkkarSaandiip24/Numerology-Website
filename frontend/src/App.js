@@ -31,6 +31,7 @@ const MobileCompatibility = React.lazy(() => import("./pages/MobileCompatibility
 const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const Blogs = React.lazy(() => import("./pages/Blogs"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
+const CourseLanding = React.lazy(() => import("./pages/CourseLanding"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -1248,6 +1249,8 @@ function App() {
             <Route path="/mobile-compatibility" element={<MobileCompatibility />} />
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blogs/:slug" element={<BlogDetail />} />
+            <Route path="/learn/:course" element={<CourseLanding />} />
+            <Route path="/learn" element={<CourseLanding />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </React.Suspense>

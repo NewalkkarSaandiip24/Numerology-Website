@@ -67,6 +67,10 @@ export const publicApi = {
     const { data } = await axios.get(`${API}/blogs/${slug}`);
     return data;
   },
+  submitCourseLead: async (payload) => {
+    const { data } = await axios.post(`${API}/course-leads`, payload);
+    return data;
+  },
 };
 
 export function formatErr(e) {

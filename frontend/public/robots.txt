@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /learn
+Disallow: /_private
 
 Sitemap: https://newalkkarsaandiip.in/sitemap.xml

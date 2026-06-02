@@ -308,6 +308,38 @@ async def delete_blog(blog_id: str, _: str = Depends(require_admin)):
     return {"ok": True}
 
 
+# ============ Course leads (ad landing pages) ============
+class CourseLeadIn(BaseModel):
+    course: str = Field(min_length=1, max_length=60)
+    name: str = Field(min_length=2, max_length=120)
+    email: str = Field(min_length=5, max_length=200)
+    mobile: str = Field(min_length=10, max_length=15)
+
+
+@api_router.post("/course-leads")
+async def add_course_lead(payload: CourseLeadIn):
+    """Public — captures registration form submissions from ad landing pages."""
+    doc = {
+        "id": str(uuid.uuid4()),
+        "course": payload.course.strip().lower(),
+        "name": payload.name.strip(),
+        "email": payload.email.strip().lower(),
+        "mobile": "".join(ch for ch in payload.mobile if ch.isdigit())[-10:],
+        "created_at": now_iso(),
+    }
+    await db.course_leads.insert_one(doc.copy())
+    return {"ok": True, "id": doc["id"]}
+
+
+@api_router.get("/admin/course-leads")
+async def list_course_leads(_: str = Depends(require_admin), course: Optional[str] = None):
+    q = {}
+    if course:
+        q["course"] = course.lower()
+    docs = await db.course_leads.find(q, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return docs
+
+
 # ============ Wire ============
 app.include_router(api_router)
 app.add_middleware(
