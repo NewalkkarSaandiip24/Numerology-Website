@@ -14,8 +14,44 @@
     --border-gold: rgba(212, 175, 55, 0.2);
 }
 
-/* Nav link gold underline animation */
-.nav-link-underline {
+/* ===== CTA shake/pulse animation for high-conversion buttons ===== */
+.cta-shake {
+    animation: ctaShake 1.6s infinite cubic-bezier(.36,.07,.19,.97);
+    transform-origin: center;
+    will-change: transform;
+}
+.cta-shake:hover {
+    animation: none;
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+@keyframes ctaShake {
+    0%, 100%   { transform: translateX(0) scale(1); }
+    8%         { transform: translateX(-2px) scale(1.02); }
+    16%        { transform: translateX(2px) scale(1.02); }
+    24%        { transform: translateX(-2px) scale(1.04); }
+    32%        { transform: translateX(2px) scale(1.04); }
+    40%        { transform: translateX(-1px) scale(1.02); }
+    48%        { transform: translateX(1px) scale(1.02); }
+    56%, 100%  { transform: translateX(0) scale(1); }
+}
+
+/* ===== Hide third-party "Made with Emergent" badge on course landing pages ===== */
+/* The platform injects #emergent-badge via emergent-main.js — hide it ONLY on /learn/* via a body[data-emergent-hide] class set per route */
+body[data-emergent-hide="1"] #emergent-badge,
+body[data-emergent-hide="1"] a[href*="emergent.sh" i] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+/* Belt-and-braces: also hide on smaller screens via CSS only */
+@media (max-width: 900px) {
+    #emergent-badge { display: none !important; }
+}
+
+
+/* Nav link gold underline animation */.nav-link-underline {
     position: relative;
     padding-bottom: 4px;
     letter-spacing: 0.01em;

@@ -225,6 +225,7 @@ const COURSES = {
     label: "Mobile Numerology",
     theme: "light",
     free: true,
+    cta_url: "https://chat.whatsapp.com/FagjXs3exRH8sgPp1PkHJ7",
     hero_kicker: "Free Live Masterclass — Limited Seats",
     hero_h1: "Your Mobile Number Is Silently Blocking Your Success — And You're Carrying It With You Every Single Day.",
     hero_sub: "The number on your SIM is vibrating into every call, every transaction, every relationship. If it carries even ONE wrong pair — your money, health and peace are leaking without you knowing. In this free 1-day masterclass, learn exactly how to read it before it costs you another year.",
@@ -237,12 +238,13 @@ const COURSES = {
     time: "9:00 PM IST",
     platform: "Live On Zoom",
     pains: [
-      "You earn well — but money mysteriously slips away every month.",
-      "Career growth slowed down right after you got that SIM.",
-      "Marriage friction, sleep issues, restless mind — all started silently.",
-      "Health going down — joint pain, BP, headaches without medical reason.",
-      "Family member's number — you suspect dosh but cannot prove it.",
-      "You've heard 'mobile number matters' but nobody explained how to verify yours.",
+      "Sudden financial losses, mounting loans or unexpected legal notices.",
+      "Spouse / life-partner health going downhill, marriage friction at home.",
+      "Repeated government, job or career obstacles — promotion stuck for years.",
+      "Depression, mood swings, restless mind, self-destructive thoughts or addictions.",
+      "Joint pain, muscle / knee / back / neck pain — no medical reason found.",
+      "Skin diseases, urinary, kidney or prostate issues — quietly getting worse.",
+      "Overthinking, decision paralysis, sleepless nights, hidden anxiety.",
     ],
     why_blocks: [
       { icon: AlertTriangle, h: "Your Number May Hold A 'Killer' Pair", t: "Pairs like 14, 27, 48 silently trigger loans, surgeries, joint pain and financial losses. One pair in your last 6 digits is enough." },
@@ -370,7 +372,7 @@ function FaqItem({ q, a, i, theme }) {
 }
 
 /* ===== Registration form ===== */
-function RegisterForm({ course, theme, onSuccess }) {
+function RegisterForm({ course, theme, countdown, onSuccess }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -388,13 +390,19 @@ function RegisterForm({ course, theme, onSuccess }) {
     setBusy(true);
     try {
       try { await publicApi.submitCourseLead({ course: course.slug, name, email, mobile: m }); } catch {}
-      const intro = course.free
-        ? `I'd like to claim my FREE seat for the ${course.label} Masterclass`
-        : `I would like to register for the ${course.label} workshop`;
-      const msg = encodeURIComponent(
-        `Namaste Newalkkar Saandiip ji,%0A%0A${intro}.%0A%0AName: ${name}%0AEmail: ${email}%0AMobile: ${m}%0A%0AKindly share the joining details.`
-      );
-      window.open(`https://wa.me/919929059153?text=${msg}`, "_blank", "noopener");
+
+      // If the course has a custom CTA URL (e.g. WhatsApp group invite), send them there
+      if (course.cta_url) {
+        window.open(course.cta_url, "_blank", "noopener");
+      } else {
+        const intro = course.free
+          ? `I'd like to claim my FREE seat for the ${course.label} Masterclass`
+          : `I would like to register for the ${course.label} workshop`;
+        const msg = encodeURIComponent(
+          `Namaste Newalkkar Saandiip ji,%0A%0A${intro}.%0A%0AName: ${name}%0AEmail: ${email}%0AMobile: ${m}%0A%0AKindly share the joining details.`
+        );
+        window.open(`https://wa.me/919929059153?text=${msg}`, "_blank", "noopener");
+      }
       onSuccess && onSuccess({ name, email, mobile: m });
     } catch (e) {
       setErr(formatErr(e));
@@ -421,16 +429,21 @@ function RegisterForm({ course, theme, onSuccess }) {
         type="submit"
         disabled={busy}
         data-testid="course-form-submit"
-        className="w-full mt-2 px-5 py-4 sm:py-5 rounded-full text-white font-bold text-base sm:text-xl shadow-lg disabled:opacity-60"
-        style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
+        className={`w-full mt-2 px-5 py-4 sm:py-5 rounded-full text-white font-extrabold text-base sm:text-xl shadow-2xl disabled:opacity-60 ${course.free ? 'cta-shake' : ''}`}
+        style={{
+          background: course.free
+            ? "linear-gradient(135deg, #FF1F3D 0%, #C00020 100%)"
+            : "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+          boxShadow: course.free ? "0 12px 28px -8px rgba(255,31,61,0.55)" : undefined,
+        }}
       >
         {busy ? "Processing…" : (course.free
-          ? `🎁 ${course.cta_short} — 100% FREE`
+          ? `🎁 ${course.cta_short}  ·  Closes in ${countdown}`
           : `🟢 ${course.cta_short} — ₹${course.price}`)}
       </button>
-      <p className={`text-xs sm:text-sm text-center ${theme === "light" ? "text-[#6B5567]" : "text-[#C8BED6]/70"}`}>
+      <p className={`text-xs sm:text-sm text-center font-medium ${theme === "light" ? "text-[#7A1E15]" : "text-[#C8BED6]/70"}`}>
         {course.free
-          ? "⏳ Limited free seats — WhatsApp opens automatically to confirm your seat"
+          ? `⏳ Only a few seats left · Closes in ${countdown}`
           : `⏳ Limited seats — pay ₹${course.price} on WhatsApp after submitting`}
       </p>
     </form>
@@ -454,13 +467,17 @@ export default function CourseLanding() {
     ogImage: "https://newalkkarsaandiip.in/saandiip-namaste.webp",
   });
 
-  // No-index meta — keep ad-only
+  // No-index meta — keep ad-only + hide Emergent badge on this page
   useEffect(() => {
     const m = document.createElement("meta");
     m.name = "robots";
     m.content = "noindex,nofollow";
     document.head.appendChild(m);
-    return () => { document.head.removeChild(m); };
+    document.body.setAttribute("data-emergent-hide", "1");
+    return () => {
+      document.head.removeChild(m);
+      document.body.removeAttribute("data-emergent-hide");
+    };
   }, []);
 
   // ---- THEME tokens ----
@@ -562,7 +579,7 @@ export default function CourseLanding() {
                   Newalkkar Saandiip
                 </div>
                 <div className={`text-[11px] sm:text-xs font-mono uppercase tracking-[0.16em] ${isLight ? 'text-[#5B0B1F]/70' : 'text-[#D4AF37]'}`}>
-                  20+ Yrs · 10k+ Lives · Trusted Across India
+                  Numerologist · Vaastu · Trusted Across India
                 </div>
               </div>
             </div>
@@ -574,7 +591,24 @@ export default function CourseLanding() {
             >
               {course.hero_h1}
             </h1>
-            <p className={`mt-5 text-lg sm:text-xl lg:text-[22px] ${isLight ? 'text-[#3B0413]' : T.textMuted} font-light leading-[1.55] max-w-[58ch]`}>
+
+            {/* Pain bullets (fear-based) — moved ABOVE the sub-headline */}
+            <div className={`mt-7 p-5 sm:p-6 rounded-2xl ${isLight ? 'bg-[#FBE7E5] border-2 border-[#C03A2B]/35' : 'bg-red-900/15 border border-red-400/30'}`}>
+              <div className={`font-mono text-xs uppercase tracking-[0.2em] mb-3 ${isLight ? 'text-[#7A1E15]' : 'text-red-300'}`} style={{ fontWeight: 700 }}>
+                ⚠️ Warning signs your mobile number is hurting you
+              </div>
+              <ul className="space-y-2.5">
+                {course.pains.map((p, i) => (
+                  <li key={i} className={`flex items-start gap-2.5 text-base sm:text-lg ${isLight ? 'text-[#3B0413]' : 'text-[#F8F5F0]'} font-medium leading-[1.5]`}>
+                    <span className={isLight ? "text-[#C03A2B] mt-0.5" : "text-[#F4A742] mt-0.5"}>●</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Sub-headline (moved below the warning box) */}
+            <p className={`mt-7 text-lg sm:text-xl lg:text-[22px] ${isLight ? 'text-[#3B0413]' : T.textMuted} font-light leading-[1.55] max-w-[58ch]`}>
               {course.hero_sub}
             </p>
 
@@ -591,21 +625,6 @@ export default function CourseLanding() {
                   <span className={`text-sm sm:text-base ${T.text} font-medium`}>{label}</span>
                 </div>
               ))}
-            </div>
-
-            {/* Pain bullets (fear-based) */}
-            <div className={`mt-7 p-5 sm:p-6 rounded-2xl ${isLight ? 'bg-[#FBE7E5] border-2 border-[#C03A2B]/35' : 'bg-red-900/15 border border-red-400/30'}`}>
-              <div className={`font-mono text-xs uppercase tracking-[0.2em] mb-3 ${isLight ? 'text-[#7A1E15]' : 'text-red-300'}`} style={{ fontWeight: 700 }}>
-                ⚠️ Warning signs your mobile number is hurting you
-              </div>
-              <ul className="space-y-2.5">
-                {course.pains.map((p, i) => (
-                  <li key={i} className={`flex items-start gap-2.5 text-base sm:text-lg ${isLight ? 'text-[#3B0413]' : 'text-[#F8F5F0]'} font-medium leading-[1.5]`}>
-                    <span className={isLight ? "text-[#C03A2B] mt-0.5" : "text-[#F4A742] mt-0.5"}>●</span>
-                    <span>{p}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
 
@@ -629,14 +648,11 @@ export default function CourseLanding() {
                   {" "}Masterclass
                 </div>
                 {course.free ? (
-                  <div className="mt-4 flex items-center justify-center gap-3">
-                    <span className="text-4xl sm:text-5xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }} data-testid="course-price">FREE</span>
-                    <div className="flex flex-col items-start">
-                      <span className={`text-base ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-[#7ED99B]/25 border border-[#7ED99B]/55 text-[#1F4F2A] font-bold">
-                        for 1st 200 only
-                      </span>
-                    </div>
+                  <div className="mt-4 flex flex-col items-center gap-2">
+                    <span className="text-5xl sm:text-6xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }} data-testid="course-price">FREE</span>
+                    <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-wider bg-[#FFE5E5] border-2 border-[#C03A2B]/55 text-[#7A1E15] font-bold">
+                      🎁 With Hidden Free Bonuses · Only 200 Seats
+                    </span>
                   </div>
                 ) : (
                   <div className="mt-3 flex items-center justify-center gap-3">
@@ -659,7 +675,7 @@ export default function CourseLanding() {
                   </p>
                 </div>
               ) : (
-                <RegisterForm course={course} theme={course.theme} onSuccess={() => setSubmitted(true)} />
+                <RegisterForm course={course} theme={course.theme} countdown={time} onSuccess={() => setSubmitted(true)} />
               )}
 
               <div className={`mt-5 flex items-center justify-center gap-2 text-xs sm:text-sm ${isLight ? 'text-[#5B0B1F]' : 'text-[#C8BED6]/70'}`}>
@@ -778,13 +794,19 @@ export default function CourseLanding() {
             <a
               href="#register"
               onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
-              className="inline-flex items-center gap-3 px-7 py-4 sm:px-8 sm:py-5 rounded-full text-white font-bold text-base sm:text-lg shadow-xl"
-              style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
+              className={`inline-flex items-center gap-3 px-7 py-4 sm:px-8 sm:py-5 rounded-full text-white font-extrabold text-base sm:text-lg shadow-2xl ${course.free ? 'cta-shake' : ''}`}
+              style={{
+                background: course.free
+                  ? "linear-gradient(135deg, #FF1F3D 0%, #C00020 100%)"
+                  : "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+              }}
               data-testid="cta-modules"
             >
               {course.cta} <ArrowRight size={18} />
             </a>
-            <div className={`mt-3 text-xs sm:text-sm uppercase tracking-wider ${isLight ? 'text-[#5B0B1F]/80' : 'text-[#C8BED6]/70'}`}>Hurry up — seats are filling fast</div>
+            <div className={`mt-3 text-sm uppercase tracking-wider font-bold ${isLight ? 'text-[#7A1E15]' : 'text-[#C8BED6]/70'}`}>
+              ⏳ Seats closing in <span className={`font-mono ${isLight ? 'text-[#C03A2B]' : 'text-[#F3D060]'}`}>{time}</span>
+            </div>
           </div>
         </div>
       </section>
@@ -921,9 +943,11 @@ export default function CourseLanding() {
                 : "Take 2 days, learn the system, and start making informed choices about your name, mobile, business and family."}
             </p>
             {course.free ? (
-              <div className="mt-7 flex items-center justify-center gap-3">
-                <span className="text-5xl sm:text-6xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }}>FREE</span>
-                <span className={`text-xl ${isLight ? 'text-[#6B5567]' : 'text-[#C8BED6]'} line-through`}>₹{course.original_price}</span>
+              <div className="mt-7 flex flex-col items-center gap-3">
+                <span className="text-5xl sm:text-7xl font-black" style={{ color: isLight ? "#1F4F2A" : "#7ED99B", fontFamily: "Times, serif" }}>FREE</span>
+                <span className={`text-sm font-bold uppercase tracking-wider px-3 py-1 rounded-full ${isLight ? 'bg-[#FFE5E5] border-2 border-[#C03A2B]/55 text-[#7A1E15]' : 'bg-red-900/30 border border-red-400/40 text-red-200'}`}>
+                  + 3 Hidden Bonuses Inside · Only 200 Seats
+                </span>
               </div>
             ) : (
               <div className="mt-7 flex items-center justify-center gap-3">
@@ -935,13 +959,18 @@ export default function CourseLanding() {
               href="#register"
               onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
               data-testid="final-cta"
-              className="inline-flex items-center gap-3 mt-7 px-8 py-4 sm:px-10 sm:py-5 rounded-full text-white font-bold text-base sm:text-xl shadow-xl"
-              style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
+              className={`inline-flex items-center gap-3 mt-7 px-8 py-4 sm:px-10 sm:py-5 rounded-full text-white font-extrabold text-base sm:text-xl shadow-2xl ${course.free ? 'cta-shake' : ''}`}
+              style={{
+                background: course.free
+                  ? "linear-gradient(135deg, #FF1F3D 0%, #C00020 100%)"
+                  : "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                boxShadow: course.free ? "0 14px 32px -10px rgba(255,31,61,0.65)" : undefined,
+              }}
             >
               {course.cta} <ArrowRight size={20} />
             </a>
-            <div className={`mt-4 text-xs sm:text-sm uppercase tracking-wider ${isLight ? 'text-[#5B0B1F]/80' : 'text-[#C8BED6]/70'}`}>
-              ⏳ Offer expires in <span className={`font-mono ${isLight ? 'text-[#5B0B1F]' : 'text-[#F3D060]'}`}>{time}</span>
+            <div className={`mt-4 text-xs sm:text-sm uppercase tracking-wider ${isLight ? 'text-[#7A1E15]' : 'text-[#C8BED6]/70'} font-bold`}>
+              ⏳ Seats closing in <span className={`font-mono text-base ${isLight ? 'text-[#C03A2B]' : 'text-[#F3D060]'}`}>{time}</span>
             </div>
           </div>
         </div>
@@ -961,15 +990,22 @@ export default function CourseLanding() {
       </footer>
 
       {/* Sticky mobile CTA */}
-      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-40 p-3 backdrop-blur border-t ${isLight ? 'bg-white/95 border-[#5B0B1F]/30' : 'bg-[#0F0518]/95 border-[#D4AF37]/30'}`}>
+      <div className={`lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 backdrop-blur border-t ${isLight ? 'bg-white/95 border-[#5B0B1F]/30' : 'bg-[#0F0518]/95 border-[#D4AF37]/30'}`}>
         <a
           href="#register"
           onClick={(e) => { e.preventDefault(); document.querySelector('[data-testid="course-form"]')?.scrollIntoView({behavior:"smooth", block:"center"}); }}
-          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-full text-white font-bold text-base shadow-lg"
-          style={{ background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)" }}
+          className={`flex items-center justify-center gap-2 w-full py-4 rounded-full text-white font-extrabold text-base shadow-2xl ${course.free ? 'cta-shake' : ''}`}
+          style={{
+            background: course.free
+              ? "linear-gradient(135deg, #FF1F3D 0%, #C00020 100%)"
+              : "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+            boxShadow: course.free ? "0 -6px 24px -6px rgba(255,31,61,0.55)" : undefined,
+          }}
           data-testid="sticky-cta"
         >
-          {course.free ? "🎁 Join FREE Masterclass" : `🟢 ${course.cta_short} — ₹${course.price}`}
+          {course.free
+            ? `🎁 Join FREE Masterclass · ${time}`
+            : `🟢 ${course.cta_short} — ₹${course.price}`}
         </a>
       </div>
     </div>
