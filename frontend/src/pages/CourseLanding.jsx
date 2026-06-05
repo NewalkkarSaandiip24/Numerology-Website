@@ -612,12 +612,10 @@ export default function CourseLanding() {
               {course.hero_sub}
             </p>
 
-            {/* Date / lang / time / platform pills */}
-            <div className="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {/* Date / lang / time / platform pills — only Language & Platform shown */}
+            <div className="mt-7 grid grid-cols-2 gap-3 max-w-md">
               {[
-                [Calendar, course.date],
                 [Languages, course.language],
-                [Clock, course.time],
                 [Video, course.platform],
               ].map(([Icon, label], i) => (
                 <div key={i} className={`flex items-center gap-2 px-3 py-3 rounded-lg ${isLight ? 'bg-white border-2 border-[#5B0B1F]/15' : 'bg-[#1A0B2E]/60 border border-[#D4AF37]/25'}`}>
@@ -625,6 +623,31 @@ export default function CourseLanding() {
                   <span className={`text-sm sm:text-base ${T.text} font-medium`}>{label}</span>
                 </div>
               ))}
+            </div>
+
+            {/* Additional Bonus callout — drives FOMO + extra value */}
+            <div className={`mt-6 relative overflow-hidden rounded-2xl p-5 sm:p-6 border-2 ${isLight ? 'bg-gradient-to-br from-[#FFF7E6] to-[#FFE5A8] border-[#B8881A]' : 'bg-gradient-to-br from-[#5B0B1F]/40 to-[#D4AF37]/15 border-[#D4AF37]/55'} shadow-lg`}>
+              <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-[#D4AF37]/25 blur-2xl pointer-events-none" />
+              <div className="flex items-start gap-3">
+                <span className="text-3xl sm:text-4xl shrink-0">🎁</span>
+                <div>
+                  <div className={`font-mono text-[11px] sm:text-xs uppercase tracking-[0.22em] mb-1 ${isLight ? 'text-[#7A1E15]' : 'text-[#F3D060]'}`} style={{ fontWeight: 700 }}>
+                    SPECIAL BONUS · UNLOCKED AT THE END
+                  </div>
+                  <div className={`font-serif text-lg sm:text-2xl leading-tight ${isLight ? 'text-[#3B0413]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 700 }}>
+                    Get 100% Trial-&-Tested{" "}
+                    <span className={isLight ? "text-[#B8881A]" : "text-[#F3D060]"}>Vaastu &amp; Numerology Remedies</span>
+                    {" "}+ Powerful{" "}
+                    <span className={isLight ? "text-[#B8881A]" : "text-[#F3D060]"}>Switch-Word</span>
+                    {" "}Combinations
+                  </div>
+                  <p className={`mt-2 text-sm sm:text-base ${isLight ? 'text-[#3B0413]' : 'text-[#C8BED6]'} font-medium leading-snug`}>
+                    Saandiip ji will personally share simple, proven remedies and instant switch-word activators
+                    you can apply <em>the same evening</em> — for money, health, marriage and peace.
+                    Only attendees who stay till the end will receive this.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
