@@ -32,6 +32,7 @@ const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const Blogs = React.lazy(() => import("./pages/Blogs"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
 const CourseLanding = React.lazy(() => import("./pages/CourseLanding"));
+const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -1162,7 +1163,13 @@ const Footer = () => {
         <div className="gold-divider mt-14 mb-6" />
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-[#C8BED6]/50 font-mono uppercase tracking-[0.24em]">
           <span>© {new Date().getFullYear()} Newalkkar Saandiip</span>
-          <span>Crafted with devotion</span>
+          <div className="flex items-center gap-5">
+            <Link to="/privacy-policy" data-testid="footer-privacy-link" className="hover:text-[#D4AF37] transition-colors">
+              Privacy Policy
+            </Link>
+            <span className="text-[#C8BED6]/35">·</span>
+            <span>Crafted with devotion</span>
+          </div>
         </div>
       </div>
     </footer>
@@ -1251,6 +1258,7 @@ function App() {
             <Route path="/blogs/:slug" element={<BlogDetail />} />
             <Route path="/learn/:course" element={<CourseLanding />} />
             <Route path="/learn" element={<CourseLanding />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </React.Suspense>
