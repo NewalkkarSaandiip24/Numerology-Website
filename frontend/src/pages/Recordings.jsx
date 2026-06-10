@@ -291,7 +291,7 @@ function Library({ data, activeSection, setActiveSection, onRefresh, loading }) 
 
       {/* Videos grid */}
       {current && current.videos?.length > 0 ? (
-        <div className="grid md:grid-cols-2 gap-5 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 lg:gap-6">
           {current.videos.map((v) => (
             <VideoCard key={v.id} video={v} />
           ))}
@@ -320,11 +320,13 @@ function VideoCard({ video }) {
     if (req) req.call(el);
   };
 
-  // Visible region of the iframe — everything OUTSIDE this polygon is clipped away.
-  // Keep ONLY the top 16-78% (centre video). Bottom 22% is entirely covered by the
-  // continuous violet strip so YouTube branding, share, scrubber etc. cannot show.
+  // Clip path: hide ONLY the YouTube branding regions —
+  //   • Top 16%  → title bar + channel logo + Share / Watch-Later icons
+  //   • Bottom-LEFT small corner (0-22% × 78-92%)  → Share / Watch Later thumbnail overlay
+  //   • Bottom-RIGHT corner (40-100% × 78-92%)    → "Watch on YouTube" + YouTube logo
+  //   • Scrubber strip (full width × 92-100%) stays visible so users can seek.
   const videoClipPath =
-    "polygon(0 16%, 100% 16%, 100% 78%, 0 78%)";
+    "polygon(0 16%, 100% 16%, 100% 78%, 40% 78%, 40% 92%, 100% 92%, 100% 100%, 0 100%, 0 92%, 22% 92%, 22% 78%, 0 78%)";
 
   return (
     <div
@@ -335,7 +337,7 @@ function VideoCard({ video }) {
       <div
         className={
           isPortrait
-            ? "mx-auto w-full max-w-[360px] sm:max-w-[400px]"
+            ? "mx-auto w-full max-w-[340px] sm:max-w-[400px]"
             : "w-full"
         }
       >
@@ -359,55 +361,68 @@ function VideoCard({ video }) {
           style={{ clipPath: videoClipPath, WebkitClipPath: videoClipPath }}
         />
 
-        {/* Decorative top frame — sits where the YouTube title bar was clipped */}
+        {/* Top frame — covers the YouTube title bar + channel logo + share */}
         <div
           aria-hidden="true"
-          className="absolute top-0 inset-x-0 h-[16%] z-10 pointer-events-auto"
+          className="absolute top-0 inset-x-0 h-[16%] z-10 pointer-events-auto flex items-center justify-between px-3 sm:px-4"
           style={{
             background:
               "linear-gradient(180deg, #0F0518 0%, #19082b 70%, rgba(212,175,55,0.18) 100%)",
             borderBottom: "1px solid rgba(212,175,55,0.35)",
           }}
-        />
-        {/* Decorative bottom strip — one continuous violet band that covers the
-            entire bottom YouTube control bar (share, scrubber, "Watch on YouTube",
-            "More videos", YouTube logo). */}
+        >
+          <span className="font-mono text-[8px] sm:text-[10px] uppercase tracking-[0.22em] text-[#F3D060]/85 truncate">
+            Private · Newalkkar Saandiip
+          </span>
+        </div>
+
+        {/* Bottom-LEFT small frame — covers Share / Watch Later thumbnail overlay */}
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-[22%] z-10 pointer-events-auto"
+          className="absolute z-10 pointer-events-auto"
           style={{
+            left: 0,
+            top: "78%",
+            bottom: "8%",
+            width: "22%",
             background:
-              "linear-gradient(180deg, #19082b 0%, #0F0518 55%, #0A0212 100%)",
-            borderTop: "1px solid rgba(212,175,55,0.32)",
-            boxShadow: "inset 0 1px 0 rgba(212,175,55,0.18)",
+              "linear-gradient(135deg, #0F0518 0%, #1A0B2E 60%, rgba(212,175,55,0.10) 100%)",
+            borderRight: "1px solid rgba(212,175,55,0.22)",
+            borderTop: "1px solid rgba(212,175,55,0.22)",
+          }}
+        />
+
+        {/* Bottom-RIGHT frame — covers "Watch on YouTube" + YouTube logo. Carries the brand signature. */}
+        <div
+          aria-hidden="true"
+          className="absolute z-10 pointer-events-auto flex items-center justify-end pr-2 sm:pr-3 gap-1.5"
+          style={{
+            right: 0,
+            top: "78%",
+            bottom: "8%",
+            width: "60%",
+            background:
+              "linear-gradient(225deg, #0F0518 0%, #1A0B2E 60%, rgba(212,175,55,0.14) 100%)",
+            borderLeft: "1px solid rgba(212,175,55,0.22)",
+            borderTop: "1px solid rgba(212,175,55,0.22)",
           }}
         >
-          {/* Brand signature — sits where YouTube's logo used to be */}
-          <div className="absolute bottom-2 right-4 flex items-center gap-2">
-            <span className="font-serif italic text-[11px] sm:text-xs text-[#F3D060]/90 tracking-wide">
-              Newalkkar Saandiip
-            </span>
-            <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_6px_#D4AF37]" />
-          </div>
+          <span className="font-serif italic text-[9px] sm:text-[11px] text-[#F3D060]/95 tracking-wide truncate">
+            Newalkkar Saandiip · Private
+          </span>
+          <span className="h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-[#D4AF37] shadow-[0_0_5px_#D4AF37] shrink-0" />
         </div>
 
-        {/* Brand watermark — top-right of the top frame */}
-        <div
-          aria-hidden="true"
-          className="absolute top-2 right-3 z-20 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.22em] text-[#F3D060]/85 pointer-events-none"
-        >
-          Private · Newalkkar Saandiip
-        </div>
-
-        {/* Maximize button — overlays our wrapper so masks stay in fullscreen */}
+        {/* Maximize button — overlays our wrapper so masks stay in fullscreen.
+            On touch devices it's always visible; on desktop it appears on hover. */}
         <button
           type="button"
           onClick={goFullscreen}
           data-testid={`recordings-fullscreen-${video.id}`}
           aria-label="Maximize video"
-          className="absolute top-2 left-3 z-30 h-8 w-8 rounded-full bg-black/55 hover:bg-black/80 backdrop-blur-sm border border-[#D4AF37]/45 text-[#F3D060] flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100"
+          className="absolute top-1.5 right-2 z-30 h-7 w-7 sm:h-8 sm:w-8 rounded-full bg-black/65 hover:bg-black/85 active:bg-black/90 backdrop-blur-sm border border-[#D4AF37]/55 text-[#F3D060] flex items-center justify-center transition-opacity opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:focus:opacity-100"
         >
-          <Maximize2 size={14} strokeWidth={2} />
+          <Maximize2 size={13} strokeWidth={2} />
         </button>
       </div>
       </div>
