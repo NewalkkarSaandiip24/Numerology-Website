@@ -624,6 +624,7 @@ function RecordingsManager() {
     title: "",
     youtube_url: "",
     description: "",
+    orientation: "landscape",
   });
   const [editingVideo, setEditingVideo] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -713,6 +714,7 @@ function RecordingsManager() {
       title: "",
       youtube_url: "",
       description: "",
+      orientation: "landscape",
     });
     setShowVidForm(true);
   };
@@ -724,6 +726,7 @@ function RecordingsManager() {
       title: v.title,
       youtube_url: `https://youtu.be/${v.youtube_id}`,
       description: v.description || "",
+      orientation: v.orientation || "landscape",
     });
     setShowVidForm(true);
   };
@@ -738,6 +741,7 @@ function RecordingsManager() {
         await adminApi.updateVideo(editingVideo.id, {
           title: vidForm.title.trim(),
           description: vidForm.description.trim(),
+          orientation: vidForm.orientation,
         });
         setShowVidForm(false);
         setEditingVideo(null);
@@ -760,6 +764,7 @@ function RecordingsManager() {
         title: vidForm.title.trim(),
         youtube_url: vidForm.youtube_url.trim(),
         description: vidForm.description.trim(),
+        orientation: vidForm.orientation,
       });
       setShowVidForm(false);
       await refresh();
@@ -958,6 +963,41 @@ function RecordingsManager() {
               }
               maxLength={2000}
             />
+          </div>
+
+          <div className="mt-4">
+            <label className="v-label block mb-2">Video Orientation</label>
+            <div className="flex flex-wrap gap-3">
+              {[
+                { value: "landscape", label: "Landscape · 16 : 9", hint: "Computer / Webcam / Zoom" },
+                { value: "portrait", label: "Portrait · 9 : 16", hint: "Phone / Reels / Shorts" },
+              ].map((opt) => {
+                const active = vidForm.orientation === opt.value;
+                return (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setVidForm({ ...vidForm, orientation: opt.value })}
+                    data-testid={`rec-video-orientation-${opt.value}`}
+                    className={`flex-1 min-w-[160px] text-left px-4 py-3 rounded-lg border transition-colors ${
+                      active
+                        ? "border-[#D4AF37] bg-[#D4AF37]/10 text-[#F3D060]"
+                        : "border-[#D4AF37]/25 hover:border-[#D4AF37]/55 text-[#C8BED6]"
+                    }`}
+                  >
+                    <div className="font-mono text-[11px] uppercase tracking-[0.22em]">
+                      {opt.label}
+                    </div>
+                    <div className="text-[11px] text-[#C8BED6]/65 mt-0.5">
+                      {opt.hint}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+            <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
+              Pick the shape your recording was filmed in — the player will be sized to fill the entire frame with no black bars.
+            </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-5">

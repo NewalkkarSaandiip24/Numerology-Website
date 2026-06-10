@@ -308,6 +308,7 @@ function Library({ data, activeSection, setActiveSection, onRefresh, loading }) 
 function VideoCard({ video }) {
   const wrapperRef = React.useRef(null);
   const blockContext = (e) => e.preventDefault();
+  const isPortrait = video.orientation === "portrait";
 
   const goFullscreen = () => {
     const el = wrapperRef.current;
@@ -332,13 +333,22 @@ function VideoCard({ video }) {
       onContextMenu={blockContext}
     >
       <div
-        ref={wrapperRef}
-        className="aspect-video relative select-none group fs-target"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, #1A0B2E 0%, #0A0212 100%)",
-        }}
+        className={
+          isPortrait
+            ? "mx-auto w-full max-w-[360px] sm:max-w-[400px]"
+            : "w-full"
+        }
       >
+        <div
+          ref={wrapperRef}
+          className={`${
+            isPortrait ? "aspect-[9/16]" : "aspect-video"
+          } relative select-none group fs-target`}
+          style={{
+            background:
+              "radial-gradient(ellipse at center, #1A0B2E 0%, #0A0212 100%)",
+          }}
+        >
         <iframe
           src={`https://www.youtube.com/embed/${video.youtube_id}?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&fs=0&disablekb=1`}
           title={video.title}
@@ -399,6 +409,7 @@ function VideoCard({ video }) {
         >
           <Maximize2 size={14} strokeWidth={2} />
         </button>
+      </div>
       </div>
       <div className="p-4 sm:p-5">
         <div className="flex items-start gap-2 mb-1">

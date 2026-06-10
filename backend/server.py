@@ -371,11 +371,14 @@ class VideoIn(BaseModel):
     title: str = Field(min_length=2, max_length=200)
     youtube_url: str = Field(min_length=10, max_length=400)
     description: Optional[str] = Field(default=None, max_length=2000)
+    # "landscape" (16:9, default) or "portrait" (9:16 for vertical phone recordings)
+    orientation: Optional[str] = "landscape"
 
 
 class VideoUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
+    orientation: Optional[str] = None
 
 
 @api_router.get("/admin/recordings/sections")
@@ -434,6 +437,7 @@ async def create_video(payload: VideoIn, _: str = Depends(require_admin)):
         "title": payload.title.strip(),
         "youtube_id": yt_id,
         "description": (payload.description or "").strip(),
+        "orientation": payload.orientation if payload.orientation in ("landscape", "portrait") else "landscape",
         "uploaded_at": now_iso(),
     }
     await db.videos.insert_one(doc.copy())
@@ -445,6 +449,8 @@ async def update_video(video_id: str, payload: VideoUpdate, _: str = Depends(req
     updates = {}
     if payload.title is not None: updates["title"] = payload.title.strip()
     if payload.description is not None: updates["description"] = payload.description.strip()
+    if payload.orientation is not None and payload.orientation in ("landscape", "portrait"):
+        updates["orientation"] = payload.orientation
     if not updates:
         raise HTTPException(status_code=400, detail="Nothing to update.")
     res = await db.videos.update_one({"id": video_id}, {"$set": updates})
@@ -504,7 +510,8 @@ async def access_recordings(payload: RecordingsGate):
     # Any active authorized mobile (same list used by Mobile Compatibility) gets full access.
     by_section: dict = {}
     for v in videos:
-        v_out = {k: v.get(k) for k in ("id", "section_id", "title", "youtube_id", "description", "uploaded_at")}
+        v_out = {k: v.get(k) for k in ("id", "section_id", "title", "youtube_id", "description", "uploaded_at", "orientation")}
+        v_out["orientation"] = v_out.get("orientation") or "landscape"
         by_section.setdefault(v["section_id"], []).append(v_out)
 
     sections_out = []
