@@ -613,15 +613,17 @@ function RecordingsManager() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  // Section form (create OR edit)
   const [showSecForm, setShowSecForm] = useState(false);
-  const [secName, setSecName] = useState("");
+  const [secForm, setSecForm] = useState({ name: "" });
+  const [editingSection, setEditingSection] = useState(null);
+  // Video form
   const [showVidForm, setShowVidForm] = useState(false);
   const [vidForm, setVidForm] = useState({
     section_id: "",
     title: "",
     youtube_url: "",
     description: "",
-    allowed_mobiles: "",
   });
   const [editingVideo, setEditingVideo] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -648,20 +650,44 @@ function RecordingsManager() {
     // eslint-disable-next-line
   }, []);
 
-  const handleAddSection = async (e) => {
+  const openAddSection = () => {
+    setEditingSection(null);
+    setSecForm({ name: "" });
+    setShowSecForm(true);
+  };
+
+  const openEditSection = (s) => {
+    setEditingSection(s);
+    setSecForm({ name: s.name });
+    setShowSecForm(true);
+  };
+
+  const handleSectionSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (secName.trim().length < 2) {
+    if (secForm.name.trim().length < 2) {
       setError("Please enter a section name.");
       return;
     }
+    setSubmitting(true);
     try {
-      await adminApi.createSection({ name: secName.trim() });
-      setSecName("");
+      if (editingSection) {
+        await adminApi.updateSection(editingSection.id, {
+          name: secForm.name.trim(),
+        });
+      } else {
+        await adminApi.createSection({
+          name: secForm.name.trim(),
+        });
+      }
       setShowSecForm(false);
+      setEditingSection(null);
+      setSecForm({ name: "" });
       await refresh();
     } catch (e) {
       setError(formatErr(e));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -687,7 +713,6 @@ function RecordingsManager() {
       title: "",
       youtube_url: "",
       description: "",
-      allowed_mobiles: "",
     });
     setShowVidForm(true);
   };
@@ -699,7 +724,6 @@ function RecordingsManager() {
       title: v.title,
       youtube_url: `https://youtu.be/${v.youtube_id}`,
       description: v.description || "",
-      allowed_mobiles: (v.allowed_mobiles || []).join(", "),
     });
     setShowVidForm(true);
   };
@@ -707,11 +731,6 @@ function RecordingsManager() {
   const handleVidSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    const mobiles = vidForm.allowed_mobiles
-      .split(/[\s,]+/)
-      .map((m) => m.replace(/\D/g, ""))
-      .filter((m) => m.length === 10);
-
     if (!vidForm.title.trim()) return setError("Please enter a video title.");
     if (editingVideo) {
       setSubmitting(true);
@@ -719,7 +738,6 @@ function RecordingsManager() {
         await adminApi.updateVideo(editingVideo.id, {
           title: vidForm.title.trim(),
           description: vidForm.description.trim(),
-          allowed_mobiles: mobiles,
         });
         setShowVidForm(false);
         setEditingVideo(null);
@@ -742,7 +760,6 @@ function RecordingsManager() {
         title: vidForm.title.trim(),
         youtube_url: vidForm.youtube_url.trim(),
         description: vidForm.description.trim(),
-        allowed_mobiles: mobiles,
       });
       setShowVidForm(false);
       await refresh();
@@ -777,21 +794,21 @@ function RecordingsManager() {
             Manage <span className="gold-shimmer">Recorded Sessions</span>
           </h2>
           <p className="mt-2 text-sm text-[#C8BED6] font-light max-w-2xl">
-            Organize unlisted YouTube videos into sections. Leave the &quot;Allowed
-            Mobiles&quot; field empty to let{" "}
-            <span className="text-[#F3D060]">any active authorized client</span> watch,
-            or list specific 10-digit mobile numbers to restrict a video to just those
-            clients.
+            Any client whose mobile is{" "}
+            <span className="text-[#F3D060]">authorized in the table above</span>{" "}
+            (same list used by the Mobile Compatibility checker) can sign in at{" "}
+            <span className="text-[#F8F5F0]">/recordings</span> and watch every video
+            uploaded here. Use sections to organise videos into courses or topics.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
-            onClick={() => setShowSecForm((v) => !v)}
+            onClick={openAddSection}
             data-testid="rec-add-section-btn"
             className="btn-ghost text-sm"
           >
-            <Folder size={16} /> {showSecForm ? "Cancel" : "Add Section"}
+            <Folder size={16} /> Add Section
           </button>
           <button
             type="button"
@@ -807,10 +824,17 @@ function RecordingsManager() {
 
       {showSecForm && (
         <form
-          onSubmit={handleAddSection}
+          onSubmit={handleSectionSubmit}
           data-testid="rec-section-form"
           className="glass-card p-5 sm:p-6 mb-6"
         >
+          <h3
+            className="font-serif text-lg sm:text-xl text-[#F8F5F0] mb-4"
+            style={{ fontWeight: 500 }}
+          >
+            {editingSection ? "Edit Section" : "Create New Section"}
+          </h3>
+
           <label className="v-label block mb-1.5">Section Name</label>
           <div className="flex flex-col sm:flex-row gap-3">
             <input
@@ -818,18 +842,39 @@ function RecordingsManager() {
               className="field-input flex-1"
               data-testid="rec-section-name"
               placeholder="e.g. Mobile Numerology Course"
-              value={secName}
-              onChange={(e) => setSecName(e.target.value)}
+              value={secForm.name}
+              onChange={(e) => setSecForm({ ...secForm, name: e.target.value })}
               maxLength={80}
             />
             <button
               type="submit"
+              disabled={submitting}
               data-testid="rec-section-submit"
-              className="btn-gold"
+              className="btn-gold disabled:opacity-50"
             >
-              <Plus size={16} /> Create
+              <Plus size={16} />
+              {submitting
+                ? "Saving…"
+                : editingSection
+                ? "Update Section"
+                : "Create Section"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowSecForm(false);
+                setEditingSection(null);
+                setSecForm({ name: "" });
+              }}
+              className="btn-ghost"
+            >
+              Cancel
             </button>
           </div>
+          <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
+            Access to recordings is granted via the Authorized Mobile Numbers table at
+            the top of this page — no separate per-section list.
+          </p>
         </form>
       )}
 
@@ -857,6 +902,10 @@ function RecordingsManager() {
                   </option>
                 ))}
               </select>
+              <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
+                Access is set at the section level — see the section&apos;s Allowed
+                Mobiles list.
+              </p>
             </div>
             <div>
               <label className="v-label block mb-1.5">Video Title</label>
@@ -909,25 +958,6 @@ function RecordingsManager() {
               }
               maxLength={2000}
             />
-          </div>
-
-          <div className="mt-4">
-            <label className="v-label block mb-1.5">
-              Allowed Mobile Numbers (optional)
-            </label>
-            <textarea
-              rows={2}
-              className="field-input"
-              data-testid="rec-video-mobiles"
-              placeholder="Leave empty for ALL authorized clients. Or enter 10-digit numbers separated by commas/spaces, e.g. 9929059153, 9829312193"
-              value={vidForm.allowed_mobiles}
-              onChange={(e) =>
-                setVidForm({ ...vidForm, allowed_mobiles: e.target.value })
-              }
-            />
-            <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
-              Numbers listed here must already be authorized in the table above.
-            </p>
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 mt-5">
@@ -984,116 +1014,123 @@ function RecordingsManager() {
       ) : (
         <div className="space-y-6">
           {videosBySection.map((sec) => (
-            <div
-              key={sec.id}
-              data-testid={`rec-section-${sec.slug || sec.id}`}
-              className="glass-card p-5 sm:p-6"
-            >
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-                <div className="flex items-center gap-3 min-w-0">
-                  <Folder
-                    size={18}
-                    className="text-[#D4AF37] shrink-0"
-                    strokeWidth={1.5}
-                  />
-                  <h3
-                    className="font-serif text-lg sm:text-xl text-[#F8F5F0] truncate"
-                    style={{ fontWeight: 500 }}
-                  >
-                    {sec.name}
-                  </h3>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#C8BED6]/60 ml-1">
-                    {sec.videos.length} video{sec.videos.length === 1 ? "" : "s"}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => openAddVideo(sec.id)}
-                    data-testid={`rec-add-video-here-${sec.id}`}
-                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.2em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-1"
-                  >
-                    <Plus size={12} /> Add Video
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDeleteSection(sec.id, sec.name)}
-                    data-testid={`rec-delete-section-${sec.id}`}
-                    className="inline-flex items-center gap-1.5 text-xs text-red-300 hover:text-red-200 transition-colors px-2 py-1 rounded border border-red-400/30 hover:border-red-400/60"
-                  >
-                    <Trash2 size={12} /> Delete
-                  </button>
-                </div>
-              </div>
-
-              {sec.videos.length === 0 ? (
-                <div className="text-center py-6 text-[#C8BED6]/55 text-sm">
-                  No videos in this section yet.
-                </div>
-              ) : (
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {sec.videos.map((v) => (
-                    <div
-                      key={v.id}
-                      data-testid={`rec-video-row-${v.id}`}
-                      className="flex gap-3 p-3 rounded-lg border border-[#D4AF37]/15 bg-[#1A0B2E]/30"
+              <div
+                key={sec.id}
+                data-testid={`rec-section-${sec.slug || sec.id}`}
+                className="glass-card p-5 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <Folder
+                      size={18}
+                      className="text-[#D4AF37] shrink-0"
+                      strokeWidth={1.5}
+                    />
+                    <h3
+                      className="font-serif text-lg sm:text-xl text-[#F8F5F0] truncate"
+                      style={{ fontWeight: 500 }}
                     >
-                      <a
-                        href={`https://youtu.be/${v.youtube_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-24 h-16 shrink-0 rounded-md overflow-hidden bg-black relative group"
+                      {sec.name}
+                    </h3>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#C8BED6]/60">
+                      {sec.videos.length} video
+                      {sec.videos.length === 1 ? "" : "s"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => openEditSection(sec)}
+                      data-testid={`rec-edit-section-${sec.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-1 rounded border border-[#D4AF37]/30 hover:border-[#D4AF37]"
+                    >
+                      <Pencil size={11} /> Rename
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openAddVideo(sec.id)}
+                      data-testid={`rec-add-video-here-${sec.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#F3D060] hover:text-[#D4AF37] px-2 py-1 rounded border border-[#D4AF37]/30 hover:border-[#D4AF37]"
+                    >
+                      <Plus size={11} /> Add Video
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteSection(sec.id, sec.name)}
+                      data-testid={`rec-delete-section-${sec.id}`}
+                      className="inline-flex items-center gap-1 text-[11px] text-red-300 hover:text-red-200 transition-colors px-2 py-1 rounded border border-red-400/30 hover:border-red-400/60"
+                    >
+                      <Trash2 size={11} /> Delete
+                    </button>
+                  </div>
+                </div>
+
+                {sec.videos.length === 0 ? (
+                  <div className="text-center py-6 text-[#C8BED6]/55 text-sm">
+                    No videos in this section yet.
+                  </div>
+                ) : (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {sec.videos.map((v) => (
+                      <div
+                        key={v.id}
+                        data-testid={`rec-video-row-${v.id}`}
+                        className="flex gap-3 p-3 rounded-lg border border-[#D4AF37]/15 bg-[#1A0B2E]/30"
                       >
-                        <img
-                          src={`https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`}
-                          alt={v.title}
-                          className="w-full h-full object-cover"
-                          loading="lazy"
-                        />
-                        <Film
-                          size={18}
-                          className="absolute inset-0 m-auto text-white drop-shadow-lg opacity-90 group-hover:scale-110 transition-transform"
-                        />
-                      </a>
-                      <div className="flex-1 min-w-0">
-                        <div
-                          className="font-serif text-sm sm:text-base text-[#F8F5F0] line-clamp-1"
-                          style={{ fontWeight: 500 }}
+                        <a
+                          href={`https://youtu.be/${v.youtube_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-24 h-16 shrink-0 rounded-md overflow-hidden bg-black relative group"
                         >
-                          {v.title}
-                        </div>
-                        <div className="mt-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#C8BED6]/60">
-                          {v.allowed_mobiles && v.allowed_mobiles.length
-                            ? `Restricted · ${v.allowed_mobiles.length} mobile${
-                                v.allowed_mobiles.length === 1 ? "" : "s"
-                              }`
-                            : "All authorized clients"}
-                        </div>
-                        <div className="mt-2 flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => openEditVideo(v)}
-                            data-testid={`rec-edit-video-${v.id}`}
-                            className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-0.5 rounded border border-[#D4AF37]/30 hover:border-[#D4AF37]"
+                          <img
+                            src={`https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`}
+                            alt={v.title}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          <Film
+                            size={18}
+                            className="absolute inset-0 m-auto text-white drop-shadow-lg opacity-90 group-hover:scale-110 transition-transform"
+                          />
+                        </a>
+                        <div className="flex-1 min-w-0">
+                          <div
+                            className="font-serif text-sm sm:text-base text-[#F8F5F0] line-clamp-1"
+                            style={{ fontWeight: 500 }}
                           >
-                            <Pencil size={11} /> Edit
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteVideo(v.id, v.title)}
-                            data-testid={`rec-delete-video-${v.id}`}
-                            className="inline-flex items-center gap-1 text-[11px] text-red-300 hover:text-red-200 px-2 py-0.5 rounded border border-red-400/30 hover:border-red-400/60"
-                          >
-                            <Trash2 size={11} /> Delete
-                          </button>
+                            {v.title}
+                          </div>
+                          {v.description && (
+                            <div className="mt-1 text-[11px] text-[#C8BED6]/70 font-light line-clamp-1">
+                              {v.description}
+                            </div>
+                          )}
+                          <div className="mt-2 flex items-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => openEditVideo(v)}
+                              data-testid={`rec-edit-video-${v.id}`}
+                              className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-0.5 rounded border border-[#D4AF37]/30 hover:border-[#D4AF37]"
+                            >
+                              <Pencil size={11} /> Edit
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteVideo(v.id, v.title)}
+                              data-testid={`rec-delete-video-${v.id}`}
+                              className="inline-flex items-center gap-1 text-[11px] text-red-300 hover:text-red-200 px-2 py-0.5 rounded border border-red-400/30 hover:border-red-400/60"
+                            >
+                              <Trash2 size={11} /> Delete
+                            </button>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
         </div>
       )}
     </section>

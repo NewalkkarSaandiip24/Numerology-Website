@@ -362,19 +362,20 @@ class SectionIn(BaseModel):
     name: str = Field(min_length=2, max_length=80)
 
 
+class SectionUpdate(BaseModel):
+    name: Optional[str] = None
+
+
 class VideoIn(BaseModel):
     section_id: str
     title: str = Field(min_length=2, max_length=200)
     youtube_url: str = Field(min_length=10, max_length=400)
     description: Optional[str] = Field(default=None, max_length=2000)
-    # If list is empty -> ANY active authorized client can watch.
-    allowed_mobiles: List[str] = Field(default_factory=list)
 
 
 class VideoUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-    allowed_mobiles: Optional[List[str]] = None
 
 
 @api_router.get("/admin/recordings/sections")
@@ -393,6 +394,23 @@ async def create_section(payload: SectionIn, _: str = Depends(require_admin)):
     }
     await db.video_sections.insert_one(doc.copy())
     return doc
+
+
+@api_router.patch("/admin/recordings/sections/{section_id}")
+async def update_section(section_id: str, payload: SectionUpdate, _: str = Depends(require_admin)):
+    updates: dict = {}
+    if payload.name is not None:
+        nm = payload.name.strip()
+        if len(nm) < 2:
+            raise HTTPException(status_code=400, detail="Section name is too short.")
+        updates["name"] = nm
+        updates["slug"] = slugify(nm)
+    if not updates:
+        raise HTTPException(status_code=400, detail="Nothing to update.")
+    res = await db.video_sections.update_one({"id": section_id}, {"$set": updates})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Section not found.")
+    return {"ok": True}
 
 
 @api_router.delete("/admin/recordings/sections/{section_id}")
@@ -416,7 +434,6 @@ async def create_video(payload: VideoIn, _: str = Depends(require_admin)):
         "title": payload.title.strip(),
         "youtube_id": yt_id,
         "description": (payload.description or "").strip(),
-        "allowed_mobiles": [normalize_mobile(m) for m in payload.allowed_mobiles if normalize_mobile(m)],
         "uploaded_at": now_iso(),
     }
     await db.videos.insert_one(doc.copy())
@@ -428,8 +445,6 @@ async def update_video(video_id: str, payload: VideoUpdate, _: str = Depends(req
     updates = {}
     if payload.title is not None: updates["title"] = payload.title.strip()
     if payload.description is not None: updates["description"] = payload.description.strip()
-    if payload.allowed_mobiles is not None:
-        updates["allowed_mobiles"] = [normalize_mobile(m) for m in payload.allowed_mobiles if normalize_mobile(m)]
     if not updates:
         raise HTTPException(status_code=400, detail="Nothing to update.")
     res = await db.videos.update_one({"id": video_id}, {"$set": updates})
@@ -486,25 +501,20 @@ async def access_recordings(payload: RecordingsGate):
     sections = await db.video_sections.find({}, {"_id": 0}).sort("created_at", 1).to_list(200)
     videos = await db.videos.find({}, {"_id": 0}).sort("uploaded_at", -1).to_list(1000)
 
-    # Filter videos: if allowed_mobiles is empty -> visible to any authorized user; else must include this mobile
-    visible = [v for v in videos if not v.get("allowed_mobiles") or m in v["allowed_mobiles"]]
-    # Group by section
-    by_section = {}
-    for v in visible:
-        # Strip allowed_mobiles from response (privacy)
-        v_out = {k: v[k] for k in ("id", "section_id", "title", "youtube_id", "description", "uploaded_at")}
+    # Any active authorized mobile (same list used by Mobile Compatibility) gets full access.
+    by_section: dict = {}
+    for v in videos:
+        v_out = {k: v.get(k) for k in ("id", "section_id", "title", "youtube_id", "description", "uploaded_at")}
         by_section.setdefault(v["section_id"], []).append(v_out)
 
-    # Build response only for sections that have visible videos
     sections_out = []
     for s in sections:
-        if by_section.get(s["id"]):
-            sections_out.append({
-                "id": s["id"],
-                "name": s["name"],
-                "slug": s.get("slug"),
-                "videos": by_section[s["id"]],
-            })
+        sections_out.append({
+            "id": s["id"],
+            "name": s["name"],
+            "slug": s.get("slug"),
+            "videos": by_section.get(s["id"], []),
+        })
 
     return {
         "name": user.get("name"),

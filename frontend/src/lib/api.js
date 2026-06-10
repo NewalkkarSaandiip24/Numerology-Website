@@ -65,6 +65,10 @@ export const adminApi = {
     const { data } = await axios.delete(`${API}/admin/recordings/sections/${id}`, { headers: authHeaders() });
     return data;
   },
+  updateSection: async (id, payload) => {
+    const { data } = await axios.patch(`${API}/admin/recordings/sections/${id}`, payload, { headers: authHeaders() });
+    return data;
+  },
   listAllVideos: async () => {
     const { data } = await axios.get(`${API}/admin/recordings/videos`, { headers: authHeaders() });
     return data;
