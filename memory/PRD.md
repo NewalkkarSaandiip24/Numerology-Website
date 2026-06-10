@@ -63,12 +63,24 @@ Build an elegant business website for Newalkkarsaandiip (Mobile Numerologist, Na
   - Owner mobiles `9929059153` & `9829312193` authorized as compatibility clients until 2030-12-31
 - **(Feb 10, 2026) Speed**: deferred third-party `emergent-main.js` script in `index.html`
 - **Regression suite**: `/app/backend/tests/test_mobile_compat.py` (11 cases). Iteration_4 = 100% pass.
+- **(Feb 11, 2026) Blog CMS** — Admin CRUD + public SEO-optimized `/blogs` & `/blogs/:slug`
+- **(Feb 11, 2026) Dynamic Course Landing Pages** `/learn/:course` with WhatsApp lead capture, red shaky CTAs, countdown timer, fear-based copy. `course_leads` collection. `robots.txt` disallows `/learn`.
+- **(Feb 11, 2026) Privacy Policy page** `/privacy-policy`
+- **(Feb 11, 2026) PDF report cleanup** — duplicate "27/72" fix, direct download, footer, Lakshmi-Ganesh cover imagery
+- **(Feb 11, 2026) Recorded Sessions feature — full-stack** (`/recordings`)
+  - Backend: `video_sections` + `videos` collections; admin CRUD at `/api/admin/recordings/sections|videos`; mobile-gated public endpoint `POST /api/recordings/access`
+  - Public page: `/recordings` — mobile gate using same `authorized_users` collection as Mobile Compatibility; YouTube Unlisted iframe player; auto-restore via `localStorage` (`ns_recordings_mobile`); per-video access via `allowed_mobiles` whitelist (empty = ALL authorized clients can watch)
+  - Admin: "Manage Recorded Sessions" section in `/admin` — create/delete sections, add/edit/delete videos with title/URL/description/allowed mobiles
+  - Nav: "Recordings" link added to desktop + mobile nav and footer
+  - Regression: `/app/backend/tests/test_recordings.py` (11 cases). Iteration_5 = 100% pass (frontend + backend).
 
 ## Backlog (Next Action Items)
-- **P0**: Deploy to Emergent and hook up the custom domain `newalkkarsaandiip.in` (requires user to update DNS at their registrar after Emergent deployment)
+- **P0**: User to click **Deploy** to push the new `/recordings` feature to production `newalkkarsaandiip.in`
 - **P1**: Hardening (per code review): rate-limit admin login, move DEFAULT_PASSWORD to env, strict ISO date validation on `expires_on`, migrate from on_event → lifespan, consider httpOnly cookie for JWT
-- **P1**: Email-based password reset for admin (deferred per user request)
-- **P1**: Add blog/articles section for SEO (numerology insights)
+- **P1**: Refactor `/app/backend/server.py` into routers (recordings_router.py, blogs_router.py, admin_router.py) — now 533 lines
+- **P1**: Replace `window.confirm()` in Admin RecordingsManager with shadcn AlertDialog (`rec-delete-confirm` testid) for flaky-free deletes
+- **P1**: Add Pydantic date validation for `expires_on` at write time
 - **P2**: Add favicon + OG image using the gold logo
 - **P2**: Add Hindi language toggle
 - **P2**: Gallery of past consultations / before-after name-correction cases
+- **P2**: Per-user video view counts / last-viewed timestamp on `/recordings`
