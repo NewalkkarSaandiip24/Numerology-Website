@@ -372,7 +372,7 @@ function FaqItem({ q, a, i, theme }) {
 }
 
 /* ===== Registration form ===== */
-function RegisterForm({ course, theme, countdown, onSuccess }) {
+function RegisterForm({ course, theme, countdown, onSuccess, autoFocusFirst }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -390,19 +390,9 @@ function RegisterForm({ course, theme, countdown, onSuccess }) {
     setBusy(true);
     try {
       try { await publicApi.submitCourseLead({ course: course.slug, name, email, mobile: m }); } catch {}
-
-      // If the course has a custom CTA URL (e.g. WhatsApp group invite), send them there
-      if (course.cta_url) {
-        window.open(course.cta_url, "_blank", "noopener");
-      } else {
-        const intro = course.free
-          ? `I'd like to claim my FREE seat for the ${course.label} Masterclass`
-          : `I would like to register for the ${course.label} workshop`;
-        const msg = encodeURIComponent(
-          `Namaste Newalkkar Saandiip ji,%0A%0A${intro}.%0A%0AName: ${name}%0AEmail: ${email}%0AMobile: ${m}%0A%0AKindly share the joining details.`
-        );
-        window.open(`https://wa.me/919929059153?text=${msg}`, "_blank", "noopener");
-      }
+      // Hand off to the thank-you state; do NOT auto-open WhatsApp here so
+      // the user can read the next-step message on the thank-you page and tap
+      // the prominent CTA button themselves (works inside Meta in-app browser too).
       onSuccess && onSuccess({ name, email, mobile: m });
     } catch (e) {
       setErr(formatErr(e));
@@ -416,14 +406,51 @@ function RegisterForm({ course, theme, countdown, onSuccess }) {
     : "w-full px-4 py-3 rounded-lg bg-[#1A0B2E] border border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-[#F8F5F0] placeholder-[#C8BED6]/50";
 
   return (
-    <form onSubmit={submit} data-testid="course-form" className="space-y-3">
-      <input data-testid="course-name" type="text" placeholder="Full Name" value={name}
-        onChange={(e) => setName(e.target.value)} className={inputCls} />
-      <input data-testid="course-email" type="email" placeholder="Email Address" value={email}
-        onChange={(e) => setEmail(e.target.value)} className={inputCls} />
-      <input data-testid="course-mobile" type="tel" inputMode="tel"
-        placeholder="WhatsApp number (10 digits, no country code)" value={mobile}
-        onChange={(e) => setMobile(e.target.value)} className={inputCls} />
+    <form onSubmit={submit} data-testid="course-form" className="space-y-3" autoComplete="on">
+      <input
+        data-testid="course-name"
+        type="text"
+        name="name"
+        id="course-lead-name"
+        placeholder="Full Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        className={inputCls}
+        autoComplete="name"
+        autoCapitalize="words"
+        spellCheck={false}
+        required
+        autoFocus={autoFocusFirst}
+      />
+      <input
+        data-testid="course-email"
+        type="email"
+        name="email"
+        id="course-lead-email"
+        placeholder="Email Address"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className={inputCls}
+        autoComplete="email"
+        inputMode="email"
+        spellCheck={false}
+        required
+      />
+      <input
+        data-testid="course-mobile"
+        type="tel"
+        name="phone"
+        id="course-lead-mobile"
+        inputMode="tel"
+        placeholder="WhatsApp number (10 digits, no country code)"
+        value={mobile}
+        onChange={(e) => setMobile(e.target.value)}
+        className={inputCls}
+        autoComplete="tel-national"
+        pattern="[0-9]{10}"
+        maxLength={10}
+        required
+      />
       {err && <div data-testid="course-form-error" className={`text-sm ${theme === "light" ? "text-red-700" : "text-red-300"}`}>{err}</div>}
       <button
         type="submit"
@@ -458,6 +485,7 @@ export default function CourseLanding() {
   const course = COURSES[slug] || COURSES[DEFAULT_COURSE];
   const time = useCountdown();
   const [submitted, setSubmitted] = useState(false);
+  const [leadData, setLeadData] = useState(null);
 
   useSEO({
     title: `${course.label} Workshop with Newalkkar Saandiip — Live Online Course at ₹${course.price}`,
@@ -689,16 +717,64 @@ export default function CourseLanding() {
               </div>
 
               {submitted ? (
-                <div data-testid="course-thankyou" className="text-center py-6">
+                <div data-testid="course-thankyou" className="text-center py-4">
                   <CheckCircle2 size={56} className="text-[#7ED99B] mx-auto mb-3" />
-                  <div className={`font-serif text-2xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 600 }}>Thank you!</div>
-                  <p className={`mt-2 text-base ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-light`}>
-                    WhatsApp is opening — please send the prefilled message to confirm your seat
-                    with Newalkkar Saandiip ji.
+                  <div className={`font-serif text-2xl sm:text-3xl ${isLight ? 'text-[#5B0B1F]' : 'text-[#F8F5F0]'}`} style={{ fontWeight: 700 }}>
+                    {course.free ? "Your seat is locked-in! 🎉" : "Almost there! 🎉"}
+                  </div>
+                  <p className={`mt-3 text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-medium leading-relaxed`}>
+                    {course.free ? (
+                      <>
+                        One last step — <span className={isLight ? 'text-[#5B0B1F] font-bold' : 'text-[#F3D060] font-bold'}>join the FREE Masterclass WhatsApp group</span> to receive your joining link, study material and last-minute reminders from Newalkkar Saandiip ji.
+                      </>
+                    ) : (
+                      <>
+                        Tap the green button below to <span className={isLight ? 'text-[#5B0B1F] font-bold' : 'text-[#F3D060] font-bold'}>message Newalkkar Saandiip ji on WhatsApp</span> with your details — your seat will be confirmed after ₹{course.price} is paid.
+                      </>
+                    )}
+                  </p>
+                  {(() => {
+                    const ld = leadData || {};
+                    const dmIntro = course.free
+                      ? `I'd like to claim my FREE seat for the ${course.label} Masterclass`
+                      : `I would like to register for the ${course.label} workshop`;
+                    const dmMsg = encodeURIComponent(
+                      `Namaste Newalkkar Saandiip ji,\n\n${dmIntro}.\n\nName: ${ld.name || ""}\nEmail: ${ld.email || ""}\nMobile: ${ld.mobile || ""}\n\nKindly share the joining details.`
+                    );
+                    const href = course.free
+                      ? (course.cta_url || "https://chat.whatsapp.com/FagjXs3exRH8sgPp1PkHJ7")
+                      : `https://wa.me/919929059153?text=${dmMsg}`;
+                    const label = course.free
+                      ? "Join Free Masterclass WhatsApp Group"
+                      : "Message on WhatsApp to Confirm Seat";
+                    return (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-testid="course-join-whatsapp-group"
+                        className="cta-shake mt-6 inline-flex items-center justify-center gap-2.5 w-full px-5 py-4 sm:py-5 rounded-full text-white font-extrabold text-base sm:text-xl shadow-2xl"
+                        style={{
+                          background: "linear-gradient(135deg, #25D366 0%, #128C7E 100%)",
+                          boxShadow: "0 14px 32px -8px rgba(37,211,102,0.55)",
+                        }}
+                      >
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+                        </svg>
+                        {label}
+                      </a>
+                    );
+                  })()}
+                  <p className={`mt-4 text-xs sm:text-sm ${isLight ? 'text-[#7A1E15]' : 'text-[#C8BED6]/70'} font-medium`}>
+                    {course.free
+                      ? <>⚠️ Without joining the group you will <span className="font-bold">NOT</span> receive the masterclass link. This takes 5 seconds.</>
+                      : <>⚠️ Your seat will be held for the next 15 minutes only. Please complete the WhatsApp step now.</>
+                    }
                   </p>
                 </div>
               ) : (
-                <RegisterForm course={course} theme={course.theme} countdown={time} onSuccess={() => setSubmitted(true)} />
+                <RegisterForm course={course} theme={course.theme} countdown={time} onSuccess={(d) => { setLeadData(d); setSubmitted(true); }} autoFocusFirst />
               )}
 
               <div className={`mt-5 flex items-center justify-center gap-2 text-xs sm:text-sm ${isLight ? 'text-[#5B0B1F]' : 'text-[#C8BED6]/70'}`}>
