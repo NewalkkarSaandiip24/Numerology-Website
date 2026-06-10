@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Plus, Trash2, History, RefreshCw, LogOut, Lock, Phone, User, Calendar, Shield, BookOpen, Image as ImageIcon, X } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, History, RefreshCw, LogOut, Lock, Phone, User, Calendar, Shield, BookOpen, Image as ImageIcon, X, Video, Film, Link as LinkIcon, Folder, Pencil } from "lucide-react";
 import Logo from "../components/Logo";
 import useSEO from "../hooks/useSEO";
 import { adminApi, getToken, clearToken, formatErr } from "../lib/api";
@@ -214,6 +214,9 @@ export default function AdminPage() {
 
         {/* ===== Blog Management Section ===== */}
         <BlogManager />
+
+        {/* ===== Recordings Management Section ===== */}
+        <RecordingsManager />
       </main>
     </div>
   );
@@ -602,6 +605,499 @@ function BlogManager() {
 async function publicListBlogs() {
   const { publicApi } = await import("../lib/api");
   return publicApi.listBlogs();
+}
+
+/* ============= Recordings Manager (admin) ============= */
+function RecordingsManager() {
+  const [sections, setSections] = useState([]);
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [showSecForm, setShowSecForm] = useState(false);
+  const [secName, setSecName] = useState("");
+  const [showVidForm, setShowVidForm] = useState(false);
+  const [vidForm, setVidForm] = useState({
+    section_id: "",
+    title: "",
+    youtube_url: "",
+    description: "",
+    allowed_mobiles: "",
+  });
+  const [editingVideo, setEditingVideo] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const refresh = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const [s, v] = await Promise.all([
+        adminApi.listSections(),
+        adminApi.listAllVideos(),
+      ]);
+      setSections(s);
+      setVideos(v);
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleAddSection = async (e) => {
+    e.preventDefault();
+    setError("");
+    if (secName.trim().length < 2) {
+      setError("Please enter a section name.");
+      return;
+    }
+    try {
+      await adminApi.createSection({ name: secName.trim() });
+      setSecName("");
+      setShowSecForm(false);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    }
+  };
+
+  const handleDeleteSection = async (id, name) => {
+    if (
+      !window.confirm(
+        `Delete section "${name}"? All videos inside this section will also be removed.`
+      )
+    )
+      return;
+    try {
+      await adminApi.deleteSection(id);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    }
+  };
+
+  const openAddVideo = (section_id = "") => {
+    setEditingVideo(null);
+    setVidForm({
+      section_id: section_id || sections[0]?.id || "",
+      title: "",
+      youtube_url: "",
+      description: "",
+      allowed_mobiles: "",
+    });
+    setShowVidForm(true);
+  };
+
+  const openEditVideo = (v) => {
+    setEditingVideo(v);
+    setVidForm({
+      section_id: v.section_id,
+      title: v.title,
+      youtube_url: `https://youtu.be/${v.youtube_id}`,
+      description: v.description || "",
+      allowed_mobiles: (v.allowed_mobiles || []).join(", "),
+    });
+    setShowVidForm(true);
+  };
+
+  const handleVidSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    const mobiles = vidForm.allowed_mobiles
+      .split(/[\s,]+/)
+      .map((m) => m.replace(/\D/g, ""))
+      .filter((m) => m.length === 10);
+
+    if (!vidForm.title.trim()) return setError("Please enter a video title.");
+    if (editingVideo) {
+      setSubmitting(true);
+      try {
+        await adminApi.updateVideo(editingVideo.id, {
+          title: vidForm.title.trim(),
+          description: vidForm.description.trim(),
+          allowed_mobiles: mobiles,
+        });
+        setShowVidForm(false);
+        setEditingVideo(null);
+        await refresh();
+      } catch (e) {
+        setError(formatErr(e));
+      } finally {
+        setSubmitting(false);
+      }
+      return;
+    }
+
+    if (!vidForm.section_id) return setError("Please pick a section.");
+    if (!vidForm.youtube_url.trim()) return setError("Please paste a YouTube URL.");
+
+    setSubmitting(true);
+    try {
+      await adminApi.createVideo({
+        section_id: vidForm.section_id,
+        title: vidForm.title.trim(),
+        youtube_url: vidForm.youtube_url.trim(),
+        description: vidForm.description.trim(),
+        allowed_mobiles: mobiles,
+      });
+      setShowVidForm(false);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteVideo = async (id, title) => {
+    if (!window.confirm(`Delete video "${title}"?`)) return;
+    try {
+      await adminApi.deleteVideo(id);
+      await refresh();
+    } catch (e) {
+      setError(formatErr(e));
+    }
+  };
+
+  const videosBySection = sections.map((s) => ({
+    ...s,
+    videos: videos.filter((v) => v.section_id === s.id),
+  }));
+
+  return (
+    <section className="mt-14" data-testid="recordings-manager">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+        <div>
+          <div className="v-label mb-2">Client Portal · YouTube Unlisted</div>
+          <h2 className="font-serif text-2xl sm:text-3xl" style={{ fontWeight: 400 }}>
+            Manage <span className="gold-shimmer">Recorded Sessions</span>
+          </h2>
+          <p className="mt-2 text-sm text-[#C8BED6] font-light max-w-2xl">
+            Organize unlisted YouTube videos into sections. Leave the &quot;Allowed
+            Mobiles&quot; field empty to let{" "}
+            <span className="text-[#F3D060]">any active authorized client</span> watch,
+            or list specific 10-digit mobile numbers to restrict a video to just those
+            clients.
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setShowSecForm((v) => !v)}
+            data-testid="rec-add-section-btn"
+            className="btn-ghost text-sm"
+          >
+            <Folder size={16} /> {showSecForm ? "Cancel" : "Add Section"}
+          </button>
+          <button
+            type="button"
+            onClick={() => openAddVideo()}
+            disabled={sections.length === 0}
+            data-testid="rec-add-video-btn"
+            className="btn-gold text-sm disabled:opacity-50"
+          >
+            <Plus size={16} /> Add Video
+          </button>
+        </div>
+      </div>
+
+      {showSecForm && (
+        <form
+          onSubmit={handleAddSection}
+          data-testid="rec-section-form"
+          className="glass-card p-5 sm:p-6 mb-6"
+        >
+          <label className="v-label block mb-1.5">Section Name</label>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <input
+              type="text"
+              className="field-input flex-1"
+              data-testid="rec-section-name"
+              placeholder="e.g. Mobile Numerology Course"
+              value={secName}
+              onChange={(e) => setSecName(e.target.value)}
+              maxLength={80}
+            />
+            <button
+              type="submit"
+              data-testid="rec-section-submit"
+              className="btn-gold"
+            >
+              <Plus size={16} /> Create
+            </button>
+          </div>
+        </form>
+      )}
+
+      {showVidForm && (
+        <form
+          onSubmit={handleVidSubmit}
+          data-testid="rec-video-form"
+          className="glass-card p-5 sm:p-6 mb-6"
+        >
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className={editingVideo ? "sm:col-span-1 opacity-60" : ""}>
+              <label className="v-label block mb-1.5">Section</label>
+              <select
+                className="field-input"
+                data-testid="rec-video-section"
+                value={vidForm.section_id}
+                onChange={(e) =>
+                  setVidForm({ ...vidForm, section_id: e.target.value })
+                }
+                disabled={!!editingVideo}
+              >
+                {sections.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="v-label block mb-1.5">Video Title</label>
+              <input
+                type="text"
+                className="field-input"
+                data-testid="rec-video-title"
+                placeholder="e.g. Day 1 — Foundations of Mobile Numerology"
+                value={vidForm.title}
+                onChange={(e) =>
+                  setVidForm({ ...vidForm, title: e.target.value })
+                }
+                maxLength={200}
+              />
+            </div>
+          </div>
+
+          {!editingVideo && (
+            <div className="mt-4">
+              <label className="v-label block mb-1.5">
+                <LinkIcon size={11} className="inline mr-1" /> YouTube Unlisted URL
+              </label>
+              <input
+                type="url"
+                className="field-input"
+                data-testid="rec-video-url"
+                placeholder="https://youtu.be/XXXXXXXXXXX or https://www.youtube.com/watch?v=…"
+                value={vidForm.youtube_url}
+                onChange={(e) =>
+                  setVidForm({ ...vidForm, youtube_url: e.target.value })
+                }
+              />
+              <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
+                Upload to YouTube as &quot;Unlisted&quot; — anyone with the link (or via
+                this portal) can view, but it won&apos;t appear in YouTube search.
+              </p>
+            </div>
+          )}
+
+          <div className="mt-4">
+            <label className="v-label block mb-1.5">Description (optional)</label>
+            <textarea
+              rows={3}
+              className="field-input"
+              data-testid="rec-video-desc"
+              placeholder="Short summary that appears under the video."
+              value={vidForm.description}
+              onChange={(e) =>
+                setVidForm({ ...vidForm, description: e.target.value })
+              }
+              maxLength={2000}
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="v-label block mb-1.5">
+              Allowed Mobile Numbers (optional)
+            </label>
+            <textarea
+              rows={2}
+              className="field-input"
+              data-testid="rec-video-mobiles"
+              placeholder="Leave empty for ALL authorized clients. Or enter 10-digit numbers separated by commas/spaces, e.g. 9929059153, 9829312193"
+              value={vidForm.allowed_mobiles}
+              onChange={(e) =>
+                setVidForm({ ...vidForm, allowed_mobiles: e.target.value })
+              }
+            />
+            <p className="mt-1 text-[11px] font-mono uppercase tracking-[0.2em] text-[#C8BED6]/60">
+              Numbers listed here must already be authorized in the table above.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 mt-5">
+            <button
+              type="submit"
+              disabled={submitting}
+              data-testid="rec-video-submit"
+              className="btn-gold disabled:opacity-50"
+            >
+              <Plus size={16} />
+              {submitting
+                ? "Saving…"
+                : editingVideo
+                ? "Update Video"
+                : "Publish Video"}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setShowVidForm(false);
+                setEditingVideo(null);
+              }}
+              className="btn-ghost"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      {error && (
+        <div
+          data-testid="rec-error"
+          className="mb-4 px-4 py-3 rounded-lg border border-red-400/40 bg-red-500/10 text-red-200 text-sm"
+        >
+          {error}
+        </div>
+      )}
+
+      {loading && sections.length === 0 ? (
+        <div className="text-center py-10 text-[#C8BED6]/70 font-mono text-xs uppercase tracking-[0.2em]">
+          Loading…
+        </div>
+      ) : sections.length === 0 ? (
+        <div className="text-center py-10 text-[#C8BED6]/60 border border-dashed border-[#D4AF37]/25 rounded-xl">
+          <Video
+            size={28}
+            className="mx-auto mb-3 text-[#D4AF37]/45"
+            strokeWidth={1.3}
+          />
+          No sections yet. Click <span className="text-[#D4AF37]">Add Section</span>{" "}
+          first, then add YouTube videos under it.
+        </div>
+      ) : (
+        <div className="space-y-6">
+          {videosBySection.map((sec) => (
+            <div
+              key={sec.id}
+              data-testid={`rec-section-${sec.slug || sec.id}`}
+              className="glass-card p-5 sm:p-6"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+                <div className="flex items-center gap-3 min-w-0">
+                  <Folder
+                    size={18}
+                    className="text-[#D4AF37] shrink-0"
+                    strokeWidth={1.5}
+                  />
+                  <h3
+                    className="font-serif text-lg sm:text-xl text-[#F8F5F0] truncate"
+                    style={{ fontWeight: 500 }}
+                  >
+                    {sec.name}
+                  </h3>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#C8BED6]/60 ml-1">
+                    {sec.videos.length} video{sec.videos.length === 1 ? "" : "s"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => openAddVideo(sec.id)}
+                    data-testid={`rec-add-video-here-${sec.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-[0.2em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-1"
+                  >
+                    <Plus size={12} /> Add Video
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteSection(sec.id, sec.name)}
+                    data-testid={`rec-delete-section-${sec.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs text-red-300 hover:text-red-200 transition-colors px-2 py-1 rounded border border-red-400/30 hover:border-red-400/60"
+                  >
+                    <Trash2 size={12} /> Delete
+                  </button>
+                </div>
+              </div>
+
+              {sec.videos.length === 0 ? (
+                <div className="text-center py-6 text-[#C8BED6]/55 text-sm">
+                  No videos in this section yet.
+                </div>
+              ) : (
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {sec.videos.map((v) => (
+                    <div
+                      key={v.id}
+                      data-testid={`rec-video-row-${v.id}`}
+                      className="flex gap-3 p-3 rounded-lg border border-[#D4AF37]/15 bg-[#1A0B2E]/30"
+                    >
+                      <a
+                        href={`https://youtu.be/${v.youtube_id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-24 h-16 shrink-0 rounded-md overflow-hidden bg-black relative group"
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`}
+                          alt={v.title}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                        <Film
+                          size={18}
+                          className="absolute inset-0 m-auto text-white drop-shadow-lg opacity-90 group-hover:scale-110 transition-transform"
+                        />
+                      </a>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className="font-serif text-sm sm:text-base text-[#F8F5F0] line-clamp-1"
+                          style={{ fontWeight: 500 }}
+                        >
+                          {v.title}
+                        </div>
+                        <div className="mt-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#C8BED6]/60">
+                          {v.allowed_mobiles && v.allowed_mobiles.length
+                            ? `Restricted · ${v.allowed_mobiles.length} mobile${
+                                v.allowed_mobiles.length === 1 ? "" : "s"
+                              }`
+                            : "All authorized clients"}
+                        </div>
+                        <div className="mt-2 flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => openEditVideo(v)}
+                            data-testid={`rec-edit-video-${v.id}`}
+                            className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-[#D4AF37] hover:text-[#F3D060] px-2 py-0.5 rounded border border-[#D4AF37]/30 hover:border-[#D4AF37]"
+                          >
+                            <Pencil size={11} /> Edit
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteVideo(v.id, v.title)}
+                            data-testid={`rec-delete-video-${v.id}`}
+                            className="inline-flex items-center gap-1 text-[11px] text-red-300 hover:text-red-200 px-2 py-0.5 rounded border border-red-400/30 hover:border-red-400/60"
+                          >
+                            <Trash2 size={11} /> Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }
 
 /* ============= Login Form ============= */

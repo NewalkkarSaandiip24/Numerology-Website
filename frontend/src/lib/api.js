@@ -52,6 +52,35 @@ export const adminApi = {
     const { data } = await axios.delete(`${API}/admin/blogs/${id}`, { headers: authHeaders() });
     return data;
   },
+  // ---- Recorded Videos ----
+  listSections: async () => {
+    const { data } = await axios.get(`${API}/admin/recordings/sections`, { headers: authHeaders() });
+    return data;
+  },
+  createSection: async (payload) => {
+    const { data } = await axios.post(`${API}/admin/recordings/sections`, payload, { headers: authHeaders() });
+    return data;
+  },
+  deleteSection: async (id) => {
+    const { data } = await axios.delete(`${API}/admin/recordings/sections/${id}`, { headers: authHeaders() });
+    return data;
+  },
+  listAllVideos: async () => {
+    const { data } = await axios.get(`${API}/admin/recordings/videos`, { headers: authHeaders() });
+    return data;
+  },
+  createVideo: async (payload) => {
+    const { data } = await axios.post(`${API}/admin/recordings/videos`, payload, { headers: authHeaders() });
+    return data;
+  },
+  updateVideo: async (id, payload) => {
+    const { data } = await axios.patch(`${API}/admin/recordings/videos/${id}`, payload, { headers: authHeaders() });
+    return data;
+  },
+  deleteVideo: async (id) => {
+    const { data } = await axios.delete(`${API}/admin/recordings/videos/${id}`, { headers: authHeaders() });
+    return data;
+  },
 };
 
 export const publicApi = {

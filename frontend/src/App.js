@@ -33,6 +33,7 @@ const Blogs = React.lazy(() => import("./pages/Blogs"));
 const BlogDetail = React.lazy(() => import("./pages/BlogDetail"));
 const CourseLanding = React.lazy(() => import("./pages/CourseLanding"));
 const PrivacyPolicy = React.lazy(() => import("./pages/PrivacyPolicy"));
+const Recordings = React.lazy(() => import("./pages/Recordings"));
 
 const WHATSAPP_NUMBER = "919929059153"; // +91 9929059153
 
@@ -112,6 +113,7 @@ const Nav = () => {
     ["Name Numerology", "/name-numerology"],
     ["Personal Year", "/personal-year"],
     ["Mobile Compatibility", "/mobile-compatibility"],
+    ["Recordings", "/recordings"],
     ["Blogs", "/blogs"],
     ["Contact", "#contact"],
   ];
@@ -1114,6 +1116,7 @@ const Footer = () => {
                 ["Services", "#services", false],
                 ["Name Calculator", "/name-numerology", true],
                 ["Personal Year", "/personal-year", true],
+                ["Recordings", "/recordings", true],
                 ["Testimonials", "#testimonials", false],
                 ["Contact", "#contact", false],
               ].map(([l, h, isRoute]) => (
@@ -1259,6 +1262,7 @@ function App() {
             <Route path="/learn/:course" element={<CourseLanding />} />
             <Route path="/learn" element={<CourseLanding />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/recordings" element={<Recordings />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </React.Suspense>

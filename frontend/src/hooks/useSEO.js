@@ -4,7 +4,7 @@ import { useEffect } from "react";
  * Lightweight per-route SEO updater (no react-helmet dependency).
  * Updates <title>, meta[description], meta[keywords], og:title, og:description, canonical.
  */
-export default function useSEO({ title, description, keywords, canonical, ogImage }) {
+export default function useSEO({ title, description, keywords, canonical, ogImage, noindex }) {
   useEffect(() => {
     if (title) document.title = title;
 
@@ -28,6 +28,19 @@ export default function useSEO({ title, description, keywords, canonical, ogImag
     setMeta('meta[name="twitter:title"]', "content", title);
     setMeta('meta[name="twitter:description"]', "content", description);
 
+    // Robots: allow opting a route out of indexing (e.g. private portals)
+    let robots = document.head.querySelector('meta[name="robots"]');
+    if (noindex) {
+      if (!robots) {
+        robots = document.createElement("meta");
+        robots.setAttribute("name", "robots");
+        document.head.appendChild(robots);
+      }
+      robots.setAttribute("content", "noindex,nofollow");
+    } else if (robots) {
+      robots.setAttribute("content", "index,follow");
+    }
+
     if (canonical) {
       let link = document.head.querySelector('link[rel="canonical"]');
       if (!link) {
@@ -38,5 +51,5 @@ export default function useSEO({ title, description, keywords, canonical, ogImag
       link.setAttribute("href", canonical);
       setMeta('meta[property="og:url"]', "content", canonical);
     }
-  }, [title, description, keywords, canonical, ogImage]);
+  }, [title, description, keywords, canonical, ogImage, noindex]);
 }
