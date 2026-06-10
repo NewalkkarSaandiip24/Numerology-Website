@@ -340,6 +340,179 @@ async def list_course_leads(_: str = Depends(require_admin), course: Optional[st
     return docs
 
 
+# ============ Video Recordings (YouTube-embedded) ============
+import re as _re
+
+YT_REGEX = _re.compile(
+    r"(?:youtu\.be/|youtube\.com/(?:watch\?v=|embed/|v/|shorts/))([\w-]{11})"
+)
+
+def extract_youtube_id(url: str) -> str:
+    m = YT_REGEX.search(url or "")
+    if not m:
+        raise HTTPException(status_code=400, detail="Please paste a valid YouTube URL (https://youtu.be/... or https://youtube.com/watch?v=...).")
+    return m.group(1)
+
+
+def normalize_mobile(m: str) -> str:
+    return "".join(ch for ch in (m or "") if ch.isdigit())[-10:]
+
+
+class SectionIn(BaseModel):
+    name: str = Field(min_length=2, max_length=80)
+
+
+class VideoIn(BaseModel):
+    section_id: str
+    title: str = Field(min_length=2, max_length=200)
+    youtube_url: str = Field(min_length=10, max_length=400)
+    description: Optional[str] = Field(default=None, max_length=2000)
+    # If list is empty -> ANY active authorized client can watch.
+    allowed_mobiles: List[str] = Field(default_factory=list)
+
+
+class VideoUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    allowed_mobiles: Optional[List[str]] = None
+
+
+@api_router.get("/admin/recordings/sections")
+async def list_sections_admin(_: str = Depends(require_admin)):
+    docs = await db.video_sections.find({}, {"_id": 0}).sort("created_at", 1).to_list(200)
+    return docs
+
+
+@api_router.post("/admin/recordings/sections")
+async def create_section(payload: SectionIn, _: str = Depends(require_admin)):
+    doc = {
+        "id": str(uuid.uuid4()),
+        "name": payload.name.strip(),
+        "slug": slugify(payload.name),
+        "created_at": now_iso(),
+    }
+    await db.video_sections.insert_one(doc.copy())
+    return doc
+
+
+@api_router.delete("/admin/recordings/sections/{section_id}")
+async def delete_section(section_id: str, _: str = Depends(require_admin)):
+    await db.videos.delete_many({"section_id": section_id})
+    res = await db.video_sections.delete_one({"id": section_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Section not found.")
+    return {"ok": True}
+
+
+@api_router.post("/admin/recordings/videos")
+async def create_video(payload: VideoIn, _: str = Depends(require_admin)):
+    yt_id = extract_youtube_id(payload.youtube_url)
+    section = await db.video_sections.find_one({"id": payload.section_id}, {"_id": 0, "id": 1})
+    if not section:
+        raise HTTPException(status_code=404, detail="Section not found.")
+    doc = {
+        "id": str(uuid.uuid4()),
+        "section_id": payload.section_id,
+        "title": payload.title.strip(),
+        "youtube_id": yt_id,
+        "description": (payload.description or "").strip(),
+        "allowed_mobiles": [normalize_mobile(m) for m in payload.allowed_mobiles if normalize_mobile(m)],
+        "uploaded_at": now_iso(),
+    }
+    await db.videos.insert_one(doc.copy())
+    return doc
+
+
+@api_router.patch("/admin/recordings/videos/{video_id}")
+async def update_video(video_id: str, payload: VideoUpdate, _: str = Depends(require_admin)):
+    updates = {}
+    if payload.title is not None: updates["title"] = payload.title.strip()
+    if payload.description is not None: updates["description"] = payload.description.strip()
+    if payload.allowed_mobiles is not None:
+        updates["allowed_mobiles"] = [normalize_mobile(m) for m in payload.allowed_mobiles if normalize_mobile(m)]
+    if not updates:
+        raise HTTPException(status_code=400, detail="Nothing to update.")
+    res = await db.videos.update_one({"id": video_id}, {"$set": updates})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Video not found.")
+    return {"ok": True}
+
+
+@api_router.delete("/admin/recordings/videos/{video_id}")
+async def delete_video(video_id: str, _: str = Depends(require_admin)):
+    res = await db.videos.delete_one({"id": video_id})
+    if res.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Video not found.")
+    return {"ok": True}
+
+
+@api_router.get("/admin/recordings/videos")
+async def list_all_videos_admin(_: str = Depends(require_admin)):
+    docs = await db.videos.find({}, {"_id": 0}).sort("uploaded_at", -1).to_list(1000)
+    return docs
+
+
+# ----- Public recordings access -----
+class RecordingsGate(BaseModel):
+    mobile: str
+
+
+@api_router.post("/recordings/access")
+async def access_recordings(payload: RecordingsGate):
+    """Mobile-gated. Returns sections + videos that this mobile is allowed to watch."""
+    m = normalize_mobile(payload.mobile)
+    if len(m) != 10:
+        raise HTTPException(status_code=400, detail="Please enter a valid 10-digit mobile number.")
+
+    # Same auth check as Mobile Compatibility
+    user = await db.authorized_users.find_one(
+        {"mobile": m, "status": "active"},
+        {"_id": 0, "mobile": 1, "name": 1, "expires_on": 1},
+    )
+    if not user:
+        raise HTTPException(status_code=403, detail="This mobile number is not authorized yet. Please contact the administrator — Newalkkar Saandiip ji at +91 99290 59153 — to register your details.")
+
+    # Expiry check
+    try:
+        if user.get("expires_on"):
+            exp = datetime.fromisoformat(user["expires_on"]).date()
+            if exp < datetime.now(timezone.utc).date():
+                raise HTTPException(status_code=403, detail="Your access has expired. Please contact the administrator to renew.")
+    except HTTPException:
+        raise
+    except Exception:
+        pass
+
+    sections = await db.video_sections.find({}, {"_id": 0}).sort("created_at", 1).to_list(200)
+    videos = await db.videos.find({}, {"_id": 0}).sort("uploaded_at", -1).to_list(1000)
+
+    # Filter videos: if allowed_mobiles is empty -> visible to any authorized user; else must include this mobile
+    visible = [v for v in videos if not v.get("allowed_mobiles") or m in v["allowed_mobiles"]]
+    # Group by section
+    by_section = {}
+    for v in visible:
+        # Strip allowed_mobiles from response (privacy)
+        v_out = {k: v[k] for k in ("id", "section_id", "title", "youtube_id", "description", "uploaded_at")}
+        by_section.setdefault(v["section_id"], []).append(v_out)
+
+    # Build response only for sections that have visible videos
+    sections_out = []
+    for s in sections:
+        if by_section.get(s["id"]):
+            sections_out.append({
+                "id": s["id"],
+                "name": s["name"],
+                "slug": s.get("slug"),
+                "videos": by_section[s["id"]],
+            })
+
+    return {
+        "name": user.get("name"),
+        "mobile": user["mobile"],
+        "sections": sections_out,
+    }
+
+
 # ============ Wire ============
 app.include_router(api_router)
 app.add_middleware(

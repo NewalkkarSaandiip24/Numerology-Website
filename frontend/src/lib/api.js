@@ -71,6 +71,10 @@ export const publicApi = {
     const { data } = await axios.post(`${API}/course-leads`, payload);
     return data;
   },
+  recordingsAccess: async (mobile) => {
+    const { data } = await axios.post(`${API}/recordings/access`, { mobile });
+    return data;
+  },
 };
 
 export function formatErr(e) {
