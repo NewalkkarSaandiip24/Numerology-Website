@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, ShieldCheck, PlayCircle, Video, Lock, RefreshCw, LogOut } from "lucide-react";
+import { ArrowLeft, ShieldCheck, PlayCircle, Video, Lock, RefreshCw, LogOut, Maximize2 } from "lucide-react";
 import Logo from "../components/Logo";
 import WhatsAppIcon from "../components/WhatsAppIcon";
 import useSEO from "../hooks/useSEO";
@@ -306,15 +306,30 @@ function Library({ data, activeSection, setActiveSection, onRefresh, loading }) 
 }
 
 function VideoCard({ video }) {
+  const wrapperRef = React.useRef(null);
   // Block right-click context menu (prevents "Copy video URL")
   const blockContext = (e) => e.preventDefault();
+
+  const goFullscreen = () => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const req =
+      el.requestFullscreen ||
+      el.webkitRequestFullscreen ||
+      el.msRequestFullscreen;
+    if (req) req.call(el);
+  };
+
   return (
     <div
       data-testid={`recordings-video-${video.id}`}
       className="glass-card overflow-hidden flex flex-col"
       onContextMenu={blockContext}
     >
-      <div className="aspect-video bg-black relative select-none">
+      <div
+        ref={wrapperRef}
+        className="aspect-video bg-black relative select-none group fs-target"
+      >
         <iframe
           src={`https://www.youtube.com/embed/${video.youtube_id}?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&fs=0&disablekb=1`}
           title={video.title}
@@ -348,6 +363,17 @@ function VideoCard({ video }) {
         >
           Newalkkar Saandiip · Private
         </div>
+
+        {/* Maximize button — fullscreens our wrapper (so masks stay covering YouTube UI) */}
+        <button
+          type="button"
+          onClick={goFullscreen}
+          data-testid={`recordings-fullscreen-${video.id}`}
+          aria-label="Maximize video"
+          className="absolute bottom-2 right-2 z-30 h-9 w-9 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm border border-[#D4AF37]/40 text-[#F3D060] flex items-center justify-center transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100"
+        >
+          <Maximize2 size={15} strokeWidth={2} />
+        </button>
       </div>
       <div className="p-4 sm:p-5">
         <div className="flex items-start gap-2 mb-1">
