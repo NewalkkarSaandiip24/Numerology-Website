@@ -306,21 +306,48 @@ function Library({ data, activeSection, setActiveSection, onRefresh, loading }) 
 }
 
 function VideoCard({ video }) {
+  // Block right-click context menu (prevents "Copy video URL")
+  const blockContext = (e) => e.preventDefault();
   return (
     <div
       data-testid={`recordings-video-${video.id}`}
       className="glass-card overflow-hidden flex flex-col"
+      onContextMenu={blockContext}
     >
-      <div className="aspect-video bg-black relative">
+      <div className="aspect-video bg-black relative select-none">
         <iframe
-          src={`https://www.youtube.com/embed/${video.youtube_id}?rel=0&modestbranding=1`}
+          src={`https://www.youtube.com/embed/${video.youtube_id}?rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&fs=0&disablekb=1`}
           title={video.title}
           loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
           referrerPolicy="strict-origin-when-cross-origin"
           className="absolute inset-0 w-full h-full"
         />
+
+        {/* === Branding masks — hide YouTube UI so authorized users can't share/click out === */}
+        {/* Top bar: covers channel logo, title, sound, CC, settings */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 inset-x-0 h-[20%] bg-black pointer-events-auto z-10"
+        />
+        {/* Bottom-left: covers Share + Watch Later buttons (above the scrubber) */}
+        <div
+          aria-hidden="true"
+          className="absolute left-0 bottom-[6%] h-[20%] w-[26%] bg-black pointer-events-auto z-10"
+        />
+        {/* Bottom-right: covers "More videos" chip + YouTube logo + "Watch on YouTube" link */}
+        <div
+          aria-hidden="true"
+          className="absolute right-0 bottom-[6%] h-[20%] w-[42%] bg-black pointer-events-auto z-10"
+        />
+
+        {/* Subtle watermark with our brand so screen recordings show the source */}
+        <div
+          aria-hidden="true"
+          className="absolute top-2 right-2 z-20 font-mono text-[9px] uppercase tracking-[0.2em] text-[#F3D060]/70 bg-black/45 px-2 py-1 rounded backdrop-blur-sm pointer-events-none"
+        >
+          Newalkkar Saandiip · Private
+        </div>
       </div>
       <div className="p-4 sm:p-5">
         <div className="flex items-start gap-2 mb-1">
