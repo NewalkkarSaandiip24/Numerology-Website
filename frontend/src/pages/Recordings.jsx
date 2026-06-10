@@ -320,10 +320,10 @@ function VideoCard({ video }) {
   };
 
   // Visible region of the iframe — everything OUTSIDE this polygon is clipped away.
-  // Keep ONLY a narrow middle strip at the bottom (for scrubber drag); the corners
-  // are fully cut so YouTube branding/Share/Watch-on-YouTube cannot render in them.
+  // Keep ONLY the top 16-78% (centre video). Bottom 22% is entirely covered by the
+  // continuous violet strip so YouTube branding, share, scrubber etc. cannot show.
   const videoClipPath =
-    "polygon(0 16%, 100% 16%, 100% 78%, 40% 78%, 40% 100%, 20% 100%, 20% 78%, 0 78%)";
+    "polygon(0 16%, 100% 16%, 100% 78%, 0 78%)";
 
   return (
     <div
@@ -359,30 +359,21 @@ function VideoCard({ video }) {
             borderBottom: "1px solid rgba(212,175,55,0.35)",
           }}
         />
-        {/* Decorative bottom-left frame — covers Share / Watch Later area (full height to bottom) */}
+        {/* Decorative bottom strip — one continuous violet band that covers the
+            entire bottom YouTube control bar (share, scrubber, "Watch on YouTube",
+            "More videos", YouTube logo). */}
         <div
           aria-hidden="true"
-          className="absolute left-0 bottom-0 h-[22%] w-[20%] z-10 pointer-events-auto"
+          className="absolute inset-x-0 bottom-0 h-[22%] z-10 pointer-events-auto"
           style={{
             background:
-              "linear-gradient(135deg, #0F0518 0%, #1A0B2E 60%, rgba(212,175,55,0.12) 100%)",
-            borderTop: "1px solid rgba(212,175,55,0.25)",
-            borderRight: "1px solid rgba(212,175,55,0.18)",
-          }}
-        />
-        {/* Decorative bottom-right frame — covers "More videos" + YouTube logo + "Watch on YouTube" (full height to bottom) */}
-        <div
-          aria-hidden="true"
-          className="absolute right-0 bottom-0 h-[22%] w-[60%] z-10 pointer-events-auto"
-          style={{
-            background:
-              "linear-gradient(225deg, #0F0518 0%, #1A0B2E 60%, rgba(212,175,55,0.12) 100%)",
-            borderTop: "1px solid rgba(212,175,55,0.25)",
-            borderLeft: "1px solid rgba(212,175,55,0.18)",
+              "linear-gradient(180deg, #19082b 0%, #0F0518 55%, #0A0212 100%)",
+            borderTop: "1px solid rgba(212,175,55,0.32)",
+            boxShadow: "inset 0 1px 0 rgba(212,175,55,0.18)",
           }}
         >
-          {/* Tiny brand mark inside the bottom-right frame — replaces YouTube's logo */}
-          <div className="absolute bottom-2 right-3 flex items-center gap-2">
+          {/* Brand signature — sits where YouTube's logo used to be */}
+          <div className="absolute bottom-2 right-4 flex items-center gap-2">
             <span className="font-serif italic text-[11px] sm:text-xs text-[#F3D060]/90 tracking-wide">
               Newalkkar Saandiip
             </span>
