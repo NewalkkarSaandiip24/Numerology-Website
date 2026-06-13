@@ -239,7 +239,7 @@ const COURSES = {
     label: "Mobile Numerology",
     theme: "light",
     free: true,
-    cta_url: "https://chat.whatsapp.com/FagjXs3exRH8sgPp1PkHJ7",
+    cta_url: "https://chat.whatsapp.com/Ecv8TS4W4qk8T5AyDYFBb0",
     hero_kicker: "Free Live Masterclass — Limited Seats",
     hero_h1: "Your Mobile Number Is Silently Blocking Your Success — And You're Carrying It With You Every Single Day.",
     hero_sub: "The number on your SIM is vibrating into every call, every transaction, every relationship. If it carries even ONE wrong pair — your money, health and peace are leaking without you knowing. In this free 1-day masterclass, learn exactly how to read it before it costs you another year.",
@@ -773,10 +773,10 @@ export default function CourseLanding() {
                       🔴 Live Masterclass — {course.label}
                     </div>
                     <div
-                      className={`mt-0.5 font-serif text-lg sm:text-xl ${
+                      className={`mt-0.5 text-lg sm:text-xl ${
                         isLight ? "text-[#5B0B1F]" : "text-[#F8F5F0]"
                       }`}
-                      style={{ fontWeight: 700 }}
+                      style={{ fontFamily: "'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif", fontWeight: 700, letterSpacing: "0.01em" }}
                     >
                       {schedule.event_date ? formatScheduleDate(schedule.event_date) : ""}
                       {schedule.event_date && schedule.event_time ? " · " : ""}
@@ -813,7 +813,7 @@ export default function CourseLanding() {
                   <p className={`mt-3 text-base sm:text-lg ${isLight ? 'text-[#2A1A2C]' : 'text-[#C8BED6]'} font-medium leading-relaxed`}>
                     {course.free ? (
                       <>
-                        One last step — <span className={isLight ? 'text-[#5B0B1F] font-bold' : 'text-[#F3D060] font-bold'}>join the FREE Masterclass WhatsApp group</span> to receive your joining link, study material and last-minute reminders from Newalkkar Saandiip ji.
+                        One last step — <span className={isLight ? 'text-[#5B0B1F] font-bold' : 'text-[#F3D060] font-bold'}>join our FREE Master Class WhatsApp Community</span> to receive your joining link, study material and last-minute reminders from Newalkkar Saandiip ji.
                       </>
                     ) : (
                       <>
@@ -830,10 +830,10 @@ export default function CourseLanding() {
                       `Namaste Newalkkar Saandiip ji,\n\n${dmIntro}.\n\nName: ${ld.name || ""}\nEmail: ${ld.email || ""}\nMobile: ${ld.mobile || ""}\n\nKindly share the joining details.`
                     );
                     const href = course.free
-                      ? (course.cta_url || "https://chat.whatsapp.com/FagjXs3exRH8sgPp1PkHJ7")
+                      ? (course.cta_url || "https://chat.whatsapp.com/Ecv8TS4W4qk8T5AyDYFBb0")
                       : `https://wa.me/919929059153?text=${dmMsg}`;
                     const label = course.free
-                      ? "Join Free Masterclass WhatsApp Group"
+                      ? "Join our Free Master Class WhatsApp Community"
                       : "Message on WhatsApp to Confirm Seat";
                     return (
                       <a
@@ -856,7 +856,7 @@ export default function CourseLanding() {
                   })()}
                   <p className={`mt-4 text-xs sm:text-sm ${isLight ? 'text-[#7A1E15]' : 'text-[#C8BED6]/70'} font-medium`}>
                     {course.free
-                      ? <>⚠️ Without joining the group you will <span className="font-bold">NOT</span> receive the masterclass link. This takes 5 seconds.</>
+                      ? <>⚠️ Without joining our Community you will <span className="font-bold">NOT</span> receive the master class link. This takes 5 seconds.</>
                       : <>⚠️ Your seat will be held for the next 15 minutes only. Please complete the WhatsApp step now.</>
                     }
                   </p>
