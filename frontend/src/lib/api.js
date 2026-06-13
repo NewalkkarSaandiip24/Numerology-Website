@@ -69,6 +69,11 @@ export const adminApi = {
     const { data } = await axios.patch(`${API}/admin/recordings/sections/${id}`, payload, { headers: authHeaders() });
     return data;
   },
+  // ---- Course Schedules ----
+  updateSchedule: async (slug, payload) => {
+    const { data } = await axios.patch(`${API}/admin/course-schedules/${slug}`, payload, { headers: authHeaders() });
+    return data;
+  },
   listAllVideos: async () => {
     const { data } = await axios.get(`${API}/admin/recordings/videos`, { headers: authHeaders() });
     return data;
@@ -102,6 +107,15 @@ export const publicApi = {
   },
   submitCourseLead: async (payload) => {
     const { data } = await axios.post(`${API}/course-leads`, payload);
+    return data;
+  },
+  // ---- Course Schedules ----
+  listSchedules: async () => {
+    const { data } = await axios.get(`${API}/course-schedules`);
+    return data;
+  },
+  getSchedule: async (slug) => {
+    const { data } = await axios.get(`${API}/course-schedules/${slug}`);
     return data;
   },
   recordingsAccess: async (mobile) => {

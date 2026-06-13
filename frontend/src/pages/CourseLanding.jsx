@@ -10,6 +10,20 @@ import WhatsAppIcon from "../components/WhatsAppIcon";
 import useSEO from "../hooks/useSEO";
 import { publicApi, formatErr } from "../lib/api";
 
+// Format YYYY-MM-DD → "Saturday · 15 March 2026"
+function formatScheduleDate(yyyy_mm_dd) {
+  if (!yyyy_mm_dd) return "";
+  try {
+    const [y, m, d] = yyyy_mm_dd.split("-").map((n) => parseInt(n, 10));
+    if (!y || !m || !d) return "";
+    const dt = new Date(Date.UTC(y, m - 1, d));
+    const opts = { weekday: "long", day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" };
+    return dt.toLocaleDateString("en-IN", opts);
+  } catch {
+    return "";
+  }
+}
+
 /* ===== Course catalogue (dynamic — extend any time) ===== */
 const COURSES = {
   numerology: {
@@ -486,6 +500,18 @@ export default function CourseLanding() {
   const time = useCountdown();
   const [submitted, setSubmitted] = useState(false);
   const [leadData, setLeadData] = useState(null);
+  const [schedule, setSchedule] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const s = await publicApi.getSchedule(course.slug);
+        if (!cancelled) setSchedule(s);
+      } catch {}
+    })();
+    return () => { cancelled = true; };
+  }, [course.slug]);
 
   useSEO({
     title: `${course.label} Workshop with Newalkkar Saandiip — Live Online Course at ₹${course.price}`,
@@ -715,6 +741,68 @@ export default function CourseLanding() {
                   </div>
                 )}
               </div>
+
+              {/* === Live Schedule banner === */}
+              {schedule && (schedule.event_date || schedule.event_time) && (
+                <div
+                  data-testid="course-schedule-banner"
+                  className="mt-4 rounded-xl p-3 sm:p-4 border-2 flex flex-col sm:flex-row items-center gap-3 sm:gap-4"
+                  style={
+                    isLight
+                      ? {
+                          background:
+                            "linear-gradient(135deg, #FFF4D6 0%, #FFE7A8 100%)",
+                          borderColor: "rgba(212,175,55,0.65)",
+                        }
+                      : {
+                          background:
+                            "linear-gradient(135deg, rgba(212,175,55,0.16) 0%, rgba(91,11,31,0.55) 100%)",
+                          borderColor: "rgba(212,175,55,0.55)",
+                        }
+                  }
+                >
+                  <div className="shrink-0 h-12 w-12 rounded-full bg-[#5B0B1F] text-[#F3D060] flex items-center justify-center border-2 border-[#D4AF37]">
+                    <Calendar size={22} strokeWidth={1.8} />
+                  </div>
+                  <div className="flex-1 min-w-0 text-center sm:text-left">
+                    <div
+                      className={`font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] ${
+                        isLight ? "text-[#7A1E15]" : "text-[#F3D060]"
+                      }`}
+                    >
+                      🔴 Live Masterclass — {course.label}
+                    </div>
+                    <div
+                      className={`mt-0.5 font-serif text-lg sm:text-xl ${
+                        isLight ? "text-[#5B0B1F]" : "text-[#F8F5F0]"
+                      }`}
+                      style={{ fontWeight: 700 }}
+                    >
+                      {schedule.event_date ? formatScheduleDate(schedule.event_date) : ""}
+                      {schedule.event_date && schedule.event_time ? " · " : ""}
+                      {schedule.event_time}{" "}
+                      {schedule.timezone_label && (
+                        <span
+                          className={`text-sm sm:text-base font-bold ${
+                            isLight ? "text-[#8B6B14]" : "text-[#F3D060]"
+                          }`}
+                        >
+                          {schedule.timezone_label}
+                        </span>
+                      )}
+                    </div>
+                    {schedule.notes && (
+                      <div
+                        className={`mt-0.5 text-xs sm:text-sm ${
+                          isLight ? "text-[#2A1A2C]" : "text-[#C8BED6]"
+                        }`}
+                      >
+                        {schedule.notes}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {submitted ? (
                 <div data-testid="course-thankyou" className="text-center py-4">

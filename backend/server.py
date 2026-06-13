@@ -530,6 +530,73 @@ async def access_recordings(payload: RecordingsGate):
     }
 
 
+# ============ Course Schedules ============
+COURSE_SLUG_LABELS = {
+    "mobile-numerology": "Mobile Numerology Masterclass",
+    "numerology": "Numerology Workshop",
+    "vastu": "Vaastu Mastery Workshop",
+    "personal-year": "Personal Year Forecasting",
+}
+
+
+class CourseScheduleIn(BaseModel):
+    event_date: Optional[str] = None     # YYYY-MM-DD
+    event_time: Optional[str] = None     # free-form, e.g. "07:30 PM"
+    timezone_label: Optional[str] = None # e.g. "IST"
+    notes: Optional[str] = None
+
+
+def _schedule_doc(slug: str, doc):
+    src = doc or {}
+    return {
+        "course_slug": slug,
+        "course_label": COURSE_SLUG_LABELS.get(slug, slug.replace("-", " ").title()),
+        "event_date": src.get("event_date") or "",
+        "event_time": src.get("event_time") or "",
+        "timezone_label": src.get("timezone_label") or "IST",
+        "notes": src.get("notes") or "",
+        "updated_at": src.get("updated_at") or "",
+    }
+
+
+@api_router.get("/course-schedules")
+async def list_course_schedules_public():
+    out = []
+    for slug in COURSE_SLUG_LABELS.keys():
+        doc = await db.course_schedules.find_one({"course_slug": slug}, {"_id": 0})
+        out.append(_schedule_doc(slug, doc))
+    return out
+
+
+@api_router.get("/course-schedules/{slug}")
+async def get_course_schedule_public(slug: str):
+    doc = await db.course_schedules.find_one({"course_slug": slug}, {"_id": 0})
+    return _schedule_doc(slug, doc)
+
+
+@api_router.patch("/admin/course-schedules/{slug}")
+async def update_course_schedule(slug: str, payload: CourseScheduleIn, _: str = Depends(require_admin)):
+    if slug not in COURSE_SLUG_LABELS:
+        raise HTTPException(status_code=404, detail="Unknown course.")
+    if payload.event_date:
+        try:
+            datetime.strptime(payload.event_date, "%Y-%m-%d")
+        except ValueError:
+            raise HTTPException(status_code=400, detail="event_date must be in YYYY-MM-DD format.")
+    update = {
+        "course_slug": slug,
+        "event_date": (payload.event_date or "").strip(),
+        "event_time": (payload.event_time or "").strip(),
+        "timezone_label": (payload.timezone_label or "IST").strip(),
+        "notes": (payload.notes or "").strip(),
+        "updated_at": now_iso(),
+    }
+    await db.course_schedules.update_one(
+        {"course_slug": slug}, {"$set": update}, upsert=True
+    )
+    return _schedule_doc(slug, update)
+
+
 # ============ Wire ============
 app.include_router(api_router)
 app.add_middleware(

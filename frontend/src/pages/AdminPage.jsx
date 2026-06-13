@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Plus, Trash2, History, RefreshCw, LogOut, Lock, Phone, User, Calendar, Shield, BookOpen, Image as ImageIcon, X, Video, Film, Link as LinkIcon, Folder, Pencil } from "lucide-react";
 import Logo from "../components/Logo";
 import useSEO from "../hooks/useSEO";
-import { adminApi, getToken, clearToken, formatErr } from "../lib/api";
+import { adminApi, publicApi, getToken, clearToken, formatErr } from "../lib/api";
 
 export default function AdminPage() {
   useSEO({
@@ -217,6 +217,9 @@ export default function AdminPage() {
 
         {/* ===== Recordings Management Section ===== */}
         <RecordingsManager />
+
+        {/* ===== Course Schedule Section ===== */}
+        <CourseScheduleManager />
       </main>
     </div>
   );
@@ -1171,6 +1174,224 @@ function RecordingsManager() {
                 )}
               </div>
             ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ============= Course Schedule Manager (admin) ============= */
+function CourseScheduleManager() {
+  const [schedules, setSchedules] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [savingSlug, setSavingSlug] = useState("");
+  const [error, setError] = useState("");
+  const [okSlug, setOkSlug] = useState("");
+
+  const refresh = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const list = await publicApi.listSchedules();
+      setSchedules(list);
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line
+  }, []);
+
+  const updateField = (slug, field, value) => {
+    setSchedules((prev) =>
+      prev.map((s) => (s.course_slug === slug ? { ...s, [field]: value } : s))
+    );
+  };
+
+  const handleSave = async (slug) => {
+    setError("");
+    setOkSlug("");
+    const s = schedules.find((x) => x.course_slug === slug);
+    if (!s) return;
+    setSavingSlug(slug);
+    try {
+      await adminApi.updateSchedule(slug, {
+        event_date: s.event_date,
+        event_time: s.event_time,
+        timezone_label: s.timezone_label || "IST",
+        notes: s.notes,
+      });
+      setOkSlug(slug);
+      setTimeout(() => setOkSlug(""), 2500);
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setSavingSlug("");
+    }
+  };
+
+  const handleClear = async (slug) => {
+    if (!window.confirm("Hide the live-schedule banner from this course page?")) return;
+    updateField(slug, "event_date", "");
+    updateField(slug, "event_time", "");
+    updateField(slug, "notes", "");
+    setSavingSlug(slug);
+    try {
+      await adminApi.updateSchedule(slug, {
+        event_date: "",
+        event_time: "",
+        timezone_label: "IST",
+        notes: "",
+      });
+      setOkSlug(slug);
+      setTimeout(() => setOkSlug(""), 2500);
+    } catch (e) {
+      setError(formatErr(e));
+    } finally {
+      setSavingSlug("");
+    }
+  };
+
+  return (
+    <section className="mt-14" data-testid="schedule-manager">
+      <div className="mb-6">
+        <div className="v-label mb-2">Live Masterclass Schedule</div>
+        <h2 className="font-serif text-2xl sm:text-3xl" style={{ fontWeight: 400 }}>
+          Manage <span className="gold-shimmer">Course Date &amp; Time</span>
+        </h2>
+        <p className="mt-2 text-sm text-[#C8BED6] font-light max-w-2xl">
+          Set the date, time and timezone for each course landing page. The schedule
+          banner appears on{" "}
+          <span className="text-[#F3D060]">/learn/&lt;course&gt;</span> right above the
+          enrolment form. Leave a field empty to hide the banner for that course.
+        </p>
+      </div>
+
+      {error && (
+        <div
+          data-testid="schedule-error"
+          className="mb-4 px-4 py-3 rounded-lg border border-red-400/40 bg-red-500/10 text-red-200 text-sm"
+        >
+          {error}
+        </div>
+      )}
+
+      {loading && schedules.length === 0 ? (
+        <div className="text-center py-8 text-[#C8BED6]/70 font-mono text-xs uppercase tracking-[0.2em]">
+          Loading…
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {schedules.map((s) => (
+            <div
+              key={s.course_slug}
+              data-testid={`schedule-row-${s.course_slug}`}
+              className="glass-card p-4 sm:p-5"
+            >
+              <div className="flex items-center justify-between gap-3 mb-3 flex-wrap">
+                <div className="flex items-center gap-2 min-w-0">
+                  <Calendar size={16} className="text-[#D4AF37] shrink-0" />
+                  <h3
+                    className="font-serif text-base sm:text-lg text-[#F8F5F0]"
+                    style={{ fontWeight: 500 }}
+                  >
+                    {s.course_label}
+                  </h3>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#C8BED6]/55">
+                    /learn/{s.course_slug}
+                  </span>
+                </div>
+                {okSlug === s.course_slug && (
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-[#7ED99B]">
+                    ✓ Saved
+                  </span>
+                )}
+              </div>
+
+              <div className="grid sm:grid-cols-4 gap-3">
+                <div>
+                  <label className="v-label block mb-1.5">Date</label>
+                  <input
+                    type="date"
+                    className="field-input"
+                    data-testid={`schedule-date-${s.course_slug}`}
+                    value={s.event_date || ""}
+                    onChange={(e) =>
+                      updateField(s.course_slug, "event_date", e.target.value)
+                    }
+                  />
+                </div>
+                <div>
+                  <label className="v-label block mb-1.5">Time</label>
+                  <input
+                    type="text"
+                    className="field-input"
+                    data-testid={`schedule-time-${s.course_slug}`}
+                    placeholder="e.g. 07:30 PM"
+                    value={s.event_time || ""}
+                    onChange={(e) =>
+                      updateField(s.course_slug, "event_time", e.target.value)
+                    }
+                    maxLength={20}
+                  />
+                </div>
+                <div>
+                  <label className="v-label block mb-1.5">Timezone</label>
+                  <input
+                    type="text"
+                    className="field-input"
+                    data-testid={`schedule-tz-${s.course_slug}`}
+                    placeholder="IST"
+                    value={s.timezone_label || ""}
+                    onChange={(e) =>
+                      updateField(s.course_slug, "timezone_label", e.target.value)
+                    }
+                    maxLength={12}
+                  />
+                </div>
+                <div>
+                  <label className="v-label block mb-1.5">Notes (optional)</label>
+                  <input
+                    type="text"
+                    className="field-input"
+                    data-testid={`schedule-notes-${s.course_slug}`}
+                    placeholder="e.g. Live on Zoom"
+                    value={s.notes || ""}
+                    onChange={(e) =>
+                      updateField(s.course_slug, "notes", e.target.value)
+                    }
+                    maxLength={120}
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 mt-4">
+                <button
+                  type="button"
+                  onClick={() => handleSave(s.course_slug)}
+                  disabled={savingSlug === s.course_slug}
+                  data-testid={`schedule-save-${s.course_slug}`}
+                  className="btn-gold text-sm disabled:opacity-50"
+                >
+                  <Plus size={14} />
+                  {savingSlug === s.course_slug ? "Saving…" : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleClear(s.course_slug)}
+                  disabled={savingSlug === s.course_slug}
+                  data-testid={`schedule-clear-${s.course_slug}`}
+                  className="text-xs font-mono uppercase tracking-[0.2em] text-red-300 hover:text-red-200 px-3 py-1.5 rounded-full border border-red-400/30 hover:border-red-400/55"
+                >
+                  Hide Banner
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </section>
