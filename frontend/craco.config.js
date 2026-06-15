@@ -61,22 +61,56 @@ let webpackConfig = {
 };
 
 webpackConfig.devServer = (devServerConfig) => {
-  // Add health check endpoints if enabled
-  if (config.enableHealthCheck && setupHealthEndpoints && healthPluginInstance) {
-    const originalSetupMiddlewares = devServerConfig.setupMiddlewares;
+  // ------------------------------------------------------------------
+  // Modernise deprecated middleware hooks.
+  //
+  // react-scripts 5.x still ships its webpackDevServer.config.js using
+  // `onBeforeSetupMiddleware` / `onAfterSetupMiddleware`, which were
+  // removed in webpack-dev-server v4 in favour of `setupMiddlewares`.
+  // We translate them here so the dev server boots without deprecation
+  // warnings while preserving every existing piece of functionality:
+  //   • evalSourceMapMiddleware (powers the error overlay)
+  //   • user-supplied src/setupProxy.js
+  //   • redirectServedPath (PUBLIC_URL routing)
+  //   • noopServiceWorkerMiddleware
+  //   • our own health-check endpoints (if enabled)
+  //   • any setupMiddlewares chain already on the config (visual-edits etc.)
+  // ------------------------------------------------------------------
+  const beforeHook = devServerConfig.onBeforeSetupMiddleware;
+  const afterHook = devServerConfig.onAfterSetupMiddleware;
+  delete devServerConfig.onBeforeSetupMiddleware;
+  delete devServerConfig.onAfterSetupMiddleware;
 
-    devServerConfig.setupMiddlewares = (middlewares, devServer) => {
-      // Call original setup if exists
-      if (originalSetupMiddlewares) {
-        middlewares = originalSetupMiddlewares(middlewares, devServer);
-      }
+  const previousSetupMiddlewares = devServerConfig.setupMiddlewares;
 
-      // Setup health endpoints
+  devServerConfig.setupMiddlewares = (middlewares, devServer) => {
+    if (!devServer) {
+      throw new Error("webpack-dev-server is not defined");
+    }
+
+    // 1. CRA's "before" hook — registers middlewares on devServer.app
+    if (typeof beforeHook === "function") {
+      beforeHook(devServer);
+    }
+
+    // 2. Any previously-registered setupMiddlewares (visual-edits, future plugins)
+    let next = middlewares;
+    if (typeof previousSetupMiddlewares === "function") {
+      next = previousSetupMiddlewares(next, devServer) || next;
+    }
+
+    // 3. Our own health-check endpoints (preserves prior behaviour)
+    if (config.enableHealthCheck && setupHealthEndpoints && healthPluginInstance) {
       setupHealthEndpoints(devServer, healthPluginInstance);
+    }
 
-      return middlewares;
-    };
-  }
+    // 4. CRA's "after" hook — registers middlewares on devServer.app
+    if (typeof afterHook === "function") {
+      afterHook(devServer);
+    }
+
+    return next;
+  };
 
   return devServerConfig;
 };
