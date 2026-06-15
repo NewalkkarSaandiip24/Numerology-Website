@@ -32,9 +32,6 @@ TOKEN_TTL_HOURS = 12
 async def lifespan(_app: FastAPI):
     # ---- startup ----
     await seed_admin()
-    await db.authorized_users.create_index("mobile")
-    await db.blogs.create_index("slug", unique=True)
-    await db.blogs.create_index("created_at")
     yield
     # ---- shutdown ----
     client.close()
