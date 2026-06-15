@@ -1,4 +1,5 @@
 from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request
+from contextlib import asynccontextmanager
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -26,7 +27,20 @@ ADMIN_MOBILES = {m.strip() for m in os.environ['ADMIN_MOBILES'].split(',') if m.
 DEFAULT_PASSWORD = os.environ['ADMIN_DEFAULT_PASSWORD']
 TOKEN_TTL_HOURS = 12
 
-app = FastAPI()
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    # ---- startup ----
+    await seed_admin()
+    await db.authorized_users.create_index("mobile")
+    await db.blogs.create_index("slug", unique=True)
+    await db.blogs.create_index("created_at")
+    yield
+    # ---- shutdown ----
+    client.close()
+
+
+app = FastAPI(lifespan=lifespan)
 api_router = APIRouter(prefix="/api")
 
 
@@ -147,14 +161,6 @@ async def seed_admin():
             "hash": hash_pw(DEFAULT_PASSWORD),
             "created_at": now_iso(),
         })
-
-
-@app.on_event("startup")
-async def _startup():
-    await seed_admin()
-    await db.authorized_users.create_index("mobile")
-    await db.blogs.create_index("slug", unique=True)
-    await db.blogs.create_index("created_at")
 
 
 # ============ Public ============
@@ -609,8 +615,3 @@ app.add_middleware(
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
-
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    client.close()
